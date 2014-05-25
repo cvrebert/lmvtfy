@@ -54,7 +54,7 @@ object Html5Validator {
     }
 }
 
-class Html5Validator(inputSource: InputSource) {
+private class Html5Validator(inputSource: InputSource) {
     import Html5Validator.{schemaUrl,showSource,errorsOnly}
 
     private val outputStream = new java.io.ByteArrayOutputStream()
