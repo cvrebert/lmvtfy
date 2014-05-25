@@ -1,0 +1,11 @@
+* Need to re-parse the validator's JSON
+* Validator needs proper exception handling
+* Write code to scan for URLs in a given GitHub issue comment
+* Write code to grab the HTML from jsFiddle et al.
+* Write code to grab the HTML out of a Markdown code block
+* Add logging
+* Run this as a server using http://spray.io
+* Deploy this to DigitalOcean
+* Register this as a webhook on the Bootstrap GitHub repo
+* Write code to verify the incoming `X-Hub-Signature` header to prevent spoofing
+* Figure out GitHub TOS compliance
