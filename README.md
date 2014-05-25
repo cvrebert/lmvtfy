@@ -16,4 +16,4 @@ But due to the project's popularity, you will get some issues reported by newbie
 By automating the process of checking the validity of HTML examples, such issues can be resolved more quickly and with less work on the part of issue triagers.
 
 ## Used by
-* In the future, this will hopefully will be used by Bootstrap.
+* In the future, this will hopefully be used by Bootstrap.
