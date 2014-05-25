@@ -3,7 +3,6 @@ package com.getbootstrap.lmvtfy.server
 import java.nio.charset.Charset
 import akka.actor.Actor
 import spray.routing._
-import spray.routing.directives.HeaderDirectives
 import spray.http._
 import spray.json._
 import com.getbootstrap.lmvtfy.HmacSha1
