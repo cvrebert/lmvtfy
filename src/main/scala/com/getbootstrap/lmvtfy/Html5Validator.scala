@@ -33,16 +33,7 @@ import org.xml.sax.InputSource
 import org.xml.sax.SAXException
 import org.xml.sax.SAXParseException
 
-object Main {
-    // java -Xss512k -jar ~/vnu.jar FILE.html
-
-    // throws SAXException, Exception
-    def main(args: Array[String]) {
-        val is: InputSource = new InputSource(System.in)
-        Html5Validator.validationErrorsFor(is)
-    }
-}
-
+// java -Xss512k
 object Html5Validator {
     private val schemaUrl = "http://s.validator.nu/html5-rdfalite.rnc"
     private val showSource: Boolean = false
