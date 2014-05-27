@@ -7,5 +7,4 @@
 * Run this as a server using http://spray.io
 * Deploy this to DigitalOcean
 * Register this as a webhook on the Bootstrap GitHub repo
-* Write code to verify the incoming `X-Hub-Signature` header to prevent spoofing
 * Figure out GitHub TOS compliance
