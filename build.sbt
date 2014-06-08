@@ -4,6 +4,8 @@ version := "1.0"
 
 scalaVersion := "2.10.3"
 
+resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
+
 libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.core" % "2.1.5"
 
 libraryDependencies ++= {
@@ -16,10 +18,12 @@ libraryDependencies ++= {
     "io.spray"            %%  "spray-json"    % "1.2.6",
     "com.typesafe.akka"   %%  "akka-actor"    % akkaV,
     "com.typesafe.akka"   %%  "akka-testkit"  % akkaV   % "test",
-    "org.specs2"          %%  "specs2-core"   % "2.3.7" % "test"
+    "org.specs2"          %%  "specs2"   % "2.3.12" % "test"
   )
 }
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
+
+scalacOptions in Test ++= Seq("-Yrangepos")
 
 Revolver.settings
