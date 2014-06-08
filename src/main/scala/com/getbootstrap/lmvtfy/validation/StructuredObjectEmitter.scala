@@ -47,10 +47,9 @@ class StructuredObjectEmitter() extends nu.validator.messages.MessageEmitter {
     oneBasedLastLine: Int, oneBasedLastColumn: Int,
     exact: Boolean)
   {
-    val start = SourceLocation(oneBasedFirstLine, oneBasedFirstColumn)
-    val end = SourceLocation(oneBasedLastLine, oneBasedLastColumn)
+    val locationSpan = SourceSpan(oneBasedFirstLine, oneBasedFirstColumn, oneBasedLastLine, oneBasedLastColumn)
     val flatMsgType = msgType.getFlatType // FIXME
-    messagesStack.push(new ValidationMessage(start, end, Nil))
+    messagesStack.push(new ValidationMessage(locationSpan, Nil))
   }
 
   /**
@@ -58,7 +57,7 @@ class StructuredObjectEmitter() extends nu.validator.messages.MessageEmitter {
    */
   override def endMessage() {
     val blankMsg = messagesStack.pop()
-    val fullMsg = new ValidationMessage(blankMsg.start, blankMsg.end, handler.message)
+    val fullMsg = new ValidationMessage(blankMsg.locationSpan, handler.message)
     messagesStack.push(fullMsg)
   }
 
