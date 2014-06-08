@@ -49,8 +49,7 @@ class StructuredObjectEmitter() extends nu.validator.messages.MessageEmitter {
   {
     val start = SourceLocation(oneBasedFirstLine, oneBasedFirstColumn)
     val end = SourceLocation(oneBasedLastLine, oneBasedLastColumn)
-    val flatMsgType = msgType.getFlatType
-    System.out.println(s"type: ${flatMsgType}  start: ${start}  end: ${end}")
+    val flatMsgType = msgType.getFlatType // FIXME
     messagesStack.push(new ValidationMessage(start, end, Nil))
   }
 
