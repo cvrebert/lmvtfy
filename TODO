@@ -1,4 +1,3 @@
-* Need to re-parse the validator's JSON
 * Validator needs proper exception handling
 * Write code to scan for URLs in a given GitHub issue comment
 * Write code to grab the HTML from jsFiddle et al.
