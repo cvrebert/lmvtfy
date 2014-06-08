@@ -15,9 +15,13 @@ object SourceSpan {
         end match {
           case None => Some(new SourceSpan(someStart, None)) // start only
           case Some(someEnd) => {
-            if (someStart <= someEnd) {
+            if (someStart < someEnd) {
               // order already correct
               Some(new SourceSpan(someStart, end))
+            }
+            else if (someStart == someEnd) {
+              // simplify span of 0/1 chars
+              Some(new SourceSpan(someStart, None))
             }
             else {
               // need to flip

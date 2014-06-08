@@ -45,4 +45,10 @@ class SourceSpanSpec extends Specification {
       }
     }
   }
+  "Identical valid start and end" should {
+    "be simplified to having no end" in {
+      SourceSpan(2, 3, 2, 3) mustEqual SourceSpan(2, 3, -1, -1)
+      SourceSpan(2, -1, 2, -1) mustEqual SourceSpan(2, -1, -1, -1)
+    }
+  }
 }
