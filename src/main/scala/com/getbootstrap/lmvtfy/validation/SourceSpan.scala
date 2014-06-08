@@ -32,5 +32,5 @@ object SourceSpan {
   }
 }
 sealed case class SourceSpan private(start: SourceLocation, end: Option[SourceLocation]) {
-  override def toString: String = s"${start}" + end.map{ s" thru " + _ }
+  override def toString: String = s"${start}" + end.map{ s" thru " + _ }.getOrElse("")
 }
