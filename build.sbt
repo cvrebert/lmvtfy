@@ -26,4 +26,6 @@ scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
 scalacOptions in Test ++= Seq("-Yrangepos")
 
+// parallelExecution in Test := false
+
 Revolver.settings
