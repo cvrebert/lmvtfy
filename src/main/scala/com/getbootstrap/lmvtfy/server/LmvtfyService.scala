@@ -48,12 +48,10 @@ trait Lmvtfy extends HttpService {
                             entity(as[IssueOrCommentEvent]) { event =>
                               event.action match {
                                 case "opened" | "created" => {
-                                  val comment = event.comment.getOrElse(event.issue)
-                                  val markdown = comment.body
-                                  val username = comment.user.login
-                                  System.out.println("EVENT: ", event.action)
-                                  System.out.println("USERNAME: ", username)
-                                  System.out.println("COMMENT BODY: ", markdown)
+                                  val comment = null//event.comment.getOrElse(event.issue)
+                                  val markdown = null//comment.body
+                                  val username = null//comment.user.login
+                                  System.out.println(event)
                                   // FIXME: DO ACTUAL WORK
                                   complete(StatusCodes.OK)
                                 }
