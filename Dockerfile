@@ -1,0 +1,10 @@
+FROM dockerfile/java
+MAINTAINER Chris Rebert <code@rebertia.com>
+
+WORKDIR /
+USER daemon
+
+ADD target/scala-2.10/lmvtfy-assembly-1.0.jar /app/server.jar
+
+ENTRYPOINT ["java", "-jar", "/app/server.jar"]
+EXPOSE 80
