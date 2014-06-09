@@ -6,6 +6,8 @@ import spray.routing._
 import spray.http._
 import spray.json._
 import com.getbootstrap.lmvtfy.github._
+import akka.event.Logging
+import spray.routing.directives.DebuggingDirectives
 
 class LmvtfyActor extends Actor with Lmvtfy {
   def actorRefFactory = context
@@ -19,6 +21,7 @@ trait Lmvtfy extends HttpService {
   import GitHubJsonProtocol._
 
   val theOnlyRoute =
+    DebuggingDirectives.logRequestResponse("get-user", Logging.InfoLevel){
     path("lmvtfy") {
       post {
         headerValueByName("X-Github-Event") { githubEvent =>
@@ -62,5 +65,6 @@ trait Lmvtfy extends HttpService {
           }
         }
       }
+    }
     }
 }
