@@ -4,6 +4,7 @@ import akka.actor.Actor
 import spray.routing._
 import spray.http._
 import spray.json._
+import spray.httpx.SprayJsonSupport
 import com.getbootstrap.lmvtfy.github._
 import akka.event.Logging
 import spray.routing.directives.DebuggingDirectives
@@ -17,7 +18,7 @@ class LmvtfyActor extends Actor with Lmvtfy {
 }
 
 
-trait Lmvtfy extends HttpService {
+trait Lmvtfy extends HttpService with SprayJsonSupport {
   import GitHubJsonProtocol._
 
   val theOnlyRoute =
@@ -39,15 +40,13 @@ trait Lmvtfy extends HttpService {
                         complete(StatusCodes.Forbidden, "HMAC verification failed!")
                       }
                       else {
-                        formField("payload") { payload =>
-                          System.out.println("RAW JSON:", payload)
-                          githubEvent match {
-                            case "ping" => {
-                              System.out.println("Pong.")
-                              complete(StatusCodes.OK)
-                            }
-                            case "issues" | "issue_comment" => {
-                              val event = payload.parseJson.convertTo[IssueOrCommentEvent]
+                        githubEvent match {
+                          case "ping" => {
+                            System.out.println("Pong.")
+                            complete(StatusCodes.OK)
+                          }
+                          case "issues" | "issue_comment" => {
+                            entity(as[IssueOrCommentEvent]) { event =>
                               event.action match {
                                 case "opened" | "created" => {
                                   val comment = event.comment.getOrElse(event.issue)
@@ -62,8 +61,8 @@ trait Lmvtfy extends HttpService {
                                 case _ => complete(StatusCodes.OK, "Ignoring irrelevant action")
                               }
                             }
-                            case _ => complete(StatusCodes.BadRequest, "Unexpected event type")
                           }
+                          case _ => complete(StatusCodes.BadRequest, "Unexpected event type")
                         }
                       }
                     }
