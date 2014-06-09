@@ -3,7 +3,6 @@ package com.getbootstrap.lmvtfy.server
 import akka.actor.Actor
 import spray.routing._
 import spray.http._
-import spray.httpx.SprayJsonSupport._
 import com.getbootstrap.lmvtfy.github._
 import akka.event.Logging
 import spray.routing.directives.DebuggingDirectives
