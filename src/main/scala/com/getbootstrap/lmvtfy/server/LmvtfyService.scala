@@ -5,7 +5,7 @@ import akka.actor.Actor
 import spray.routing._
 import spray.http._
 import spray.json._
-import com.getbootstrap.lmvtfy.HmacSha1
+import com.getbootstrap.lmvtfy.github._
 
 class LmvtfyActor extends Actor with Lmvtfy {
   def actorRefFactory = context
@@ -17,8 +17,6 @@ class LmvtfyActor extends Actor with Lmvtfy {
 
 trait Lmvtfy extends HttpService {
   import GitHubJsonProtocol._
-
-  val hmacHexCharset = Charset.forName("US-ASCII")
 
   val theOnlyRoute =
     path("lmvtfy") {
@@ -57,21 +55,4 @@ trait Lmvtfy extends HttpService {
         }
       }
     }
-}
-
-case class GitHubUser(login: String)
-case class IssueOrComment(
-  body: String,
-  user: GitHubUser
-)
-case class IssueOrCommentEvent(
-  action: String, // issue_comment: "opened", "closed", "reopened"; issue: "created"
-  comment: Option[IssueOrComment],
-  issue: IssueOrComment
-)
-
-object GitHubJsonProtocol extends DefaultJsonProtocol {
-  implicit val gitHubUserFormat = jsonFormat1(GitHubUser.apply)
-  implicit val issueOrCommentFormat = jsonFormat2(IssueOrComment.apply)
-  implicit val issueOrCommentEventFormat: JsonFormat[IssueOrCommentEvent] = jsonFormat3(IssueOrCommentEvent.apply)
 }

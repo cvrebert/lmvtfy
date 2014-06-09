@@ -1,5 +1,5 @@
+import com.getbootstrap.lmvtfy.server.HmacSha1
 import org.specs2.mutable._
-import com.getbootstrap.lmvtfy.HmacSha1
 
 class HmacSha1Spec extends Specification {
   implicit class Utf8String(str: String) {
