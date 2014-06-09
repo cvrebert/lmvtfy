@@ -3,8 +3,7 @@ package com.getbootstrap.lmvtfy.server
 import akka.actor.Actor
 import spray.routing._
 import spray.http._
-import spray.json._
-import spray.httpx.SprayJsonSupport
+import spray.httpx.SprayJsonSupport._
 import com.getbootstrap.lmvtfy.github._
 import akka.event.Logging
 import spray.routing.directives.DebuggingDirectives
@@ -18,7 +17,7 @@ class LmvtfyActor extends Actor with Lmvtfy {
 }
 
 
-trait Lmvtfy extends HttpService with SprayJsonSupport {
+trait Lmvtfy extends HttpService {
   import GitHubJsonProtocol._
 
   val theOnlyRoute =
