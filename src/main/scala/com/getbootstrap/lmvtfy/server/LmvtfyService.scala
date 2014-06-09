@@ -20,7 +20,7 @@ trait Lmvtfy extends HttpService {
 
   val theOnlyRoute =
     path("lmvtfy") {
-      get {
+      post {
         headerValueByName("X-Github-Event") { githubEvent =>
           headerValueByName("X-Hub-Signature") { hmacHex =>
             val hmacBytes = javax.xml.bind.DatatypeConverter.parseHexBinary(hmacHex)
