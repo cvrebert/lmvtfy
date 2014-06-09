@@ -34,6 +34,10 @@ trait Lmvtfy extends HttpService {
                 formField("payload") { payload =>
                   System.out.println("RAW JSON:", payload)
                   githubEvent match {
+                    case "ping" => {
+                      System.out.println("Pong.")
+                      complete(StatusCodes.OK)
+                    }
                     case "issues" | "issue_comment" => {
                       val event = payload.parseJson.convertTo[IssueOrCommentEvent]
                       event.action match {
