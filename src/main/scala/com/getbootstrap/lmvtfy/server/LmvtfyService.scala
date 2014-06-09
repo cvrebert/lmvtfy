@@ -32,9 +32,9 @@ trait Lmvtfy extends HttpService {
                 Try{ javax.xml.bind.DatatypeConverter.parseHexBinary(hmacHex) } match {
                   case Failure(_) => complete(StatusCodes.Forbidden, "Malformed HMAC hex!")
                   case Success(hmacBytes) => {
-                    entity(as[Array[Byte]]) { rawBody =>
+                    //entity(as[Array[Byte]]) { rawBody =>
                       val FOOBARDDDDD = Array(1,2,3,4,5).map{_.toByte} // FIXME
-                      val hmac = new HmacSha1(mac = hmacBytes, secretKey = FOOBARDDDDD, data = rawBody)
+                      val hmac = new HmacSha1(mac = hmacBytes, secretKey = FOOBARDDDDD, data = FOOBARDDDDD/*rawBody*/)
                       if (false && !hmac.isValid) {// FIXME
                         complete(StatusCodes.Forbidden, "HMAC verification failed!")
                       }
@@ -59,7 +59,7 @@ trait Lmvtfy extends HttpService {
                           case _ => complete(StatusCodes.BadRequest, "Unexpected event type")
                         }
                       }
-                    }
+                    //}
                   }
                 }
               }
