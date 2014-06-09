@@ -1,7 +1,6 @@
 package com.getbootstrap.lmvtfy.github
 
-import spray.json.{JsonFormat, DefaultJsonProtocol}
-import spray.httpx.SprayJsonSupport
+import spray.json.DefaultJsonProtocol
 
 case class GitHubUser(login: String)
 case class IssueOrComment(
@@ -14,7 +13,7 @@ case class IssueOrCommentEvent(
   issue: IssueOrComment
 )
 
-object GitHubJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
+object GitHubJsonProtocol extends DefaultJsonProtocol {
   implicit val gitHubUserFormat = jsonFormat1(GitHubUser.apply)
   implicit val issueOrCommentFormat = jsonFormat2(IssueOrComment.apply)
   implicit val issueOrCommentEventFormat = jsonFormat3(IssueOrCommentEvent.apply)

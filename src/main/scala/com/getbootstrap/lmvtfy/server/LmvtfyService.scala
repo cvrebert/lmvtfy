@@ -21,6 +21,7 @@ trait Lmvtfy extends HttpService {
 
   val theOnlyRoute =
     DebuggingDirectives.logRequestResponse("get-user", Logging.InfoLevel){
+    import spray.httpx.SprayJsonSupport._
     path("lmvtfy") {
       post {
         headerValueByName("X-Github-Event") { githubEvent =>
@@ -47,9 +48,6 @@ trait Lmvtfy extends HttpService {
                             entity(as[IssueOrCommentEvent]) { event =>
                               event.action match {
                                 case "opened" | "created" => {
-                                  val comment = null//event.comment.getOrElse(event.issue)
-                                  val markdown = null//comment.body
-                                  val username = null//comment.user.login
                                   System.out.println(event)
                                   // FIXME: DO ACTUAL WORK
                                   complete(StatusCodes.OK)
