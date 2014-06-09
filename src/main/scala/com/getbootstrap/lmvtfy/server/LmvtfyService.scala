@@ -3,6 +3,7 @@ package com.getbootstrap.lmvtfy.server
 import akka.actor.Actor
 import spray.routing._
 import spray.http._
+import spray.json._
 import com.getbootstrap.lmvtfy.github._
 import akka.event.Logging
 import spray.routing.directives.DebuggingDirectives
@@ -21,7 +22,6 @@ trait Lmvtfy extends HttpService {
 
   val theOnlyRoute =
     DebuggingDirectives.logRequestResponse("get-user", Logging.InfoLevel){
-    import spray.httpx.SprayJsonSupport._
     path("lmvtfy") {
       post {
         headerValueByName("X-Github-Event") { githubEvent =>
@@ -44,15 +44,20 @@ trait Lmvtfy extends HttpService {
                             System.out.println("Pong.")
                             complete(StatusCodes.OK)
                           }
-                          case "issues" | "issue_comment" => {
-                            entity(as[IssueOrCommentEvent]) { event =>
-                              event.action match {
-                                case "opened" | "created" => {
-                                  System.out.println(event)
-                                  // FIXME: DO ACTUAL WORK
-                                  complete(StatusCodes.OK)
+                          case "issues" | "issue_comment" => {  context =>
+                            entity(as[String]) { stringEntity =>
+                              Try{ stringEntity.parseJson.convertTo[IssueOrCommentEvent] } match {
+                                case Failure(_) => complete(StatusCodes.BadRequest, "JSON either malformed or does not match expected schema!")
+                                case Success(event) => {
+                                  event.action match {
+                                    case "opened" | "created" => {
+                                      System.out.println("EVENT: ", event)
+                                      // FIXME: DO ACTUAL WORK
+                                      complete(StatusCodes.OK)
+                                    }
+                                    case _ => complete(StatusCodes.OK, "Ignoring irrelevant action")
+                                  }
                                 }
-                                case _ => complete(StatusCodes.OK, "Ignoring irrelevant action")
                               }
                             }
                           }
