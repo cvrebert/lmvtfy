@@ -27,11 +27,12 @@ trait Lmvtfy extends HttpService {
             entity(as[Array[Byte]]) { rawBody =>
               val FOOBARDDDDD = Array(1,2,3,4,5).map{_.toByte} // FIXME
               val hmac = new HmacSha1(mac = hmacBytes, secretKey = FOOBARDDDDD, data = rawBody)
-              if (!hmac.isValid) {
+              if (false && !hmac.isValid) {// FIXME
                 complete(StatusCodes.Forbidden, "HMAC verification failed!")
               }
               else {
                 formField("payload") { payload =>
+                  System.out.println("RAW JSON:", payload)
                   githubEvent match {
                     case "issues" | "issue_comment" => {
                       val event = payload.parseJson.convertTo[IssueOrCommentEvent]
@@ -40,6 +41,9 @@ trait Lmvtfy extends HttpService {
                           val comment = event.comment.getOrElse(event.issue)
                           val markdown = comment.body
                           val username = comment.user.login
+                          System.out.println("EVENT: ", event.action)
+                          System.out.println("USERNAME: ", username)
+                          System.out.println("COMMENT BODY: ", markdown)
                           // FIXME: DO ACTUAL WORK
                           complete(StatusCodes.OK)
                         }
