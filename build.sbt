@@ -4,6 +4,8 @@ version := "1.0"
 
 scalaVersion := "2.10.3"
 
+mainClass := Some("com.getbootstrap.lmvtfy.server.Boot")
+
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
 libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.core" % "2.1.5"
