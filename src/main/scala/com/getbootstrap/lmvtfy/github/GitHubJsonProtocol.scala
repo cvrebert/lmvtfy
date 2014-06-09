@@ -10,12 +10,12 @@ case class IssueOrComment(
 )
 case class IssueOrCommentEvent(
   action: String, // issue_comment: "opened", "closed", "reopened"; issue: "created"
-  //comment: Option[IssueOrComment],
+  comment: Option[IssueOrComment],
   issue: IssueOrComment
 )
 
 object GitHubJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
   implicit val gitHubUserFormat = jsonFormat1(GitHubUser.apply)
   implicit val issueOrCommentFormat = jsonFormat2(IssueOrComment.apply)
-  implicit val issueOrCommentEventFormat = jsonFormat2(IssueOrCommentEvent.apply)
+  implicit val issueOrCommentEventFormat = jsonFormat3(IssueOrCommentEvent.apply)
 }
