@@ -44,7 +44,8 @@ trait Lmvtfy extends HttpService {
                             System.out.println("Pong.")
                             complete(StatusCodes.OK)
                           }
-                          case "issues" | "issue_comment" => {
+                          case "issues" | "issue_comment" => { context =>
+                            val entityBytes = context.request.entity.data.toByteArray
                             entity(as[IssueOrCommentEvent]) { event =>
                               event.action match {
                                 case "opened" | "created" => {
