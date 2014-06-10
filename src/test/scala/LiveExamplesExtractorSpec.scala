@@ -52,29 +52,29 @@ class LiveExamplesExtractorSpec extends Specification {
       example.url.query must beEmpty
     }
     "extract JS Bin examples" in {
-      onlyLiveExampleIn("http://jsbin.com/mogupeli/3/edit").url mustEqual Uri("http://jsbin.com/mogupeli/3/edit")
-      onlyLiveExampleIn("http://jsbin.com/mogupeli/3/").url mustEqual Uri("http://jsbin.com/mogupeli/3/")
+      assertHasLiveExample("http://jsbin.com/mogupeli/3/edit")
+      assertHasLiveExample("http://jsbin.com/mogupeli/3/")
     }
     "extract JS Fiddle examples" in {
-      onlyLiveExampleIn("http://jsfiddle.net/wYc3u/5/").url mustEqual Uri("http://jsfiddle.net/wYc3u/5/")
-      onlyLiveExampleIn("http://jsfiddle.net/wYc3u/5/embedded/result/").url mustEqual Uri("http://jsfiddle.net/wYc3u/5/embedded/result/")
-      onlyLiveExampleIn("http://jsfiddle.net/wYc3u/5/show/").url mustEqual Uri("http://jsfiddle.net/wYc3u/5/show/")
+      assertHasLiveExample("http://jsfiddle.net/wYc3u/5/")
+      assertHasLiveExample("http://jsfiddle.net/wYc3u/5/embedded/result/")
+      assertHasLiveExample("http://jsfiddle.net/wYc3u/5/show/")
     }
     "extract multiple examples" in {
       val examples = LiveExamplesExtractor.liveExamplesFromWithin("http://jsbin.com/mogupeli/3/   http://jsfiddle.net/wYc3u/5/")
       examples mustEqual Set(
-        JsBinExample(Uri("http://jsbin.com/mogupeli/3/")),
-        JsFiddleExample(Uri("http://jsfiddle.net/wYc3u/5/"))
+        JsBinExample(Uri("http://jsbin.com/mogupeli/3/")).get,
+        JsFiddleExample(Uri("http://jsfiddle.net/wYc3u/5/")).get
       )
     }
     "extract examples within brackets" in {
-      onlyLiveExampleIn("[http://jsbin.com/mogupeli/3/]") mustEqual JsBinExample(Uri("http://jsbin.com/mogupeli/3/"))
+      onlyLiveExampleIn("[http://jsbin.com/mogupeli/3/]") mustEqual JsBinExample(Uri("http://jsbin.com/mogupeli/3/")).get
     }
     "extract examples within parentheses" in {
-      onlyLiveExampleIn("(http://jsbin.com/mogupeli/3/)") mustEqual JsBinExample(Uri("http://jsbin.com/mogupeli/3/"))
+      onlyLiveExampleIn("(http://jsbin.com/mogupeli/3/)") mustEqual JsBinExample(Uri("http://jsbin.com/mogupeli/3/")).get
     }
     "extract examples near commas" in {
-      onlyLiveExampleIn(",http://jsbin.com/mogupeli/3/,") mustEqual JsBinExample(Uri("http://jsbin.com/mogupeli/3/"))
+      onlyLiveExampleIn(",http://jsbin.com/mogupeli/3/,") mustEqual JsBinExample(Uri("http://jsbin.com/mogupeli/3/")).get
     }
   }
 }
