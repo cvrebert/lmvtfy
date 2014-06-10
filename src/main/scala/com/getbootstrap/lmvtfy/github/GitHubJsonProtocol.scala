@@ -13,7 +13,13 @@ case class IssueOrCommentEvent(
   repository: GitHubRepository,
   comment: Option[IssueOrComment],
   issue: IssueOrComment
-)
+) {
+  def message: Option[IssueOrComment] = action match {
+    case "opened" => Some(issue)
+    case "created" => comment
+    case _ => None
+  }
+}
 
 object GitHubJsonProtocol extends DefaultJsonProtocol {
   implicit val gitHubRepoFormat = jsonFormat1(GitHubRepository.apply)
