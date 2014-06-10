@@ -20,9 +20,9 @@ object LiveExamplesExtractor {
 
     def isHttp = uri.scheme == "http" || uri.scheme == "https"
     def lacksUserInfo = uri.authority.userinfo.isEmpty
-    def lacksExplicitPort = uri.authority.port <= 0
+    def lacksNonDefaultPort = uri.authority.port <= 0
     def hasNamedHost = uri.authority.host.isInstanceOf[NamedHost]
-    def isSafe = uri.isHttp && uri.lacksUserInfo && uri.hasNamedHost && uri.lacksExplicitPort && uri.isAbsolute
+    def isSafe = uri.isHttp && uri.lacksUserInfo && uri.hasNamedHost && uri.lacksNonDefaultPort && uri.isAbsolute
     def withoutQuery = uri.withQuery(EmptyQuery)
   }
 

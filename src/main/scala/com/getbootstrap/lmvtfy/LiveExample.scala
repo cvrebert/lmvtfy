@@ -3,7 +3,9 @@ package com.getbootstrap.lmvtfy
 import spray.http.Uri
 import spray.http.Uri.NamedHost
 
-sealed trait LiveExample
+sealed trait LiveExample {
+  def url: Uri
+}
 case class JsFiddleExample(url: Uri) extends LiveExample
 case class JsBinExample(url: Uri) extends LiveExample
 
