@@ -30,13 +30,18 @@ trait Lmvtfy extends HttpService {
             case "issues" | "issue_comment" => {
               val secretKey = "abcdefg".utf8Bytes // FIXME
               authenticatedIssueOrCommentEvent(secretKey) { event =>
-                event.message match {
-                  case Some(message) => {
-                    System.out.println("GHMESSAGE: ", message)
-                    // FIXME: DO ACTUAL WORK
-                    complete(StatusCodes.OK)
+                if (event.repository.full_name == "cvrebert/lmvtfy-test") {
+                  event.message match {
+                    case Some(message) => {
+                      System.out.println("GHMESSAGE: ", message)
+                      // FIXME: DO ACTUAL WORK
+                      complete(StatusCodes.OK)
+                    }
+                    case None => complete(StatusCodes.OK, "Ignoring irrelevant action")
                   }
-                  case None => complete(StatusCodes.OK, "Ignoring irrelevant action")
+                }
+                else {
+                  complete(StatusCodes.Forbidden, "Event is from an unexpected repository")
                 }
               }
             }
