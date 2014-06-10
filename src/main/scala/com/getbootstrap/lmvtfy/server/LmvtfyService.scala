@@ -37,7 +37,7 @@ trait Lmvtfy extends HttpService {
                         System.out.println("Pong.")
                         complete(StatusCodes.OK)
                       }
-                      case "issues" | "issue_comment" => {  context =>
+                      case "issues" | "issue_comment" => {
                         entity(as[String]) { stringEntity =>
                           val secretKey = "abcdefg".utf8Bytes // FIXME
                           val hmac = new HmacSha1(mac = hmacBytes, secretKey = secretKey, data = stringEntity.utf8Bytes)
