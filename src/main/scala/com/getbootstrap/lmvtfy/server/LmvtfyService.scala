@@ -23,38 +23,25 @@ trait Lmvtfy extends HttpService {
     path("lmvtfy") {
       post {
         headerValueByName("X-Github-Event") { githubEvent =>
-          headerValueByName("X-Hub-Signature") { hmacStr =>
-            val parts = hmacStr.split('=')
-            parts match {
-              case Array("sha1", hmacHex) => {
-                Try{ javax.xml.bind.DatatypeConverter.parseHexBinary(hmacHex) } match {
-                  case Failure(_) => complete(StatusCodes.Forbidden, "Malformed HMAC hex!")
-                  case Success(hmacBytes) => {
-                    githubEvent match {
-                      case "ping" => {
-                        System.out.println("Pong.")
-                        complete(StatusCodes.OK)
-                      }
-                      case "issues" | "issue_comment" => {
-                        val secretKey = "abcdefg".utf8Bytes // FIXME
-                        authenticatedIssueOrCommentEvent(secretKey) { event =>
-                          event.action match {
-                            case "opened" | "created" => {
-                              System.out.println("EVENT: ", event)
-                              // FIXME: DO ACTUAL WORK
-                              complete(StatusCodes.OK)
-                            }
-                            case _ => complete(StatusCodes.OK, "Ignoring irrelevant action")
-                          }
-                        }
-                      }
-                      case _ => complete(StatusCodes.BadRequest, "Unexpected event type")
-                    }
+          githubEvent match {
+            case "ping" => {
+              System.out.println("Pong.")
+              complete(StatusCodes.OK)
+            }
+            case "issues" | "issue_comment" => {
+              val secretKey = "abcdefg".utf8Bytes // FIXME
+              authenticatedIssueOrCommentEvent(secretKey) { event =>
+                event.message match {
+                  case Some(message) => {
+                    System.out.println("GHMESSAGE: ", message)
+                    // FIXME: DO ACTUAL WORK
+                    complete(StatusCodes.OK)
                   }
+                  case None => complete(StatusCodes.OK, "Ignoring irrelevant action")
                 }
               }
-              case _ => complete(StatusCodes.Forbidden, "Malformed HMAC!")
             }
+            case _ => complete(StatusCodes.BadRequest, "Unexpected event type")
           }
         }
       }
