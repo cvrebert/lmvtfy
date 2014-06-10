@@ -8,7 +8,7 @@ object PlainText {
   def unapply(plainText: PlainText) = Some(plainText.text)
 }
 class PlainText private(val text: String) extends MessagePart {
-  override def equals(other: Any) = other != null && other.isInstanceOf[PlainText] && other.asInstanceOf[PlainText].text == text
+  override def equals(other: Any) = other.isInstanceOf[PlainText] && other.asInstanceOf[PlainText].text == text
   override def hashCode = text.hashCode
   override def toString = s"PlainText(${text})"
 }
