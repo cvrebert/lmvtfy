@@ -20,7 +20,6 @@ object JsFiddleExample {
     }
   }
   private def canonicalize(uri: Uri) = {
-    System.err.println("SPLAT ", uri.path.toString.split('/').toSeq)
     val newPath = uri.path.toString.split('/') match {
       case Array("", identifier)                       => Some(Path / identifier / "show" / "")
       case Array("", identifier, "show")               => Some(Path / identifier / "show" / "")
@@ -47,7 +46,6 @@ object JsBinExample {
     }
   }
   private def canonicalize(uri: Uri) = {
-    System.err.println("SPLAT ", uri.path.toString.split('/').toSeq)
     val newPath = uri.path.toString.split('/') match {
       case Array("", identifier)         => Some(Path / identifier)
       case Array("", identifier, "edit") => Some(Path / identifier)
