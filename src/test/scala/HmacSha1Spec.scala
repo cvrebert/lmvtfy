@@ -1,11 +1,8 @@
 import com.getbootstrap.lmvtfy.server.HmacSha1
+import com.getbootstrap.lmvtfy.util.Utf8String
 import org.specs2.mutable._
 
 class HmacSha1Spec extends Specification {
-  implicit class Utf8String(str: String) {
-    def utf8Bytes: Array[Byte] = str.getBytes("UTF-8")
-  }
-
   "The HMAC-SHA1 checker" should {
     val key = "key".utf8Bytes
     val data = "The quick brown fox jumps over the lazy dog".utf8Bytes
