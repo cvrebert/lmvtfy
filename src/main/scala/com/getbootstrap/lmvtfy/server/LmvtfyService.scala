@@ -1,6 +1,5 @@
 package com.getbootstrap.lmvtfy.server
 
-import scala.util.{Try, Success, Failure}
 import akka.actor.Actor
 import spray.routing._
 import spray.routing.directives.DebuggingDirectives
