@@ -10,6 +10,8 @@ resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
 libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.core" % "2.1.5"
 
+libraryDependencies += "com.twitter" % "twitter-text" % "1.9.1"
+
 libraryDependencies ++= {
   val akkaV = "2.3.0"
   val sprayV = "1.3.1"
