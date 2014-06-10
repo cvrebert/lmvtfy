@@ -18,7 +18,7 @@ class LmvtfyActor extends Actor with Lmvtfy {
 }
 
 trait Lmvtfy extends HttpService {
-  import GitHubJsonProtocol._
+  import GitHubIssuesWebHooksDirectives.authenticatedIssueOrCommentEvent
 
   val theOnlyRoute =
     DebuggingDirectives.logRequestResponse("get-user", Logging.InfoLevel){
@@ -38,26 +38,15 @@ trait Lmvtfy extends HttpService {
                         complete(StatusCodes.OK)
                       }
                       case "issues" | "issue_comment" => {
-                        entity(as[String]) { stringEntity =>
-                          val secretKey = "abcdefg".utf8Bytes // FIXME
-                          val hmac = new HmacSha1(mac = hmacBytes, secretKey = secretKey, data = stringEntity.utf8Bytes)
-                          if (!hmac.isValid) {// FIXME
-                            complete(StatusCodes.Forbidden, "HMAC verification failed!")
-                          }
-                          else {
-                            Try{ stringEntity.parseJson.convertTo[IssueOrCommentEvent] } match {
-                              case Failure(_) => complete(StatusCodes.BadRequest, "JSON either malformed or does not match expected schema!")
-                              case Success(event) => {
-                                event.action match {
-                                  case "opened" | "created" => {
-                                    System.out.println("EVENT: ", event)
-                                    // FIXME: DO ACTUAL WORK
-                                    complete(StatusCodes.OK)
-                                  }
-                                  case _ => complete(StatusCodes.OK, "Ignoring irrelevant action")
-                                }
-                              }
+                        val secretKey = "abcdefg".utf8Bytes // FIXME
+                        authenticatedIssueOrCommentEvent(secretKey) { event =>
+                          event.action match {
+                            case "opened" | "created" => {
+                              System.out.println("EVENT: ", event)
+                              // FIXME: DO ACTUAL WORK
+                              complete(StatusCodes.OK)
                             }
+                            case _ => complete(StatusCodes.OK, "Ignoring irrelevant action")
                           }
                         }
                       }

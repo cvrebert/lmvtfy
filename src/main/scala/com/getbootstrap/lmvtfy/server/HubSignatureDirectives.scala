@@ -28,7 +28,7 @@ trait HubSignatureDirectives  {
 
   private val stringEntity = entity(as[String])
 
-  def entityMatchingHubSignature(secretKey: Array[Byte]): Directive1[String] = hubSignature.flatMap { signature =>
+  def stringEntityMatchingHubSignature(secretKey: Array[Byte]): Directive1[String] = hubSignature.flatMap { signature =>
     stringEntity.flatMap { string =>
       val bytesEntity = string.utf8Bytes
       val hmac = new HmacSha1(mac = signature, secretKey = secretKey, data = bytesEntity)
@@ -41,3 +41,5 @@ trait HubSignatureDirectives  {
     }
   }
 }
+
+object HubSignatureDirectives extends HubSignatureDirectives
