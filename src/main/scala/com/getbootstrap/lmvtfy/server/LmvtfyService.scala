@@ -5,8 +5,6 @@ import akka.actor.Actor
 import spray.routing._
 import spray.routing.directives.DebuggingDirectives
 import spray.http._
-import spray.json._
-import com.getbootstrap.lmvtfy.github._
 import com.getbootstrap.lmvtfy.util.Utf8String
 import akka.event.Logging
 
