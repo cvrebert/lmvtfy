@@ -39,9 +39,9 @@ trait Lmvtfy extends HttpService {
                       }
                       case "issues" | "issue_comment" => {  context =>
                         entity(as[String]) { stringEntity =>
-                          val FOOBARDDDDD = Array(1,2,3,4,5).map{_.toByte} // FIXME
-                          val hmac = new HmacSha1(mac = hmacBytes, secretKey = FOOBARDDDDD, data = stringEntity.utf8Bytes)
-                          if (false && !hmac.isValid) {// FIXME
+                          val secretKey = "abcdefg".utf8Bytes // FIXME
+                          val hmac = new HmacSha1(mac = hmacBytes, secretKey = secretKey, data = stringEntity.utf8Bytes)
+                          if (!hmac.isValid) {// FIXME
                             complete(StatusCodes.Forbidden, "HMAC verification failed!")
                           }
                           else {
