@@ -10,7 +10,7 @@ case class IssueOrComment(
 )
 case class IssueOrCommentEvent(
   action: String, // issue_comment: "opened", "closed", "reopened"; issue: "created"
-  repo: GitHubRepository,
+  repository: GitHubRepository,
   comment: Option[IssueOrComment],
   issue: IssueOrComment
 )
