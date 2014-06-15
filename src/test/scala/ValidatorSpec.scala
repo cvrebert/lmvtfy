@@ -58,4 +58,27 @@ class ValidatorSpec extends Specification {
       messages(1) mustEqual pInUlMsg
     }
   }
+
+  "Incorrect attribute" should {
+    val badHtml =
+      """<!DOCTYPE html>
+        |<html lang="en">
+        |  <head>
+        |    <meta charset="utf-8">
+        |    <title>Title</title>
+        |  </head>
+        |  <body>
+        |    <span href="http://bad.example">Hello</span>
+        |  </body>
+        |</html>
+      """.stripMargin
+
+    "result in a properly-spelled validation error message" in {
+      val expectedMsg = ValidationMessage(SourceSpan(8, 36, -1, -1), Vector(PlainText("Attribute "), CodeText("href"), PlainText(" not allowed on HTML element "), CodeText("span"), PlainText(" at this point.")))
+
+      val messages = Html5Validator.validationErrorsFor(badHtml.inputSource)
+      messages must have size(1)
+      messages.head mustEqual expectedMsg
+    }
+  }
 }
