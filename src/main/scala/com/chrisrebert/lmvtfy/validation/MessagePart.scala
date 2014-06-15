@@ -1,4 +1,4 @@
-package com.getbootstrap.lmvtfy.validation
+package com.chrisrebert.lmvtfy.validation
 
 sealed trait MessagePart
 object PlainText {

@@ -1,5 +1,5 @@
 import org.specs2.mutable._
-import com.getbootstrap.lmvtfy.validation.XhtmlRedactor
+import com.chrisrebert.lmvtfy.validation.XhtmlRedactor
 
 class XhtmlRedactorSpec extends Specification {
   "XHTML" should {

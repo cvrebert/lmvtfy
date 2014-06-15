@@ -1,4 +1,4 @@
-package com.getbootstrap.lmvtfy
+package com.chrisrebert.lmvtfy
 
 import spray.http.Uri
 import spray.http.Uri.{Path, NamedHost}

@@ -1,4 +1,4 @@
-package com.getbootstrap.lmvtfy.validation
+package com.chrisrebert.lmvtfy.validation
 
 object SourceSpan {
   def apply(startLineNum: Int, startColumnNum: Int, endLineNum: Int, endColumnNum: Int): Option[SourceSpan] = {

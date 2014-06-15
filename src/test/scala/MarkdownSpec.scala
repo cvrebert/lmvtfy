@@ -1,6 +1,6 @@
 import org.specs2.mutable._
-import com.getbootstrap.lmvtfy.MarkdownRenderer
-import com.getbootstrap.lmvtfy.validation._
+import com.chrisrebert.lmvtfy.MarkdownRenderer
+import com.chrisrebert.lmvtfy.validation._
 
 class MarkdownSpec extends Specification {
   def singletonMsg(part: MessagePart) = Seq(ValidationMessage(None, Seq(part)))

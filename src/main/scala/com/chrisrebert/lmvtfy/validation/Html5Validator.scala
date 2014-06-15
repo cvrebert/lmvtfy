@@ -21,7 +21,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package com.getbootstrap.lmvtfy.validation
+package com.chrisrebert.lmvtfy.validation
 
 import nu.validator.messages._
 import nu.validator.servlet.imagereview.ImageCollector

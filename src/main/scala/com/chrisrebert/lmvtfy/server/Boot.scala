@@ -1,4 +1,4 @@
-package com.getbootstrap.lmvtfy.server
+package com.chrisrebert.lmvtfy.server
 
 import akka.actor.{ActorSystem, Props}
 import akka.io.IO

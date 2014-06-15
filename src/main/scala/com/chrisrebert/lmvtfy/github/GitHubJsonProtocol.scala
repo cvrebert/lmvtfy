@@ -1,4 +1,4 @@
-package com.getbootstrap.lmvtfy.github
+package com.chrisrebert.lmvtfy.github
 
 import spray.json.DefaultJsonProtocol
 

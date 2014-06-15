@@ -1,4 +1,4 @@
-import com.getbootstrap.lmvtfy.validation.SourceLocation
+import com.chrisrebert.lmvtfy.validation.SourceLocation
 import org.specs2.mutable._
 
 class SourceLocationSpec extends Specification {

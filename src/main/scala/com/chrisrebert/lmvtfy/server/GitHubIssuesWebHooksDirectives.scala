@@ -1,6 +1,6 @@
-package com.getbootstrap.lmvtfy.server
+package com.chrisrebert.lmvtfy.server
 
-import com.getbootstrap.lmvtfy.github.{IssueOrCommentEvent, GitHubJsonProtocol}
+import com.chrisrebert.lmvtfy.github.{IssueOrCommentEvent, GitHubJsonProtocol}
 import scala.util.{Success, Failure, Try}
 import spray.json._
 import spray.routing.{Directive1, ValidationRejection}

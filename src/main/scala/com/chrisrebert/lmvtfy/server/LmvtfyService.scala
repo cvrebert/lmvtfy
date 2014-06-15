@@ -1,10 +1,10 @@
-package com.getbootstrap.lmvtfy.server
+package com.chrisrebert.lmvtfy.server
 
 import akka.actor.Actor
 import spray.routing._
 import spray.routing.directives.DebuggingDirectives
 import spray.http._
-import com.getbootstrap.lmvtfy.util.Utf8String
+import com.chrisrebert.lmvtfy.util.Utf8String
 import akka.event.Logging
 
 class LmvtfyActor extends Actor with Lmvtfy {
@@ -33,7 +33,6 @@ trait Lmvtfy extends HttpService {
                 if (event.repository.full_name == "cvrebert/lmvtfy-test") {
                   event.message match {
                     case Some(message) => {
-                      System.out.println("GHMESSAGE: ", message)
                       // FIXME: DO ACTUAL WORK
                       complete(StatusCodes.OK)
                     }

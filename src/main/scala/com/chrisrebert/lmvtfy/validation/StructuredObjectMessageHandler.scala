@@ -1,4 +1,4 @@
-package com.getbootstrap.lmvtfy.validation
+package com.chrisrebert.lmvtfy.validation
 
 import scala.collection.mutable
 import org.xml.sax.SAXException

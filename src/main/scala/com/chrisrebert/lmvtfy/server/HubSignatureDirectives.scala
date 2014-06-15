@@ -1,9 +1,9 @@
-package com.getbootstrap.lmvtfy.server
+package com.chrisrebert.lmvtfy.server
 
 import scala.util.Try
 import spray.routing.{Directive1, MalformedHeaderRejection, ValidationRejection}
 import spray.routing.directives.{BasicDirectives, HeaderDirectives, RouteDirectives, MarshallingDirectives}
-import com.getbootstrap.lmvtfy.util.Utf8String
+import com.chrisrebert.lmvtfy.util.Utf8String
 
 trait HubSignatureDirectives  {
 

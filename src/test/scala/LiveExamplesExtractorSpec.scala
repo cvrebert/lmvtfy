@@ -1,8 +1,8 @@
 import org.specs2.matcher.Matcher
 import org.specs2.mutable._
 import spray.http.Uri
-import com.getbootstrap.lmvtfy.LiveExamplesExtractor
-import com.getbootstrap.lmvtfy.{JsBinExample,JsFiddleExample}
+import com.chrisrebert.lmvtfy.LiveExamplesExtractor
+import com.chrisrebert.lmvtfy.{JsBinExample,JsFiddleExample}
 
 class LiveExamplesExtractorSpec extends Specification {
   def assertNoLiveExamplesIn(text: String) = {

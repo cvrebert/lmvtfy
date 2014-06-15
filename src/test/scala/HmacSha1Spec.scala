@@ -1,5 +1,5 @@
-import com.getbootstrap.lmvtfy.server.HmacSha1
-import com.getbootstrap.lmvtfy.util.Utf8String
+import com.chrisrebert.lmvtfy.server.HmacSha1
+import com.chrisrebert.lmvtfy.util.Utf8String
 import org.specs2.mutable._
 
 class HmacSha1Spec extends Specification {

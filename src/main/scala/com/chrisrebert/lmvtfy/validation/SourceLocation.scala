@@ -1,4 +1,4 @@
-package com.getbootstrap.lmvtfy.validation
+package com.chrisrebert.lmvtfy.validation
 
 object SourceLocation {
   def apply(lineNum: Int, columnNum: Int): Option[SourceLocation] = {

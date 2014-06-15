@@ -1,5 +1,5 @@
 import org.specs2.mutable._
-import com.getbootstrap.lmvtfy.validation.{SourceLocation, SourceSpan}
+import com.chrisrebert.lmvtfy.validation.{SourceLocation, SourceSpan}
 
 class SourceSpanSpec extends Specification {
   "Start and end both invalid" should {

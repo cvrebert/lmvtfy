@@ -1,4 +1,4 @@
-package com.getbootstrap.lmvtfy.server
+package com.chrisrebert.lmvtfy.server
 
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec

@@ -1,4 +1,4 @@
-package com.getbootstrap.lmvtfy.validation
+package com.chrisrebert.lmvtfy.validation
 
 sealed case class ValidationMessage(
   locationSpan: Option[SourceSpan],

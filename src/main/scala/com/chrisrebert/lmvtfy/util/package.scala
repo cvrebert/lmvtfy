@@ -1,4 +1,4 @@
-package com.getbootstrap.lmvtfy
+package com.chrisrebert.lmvtfy
 
 import java.nio.charset.Charset
 import scala.util.Try

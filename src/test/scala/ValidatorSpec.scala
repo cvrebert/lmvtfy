@@ -1,7 +1,7 @@
 import java.io.StringReader
 import org.xml.sax.InputSource
 import org.specs2.mutable._
-import com.getbootstrap.lmvtfy.validation._
+import com.chrisrebert.lmvtfy.validation._
 
 class ValidatorSpec extends Specification {
   implicit class HtmlString(str: String) {
