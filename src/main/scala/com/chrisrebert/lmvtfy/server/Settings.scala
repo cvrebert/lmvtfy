@@ -12,6 +12,7 @@ import com.chrisrebert.lmvtfy.util.Utf8String
 class SettingsImpl(config: Config) extends Extension {
   val RepoFullName: String = config.getString("lmvtfy.github-repo-to-watch")
   val BotUsername: String = config.getString("lmvtfy.username")
+  val BotPassword: String = config.getString("lmvtfy.password")
   val WebHookSecretKey: ByteString = ByteString(config.getString("lmvtfy.web-hook-secret-key").utf8Bytes)
 }
 object Settings extends ExtensionId[SettingsImpl] with ExtensionIdProvider {

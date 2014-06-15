@@ -6,17 +6,14 @@ import org.eclipse.egit.github.core.service.IssueService
 import org.eclipse.egit.github.core.RepositoryId
 import com.chrisrebert.lmvtfy.ValidationResult
 import com.chrisrebert.lmvtfy.live_examples.{LiveExampleMention, LiveExample}
-import com.chrisrebert.lmvtfy.server.ActorWithLogging
+import com.chrisrebert.lmvtfy.server.{ActorWithLogging, Settings}
 
 
 class GitHubIssueCommenter extends ActorWithLogging {
-  private val someRepo = RepositoryId.create("cvrebert", "lmvtfy-test")
-  private val client = {
-    val c = new GitHubClient()
-    c.setCredentials("user", "passw0rd")
-    // client.setOAuth2Token("SlAV32hkKG")
-    c
-  }
+  val settings = Settings(context.system)
+
+  private val client = new GitHubClient()
+  client.setCredentials(settings.BotUsername, settings.BotPassword)
 
   private def tryToCommentOn(repo: RepositoryId, issue: IssueNumber, commentMarkdown: String) = {
     val issueService = new IssueService(client)
