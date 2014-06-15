@@ -38,7 +38,7 @@ trait HubSignatureDirectives  {
       }
       else {
         // FIXME: remove once debugged
-        val base64data = javax.xml.bind.DatatypeConverter.parseHexBinary(string)
+        val base64data = javax.xml.bind.DatatypeConverter.printBase64Binary(bytesEntity)
         log.error(s"Incorrect HMAC; expected ${hmac.correctHex}; got ${hmac.givenHex}; data as Base64 was ${base64data}")
         reject(ValidationRejection("Incorrect HMAC"))
       }
