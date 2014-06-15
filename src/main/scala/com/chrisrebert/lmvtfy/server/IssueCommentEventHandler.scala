@@ -11,18 +11,25 @@ class IssueCommentEventHandler(fetcher: ActorRef) extends ActorWithLogging {
     }
   }
 
+  val settings = Settings(context.system)
+
   override def receive = {
     case event: IssueOrCommentEvent => {
-      event.gitHubIssue.map { issue =>
-        event.message.map { message =>
-          if (message.user.username != "cvrebert") {
-            val exampleMentions = LiveExamplesExtractor.liveExamplesFromWithin(message.body).contextualize(message.user, issue)
-            for (mention <- exampleMentions) {
-              log.info(s"Requesting fetch for ${mention}")
-              fetcher ! mention
+      if (event.repository.fullName == settings.RepoFullName) {
+        event.gitHubIssue.map { issue =>
+          event.message.map { message =>
+            if (message.user.username != "cvrebert") {
+              val exampleMentions = LiveExamplesExtractor.liveExamplesFromWithin(message.body).contextualize(message.user, issue)
+              for (mention <- exampleMentions) {
+                log.info(s"Requesting fetch for ${mention}")
+                fetcher ! mention
+              }
             }
           }
         }
+      }
+      else {
+        log.error(s"Received event from GitHub about irrelevant repository: ${event}")
       }
     }
   }
