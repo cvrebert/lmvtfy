@@ -3,7 +3,7 @@ package com.chrisrebert.lmvtfy.validation
 sealed trait MessagePart
 object PlainText {
   def apply(text: String): PlainText = {
-    new PlainText(XhtmlRedactor.redact(text))
+    new PlainText(SpellingErrorCorrector.correct(XhtmlRedactor.redact(text)))
   }
   def unapply(plainText: PlainText) = Some(plainText.text)
 }
@@ -26,4 +26,16 @@ object XhtmlRedactor {
    * @param str
    */
   def redact(str: String): String = pattern.matcher(str).replaceAll("HTML")
+}
+
+object SpellingErrorCorrector {
+  import java.util.regex.Pattern
+
+  private val pattern = Pattern.compile("^Aattribute\\b", Pattern.UNICODE_CHARACTER_CLASS)
+
+  /**
+   * Corrects known spelling errors in the validator's messages
+   * @param str
+   */
+  def correct(str: String): String = pattern.matcher(str).replaceFirst("Attribute")
 }
