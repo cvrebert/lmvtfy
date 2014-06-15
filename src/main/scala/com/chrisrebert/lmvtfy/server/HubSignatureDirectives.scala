@@ -29,7 +29,7 @@ trait HubSignatureDirectives  {
 
   private val stringEntity = entity(as[String])
 
-  def stringEntityMatchingHubSignature(secretKey: Array[Byte])(implicit log: LoggingContext): Directive1[String] = hubSignature.flatMap { signature =>
+  def stringEntityMatchingHubSignature(secretKey: Array[Byte]): Directive1[String] = hubSignature.flatMap { signature =>
     stringEntity.flatMap { string =>
       val bytesEntity = string.utf8Bytes
       val hmac = new HmacSha1(mac = signature, secretKey = secretKey, data = bytesEntity)
@@ -39,7 +39,7 @@ trait HubSignatureDirectives  {
       else {
         // FIXME: remove once debugged
         val base64data = javax.xml.bind.DatatypeConverter.printBase64Binary(bytesEntity)
-        log.error(s"Incorrect HMAC; expected ${hmac.correctHex}; got ${hmac.givenHex}; data as Base64 was ${base64data}")
+        System.err.println(s"Incorrect HMAC; expected ${hmac.correctHex}; got ${hmac.givenHex}; data as Base64 was ${base64data}")
         reject(ValidationRejection("Incorrect HMAC"))
       }
     }
