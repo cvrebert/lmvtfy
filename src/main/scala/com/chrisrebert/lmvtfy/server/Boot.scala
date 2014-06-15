@@ -12,7 +12,6 @@ import com.chrisrebert.lmvtfy.github.GitHubIssueCommenter
 
 object Boot extends App {
   implicit val system = ActorSystem("on-spray-can")
-  implicit val timeout = Timeout(5.seconds) // FIXME: ?
   // import actorSystem.dispatcher
 
   val commenter = system.actorOf(Props(classOf[GitHubIssueCommenter]))
@@ -21,5 +20,6 @@ object Boot extends App {
   val issueCommentEventHandler = system.actorOf(Props(classOf[IssueCommentEventHandler], exampleFetcherPool), "issue-comment-event-handler")
   val webService = system.actorOf(Props(classOf[LmvtfyActor], issueCommentEventHandler), "lmvtfy-service")
 
+  implicit val timeout = Timeout(15.seconds)
   IO(Http) ? Http.Bind(webService, interface = "0.0.0.0", port = 80)
 }
