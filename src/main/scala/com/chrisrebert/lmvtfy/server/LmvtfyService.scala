@@ -32,7 +32,7 @@ trait Lmvtfy extends HttpService {
             case "issues" | "issue_comment" => {
               val secretKey = "abcdefg".utf8Bytes // FIXME
               authenticatedIssueOrCommentEvent(secretKey) { event =>
-                if (event.repository.full_name == "cvrebert/lmvtfy-test") { // FIXME
+                if (event.repository.fullName == "cvrebert/lmvtfy-test") { // FIXME
                   event.message match {
                     case Some(_) => {
                       issueCommentEventHandler ! event
