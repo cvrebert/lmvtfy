@@ -10,14 +10,15 @@ import com.chrisrebert.lmvtfy.server.ActorWithLogging
 
 
 class GitHubIssueCommenter extends ActorWithLogging {
-  val someRepo = RepositoryId.create("cvrebert", "lmvtfy-test")
-  val someClient = {
+  private val someRepo = RepositoryId.create("cvrebert", "lmvtfy-test")
+  private val client = {
     val c = new GitHubClient()
     c.setCredentials("user", "passw0rd")
     // client.setOAuth2Token("SlAV32hkKG")
+    c
   }
 
-  def tryToCommentOn(repo: RepositoryId, issue: IssueNumber, commentMarkdown: String)(implicit client: GitHubClient) {
+  private def tryToCommentOn(repo: RepositoryId, issue: IssueNumber, commentMarkdown: String) {
     val issueService = new IssueService(client)
     Try { issueService.createComment(repo, issue.number, commentMarkdown) }
   }

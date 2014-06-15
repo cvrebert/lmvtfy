@@ -10,4 +10,6 @@ object IssueNumber {
     }
   }
 }
-case class IssueNumber private(val number: Int) extends AnyVal
+class IssueNumber private(val number: Int) extends AnyVal {
+  override def toString = s"IssueNumber(${number}})"
+}
