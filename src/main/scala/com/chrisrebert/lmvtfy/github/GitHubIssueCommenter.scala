@@ -19,8 +19,7 @@ class GitHubIssueCommenter extends ActorWithLogging {
 
   def tryToCommentOn(repo: RepositoryId, issue: IssueNumber, commentMarkdown: String)(implicit client: GitHubClient) {
     val issueService = new IssueService(client)
-    val comment = Try { issueService.createComment(repo, issue.number, commentMarkdown) }
-    comment.isSuccess
+    Try { issueService.createComment(repo, issue.number, commentMarkdown) }
   }
 
   override def receive = {
@@ -40,7 +39,8 @@ class GitHubIssueCommenter extends ActorWithLogging {
       """.stripMargin
 
       log.info(s"Posting comment for ${mention}")
-      // tryToCommentOn(repo.id, issue, commentMarkdown)
+      val commentTry = tryToCommentOn(repo.id, issue, commentMarkdown)
+      log.info(s"Result of comment attempt:\n${commentTry}")
     }
   }
 }
