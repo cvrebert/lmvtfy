@@ -17,7 +17,7 @@ object Boot extends App {
 
   // FIXME: spawn actor for Html5Validator requests
   val commenter = system.actorOf(Props(classOf[GitHubIssueCommenter]))
-  val localValidator = system.actorOf(Props(classOf[ValidatorSingletonActor]), "validator-service")
+  val localValidator = system.actorOf(Props(classOf[ValidatorSingletonActor], commenter), "validator-service")
   val exampleFetcherPool = system.actorOf(SmallestMailboxPool(5).props(Props(classOf[LiveExampleFetcher], localValidator)), "example-fetcher-pool")
   val issueCommentEventHandler = system.actorOf(Props(classOf[IssueCommentEventHandler], exampleFetcherPool), "issue-comment-event-handler")
   val webService = system.actorOf(Props(classOf[LmvtfyActor], issueCommentEventHandler), "lmvtfy-service")
