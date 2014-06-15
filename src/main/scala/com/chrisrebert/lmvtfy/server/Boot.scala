@@ -15,7 +15,6 @@ object Boot extends App {
   implicit val timeout = Timeout(5.seconds) // FIXME: ?
   // import actorSystem.dispatcher
 
-  // FIXME: spawn actor for Html5Validator requests
   val commenter = system.actorOf(Props(classOf[GitHubIssueCommenter]))
   val localValidator = system.actorOf(Props(classOf[ValidatorSingletonActor], commenter), "validator-service")
   val exampleFetcherPool = system.actorOf(SmallestMailboxPool(5).props(Props(classOf[LiveExampleFetcher], localValidator)), "example-fetcher-pool")
