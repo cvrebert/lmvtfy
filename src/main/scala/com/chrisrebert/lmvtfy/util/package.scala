@@ -7,6 +7,10 @@ package object util {
   private val utf8 = Charset.forName("UTF-8")
 
   implicit class Utf8String(str: String) {
-    def utf8Bytes: Array[Byte] = Try{ str.getBytes(utf8) }.getOrElse{ new Array[Byte](0) }
+    def utf8Bytes: Array[Byte] = str.getBytes(utf8)
+  }
+
+  implicit class Utf8ByteArray(bytes: Array[Byte]) {
+    def utf8String: Try[String] = Try { new String(bytes, utf8) }
   }
 }

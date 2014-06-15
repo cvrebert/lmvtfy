@@ -1,10 +1,9 @@
 package com.chrisrebert.lmvtfy.server
 
-import scala.util.Try
-import spray.routing.{Directive1, MalformedHeaderRejection, ValidationRejection}
+import scala.util.{Try,Success,Failure}
+import spray.routing.{Directive1, MalformedHeaderRejection, MalformedRequestContentRejection, ValidationRejection}
 import spray.routing.directives.{BasicDirectives, HeaderDirectives, RouteDirectives, MarshallingDirectives}
-import spray.util.LoggingContext
-import com.chrisrebert.lmvtfy.util.{HmacSha1, Utf8String}
+import com.chrisrebert.lmvtfy.util.{HmacSha1,Utf8ByteArray}
 
 trait HubSignatureDirectives  {
 
@@ -27,18 +26,20 @@ trait HubSignatureDirectives  {
     }
   }
 
-  private val stringEntity = entity(as[String])
+  private val bytesEntity = entity(as[Array[Byte]])
 
   def stringEntityMatchingHubSignature(secretKey: Array[Byte]): Directive1[String] = hubSignature.flatMap { signature =>
-    stringEntity.flatMap { string =>
-      val bytesEntity = string.utf8Bytes
-      val hmac = new HmacSha1(mac = signature, secretKey = secretKey, data = bytesEntity)
+    bytesEntity.flatMap { dataBytes =>
+      val hmac = new HmacSha1(mac = signature, secretKey = secretKey, data = dataBytes)
       if (hmac.isValid) {
-        provide(string)
+        dataBytes.utf8String match {
+          case Success(string) => provide(string)
+          case Failure(exc) => reject(MalformedRequestContentRejection("Request body is not valid UTF-8", Some(exc)))
+        }
       }
       else {
         // FIXME: remove once debugged
-        val base64data = javax.xml.bind.DatatypeConverter.printBase64Binary(bytesEntity)
+        val base64data = javax.xml.bind.DatatypeConverter.printBase64Binary(dataBytes)
         System.err.println(s"Incorrect HMAC; expected ${hmac.correctHex}; got ${hmac.givenHex}; data as Base64 was ${base64data}")
         reject(ValidationRejection("Incorrect HMAC"))
       }
