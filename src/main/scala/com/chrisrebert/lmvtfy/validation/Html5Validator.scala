@@ -50,7 +50,12 @@ private class Html5Validator(inputSource: InputSource) {
   lazy val validationErrors: Seq[ValidationMessage] = {
     validator.checkHtmlInputSource(inputSource)
     end() // FIXME: catch error
-    emitter.messages
+    emitter.messages.filter{ msg =>
+      msg.parts match {
+        case Seq(PlainText("Bad value "), CodeText("X-UA-Compatible"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on HTML element "), CodeText("meta"), PlainText(".")) => false
+        case _ => true
+      }
+    }
   }
 
   /**
