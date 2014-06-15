@@ -68,5 +68,3 @@ object JsBinExample {
     newPath.map{ uri.withPath(_) }
   }
 }
-
-// FIXME: test variants with usernames
