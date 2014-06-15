@@ -31,20 +31,14 @@ trait Lmvtfy extends HttpService {
             }
             case "issues" | "issue_comment" => {
               authenticatedIssueOrCommentEvent(settings.WebHookSecretKey.toArray) { event =>
-                if (event.repository.fullName == "cvrebert/lmvtfy-test") { // FIXME
-                  event.message match {
-                    case Some(_) => {
-                      issueCommentEventHandler ! event
-                      // FIXME: needs to ignore its own comments
-                      // FIXME: do throttling
-                      // FIXME: ignore examples already posted in previous comments
-                      complete(StatusCodes.OK)
-                    }
-                    case None => complete(StatusCodes.OK, "Ignoring irrelevant action")
+                event.message match {
+                  case Some(_) => {
+                    issueCommentEventHandler ! event
+                    // FIXME: do throttling
+                    // FIXME: ignore examples already posted in previous comments
+                    complete(StatusCodes.OK)
                   }
-                }
-                else {
-                  complete(StatusCodes.Forbidden, "Event is from an unexpected repository")
+                  case None => complete(StatusCodes.OK, "Ignoring irrelevant action")
                 }
               }
             }
