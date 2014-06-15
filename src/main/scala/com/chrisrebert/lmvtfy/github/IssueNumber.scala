@@ -10,4 +10,4 @@ object IssueNumber {
     }
   }
 }
-class IssueNumber private(val number: Int) extends AnyVal
+case class IssueNumber private(val number: Int) extends AnyVal
