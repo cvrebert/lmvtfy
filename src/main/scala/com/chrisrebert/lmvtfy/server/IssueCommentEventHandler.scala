@@ -15,10 +15,12 @@ class IssueCommentEventHandler(fetcher: ActorRef) extends ActorWithLogging {
     case event: IssueOrCommentEvent => {
       event.gitHubIssue.map { issue =>
         event.message.map { message =>
-          val exampleMentions = LiveExamplesExtractor.liveExamplesFromWithin(message.body).contextualize(message.user, issue)
-          for (mention <- exampleMentions) {
-            log.info(s"Requesting fetch for ${mention}")
-            fetcher ! mention
+          if (message.user.username != "cvrebert") {
+            val exampleMentions = LiveExamplesExtractor.liveExamplesFromWithin(message.body).contextualize(message.user, issue)
+            for (mention <- exampleMentions) {
+              log.info(s"Requesting fetch for ${mention}")
+              fetcher ! mention
+            }
           }
         }
       }
