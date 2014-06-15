@@ -6,18 +6,13 @@ import spray.routing._
 import spray.routing.directives.DebuggingDirectives
 import spray.http._
 
-class LmvtfyActor(protected override val issueCommentEventHandler: ActorRef) extends ActorWithLogging with Lmvtfy {
-  override def actorRefFactory = context
-  override val settings = Settings(context.system)
-  override def receive = runRoute(theOnlyRoute)
-  // TODO: timeout handling
-}
 
-trait Lmvtfy extends HttpService {
+class LmvtfyActor(protected val issueCommentEventHandler: ActorRef) extends ActorWithLogging with HttpService {
   import GitHubIssuesWebHooksDirectives.authenticatedIssueOrCommentEvent
 
-  protected def settings: SettingsImpl
-  protected def issueCommentEventHandler: ActorRef
+  val settings = Settings(context.system)
+  override def actorRefFactory = context
+  override def receive = runRoute(theOnlyRoute)
 
   val theOnlyRoute =
     DebuggingDirectives.logRequestResponse("get-user", Logging.InfoLevel){
@@ -26,7 +21,7 @@ trait Lmvtfy extends HttpService {
         headerValueByName("X-Github-Event") { githubEvent =>
           githubEvent match {
             case "ping" => {
-              System.out.println("Pong.")
+              log.info("Successfully received GitHub WebHook ping.")
               complete(StatusCodes.OK)
             }
             case "issues" | "issue_comment" => {
