@@ -1,8 +1,7 @@
-import com.chrisrebert.lmvtfy.live_examples.{JsBinExample, JsFiddleExample, LiveExamplesExtractor}
 import org.specs2.matcher.Matcher
 import org.specs2.mutable._
 import spray.http.Uri
-import com.chrisrebert.lmvtfy.JsBinExample
+import com.chrisrebert.lmvtfy.live_examples._
 
 class LiveExamplesExtractorSpec extends Specification {
   def assertNoLiveExamplesIn(text: String) = {

@@ -1,7 +1,6 @@
-import com.chrisrebert.lmvtfy.live_examples.{JsBinExample, JsFiddleExample}
 import org.specs2.mutable._
 import spray.http.Uri
-import com.chrisrebert.lmvtfy.JsBinExample
+import com.chrisrebert.lmvtfy.live_examples._
 
 class LiveExampleCanonicalizationSpec extends Specification {
   "JsBinExample" should {
