@@ -18,7 +18,7 @@ class GitHubIssueCommenter extends ActorWithLogging {
     c
   }
 
-  private def tryToCommentOn(repo: RepositoryId, issue: IssueNumber, commentMarkdown: String) {
+  private def tryToCommentOn(repo: RepositoryId, issue: IssueNumber, commentMarkdown: String) = {
     val issueService = new IssueService(client)
     Try { issueService.createComment(repo, issue.number, commentMarkdown) }
   }
