@@ -9,6 +9,7 @@ import com.typesafe.config.Config
 
 class SettingsImpl(config: Config) extends Extension {
   val RepoFullName: String = config.getString("lmvtfy.github-repo-to-watch")
+  val BotUsername: String = config.getString("lmvtfy.username")
 }
 object Settings extends ExtensionId[SettingsImpl] with ExtensionIdProvider {
   override def lookup() = Settings

@@ -18,7 +18,10 @@ class IssueCommentEventHandler(fetcher: ActorRef) extends ActorWithLogging {
       if (event.repository.fullName == settings.RepoFullName) {
         event.gitHubIssue.map { issue =>
           event.message.map { message =>
-            if (message.user.username != "cvrebert") {
+            if (message.user.username == settings.BotUsername) {
+              log.info(s"Ignoring event about our own comment.")
+            }
+            else {
               val exampleMentions = LiveExamplesExtractor.liveExamplesFromWithin(message.body).contextualize(message.user, issue)
               for (mention <- exampleMentions) {
                 log.info(s"Requesting fetch for ${mention}")
