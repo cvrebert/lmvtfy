@@ -7,7 +7,7 @@ sealed trait LiveExample {
   def url: Uri
 }
 class JsFiddleExample private(val url: Uri) extends LiveExample {
-  override def toString = s"JsFiddleExample(${url}})"
+  override def toString = s"JsFiddleExample(${url})"
   override def hashCode = url.hashCode
   override def equals(other: Any) = other.isInstanceOf[JsFiddleExample] && other.asInstanceOf[JsFiddleExample].url == url
 }
@@ -33,7 +33,7 @@ object JsFiddleExample {
   }
 }
 class JsBinExample private(val url: Uri) extends LiveExample {
-  override def toString = s"JsBinExample(${url}})"
+  override def toString = s"JsBinExample(${url})"
   override def hashCode = url.hashCode
   override def equals(other: Any) = other.isInstanceOf[JsBinExample] && other.asInstanceOf[JsBinExample].url == url
 }
