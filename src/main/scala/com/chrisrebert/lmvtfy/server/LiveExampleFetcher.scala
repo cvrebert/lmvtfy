@@ -2,6 +2,7 @@ package com.chrisrebert.lmvtfy.server
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
+import scala.util.{Try,Success,Failure}
 import akka.actor.ActorRef
 import akka.io.IO
 import akka.pattern.ask
@@ -20,16 +21,19 @@ class LiveExampleFetcher(validator: ActorRef) extends ActorWithLogging {
       implicit val system = context.system
       val respFuture = (IO(Http) ? Get(mention.example.url)).mapTo[HttpResponse]
 
-      log.info(s"Awaiting HTTP response for ${mention.example.url}")
-      val response = Await.result(respFuture, timeout.duration) // gotta block somewhere
-
-      if (response.status.isSuccess) {
-        val htmlBytes = response.entity.data.toByteString
-        log.info(s"Sending ValidationRequest for ${mention} with fetched HTML.")
-        validator ! ValidationRequest(htmlBytes, mention)
-      }
-      else {
-        log.error(s"Failed to fetch example for ${mention}; HTTP status: ${response.status}")
+      // gotta block somewhere
+      Try{ Await.result(respFuture, timeout.duration) } match {
+        case Success(response) => {
+          if (response.status.isSuccess) {
+            val htmlBytes = response.entity.data.toByteString
+            log.info(s"Sending ValidationRequest for ${mention} with fetched HTML.")
+            validator ! ValidationRequest(htmlBytes, mention)
+          }
+          else {
+            log.error(s"Failed to fetch example for ${mention}; HTTP status: ${response.status}")
+          }
+        }
+        case Failure(exc) => log.error(exc, s"Failed to fetch example for ${mention}")
       }
     }
   }

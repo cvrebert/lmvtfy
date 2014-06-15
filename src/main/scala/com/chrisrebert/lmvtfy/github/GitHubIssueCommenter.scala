@@ -1,6 +1,6 @@
 package com.chrisrebert.lmvtfy.github
 
-import scala.util.Try
+import scala.util.{Try,Failure,Success}
 import org.eclipse.egit.github.core.client.GitHubClient
 import org.eclipse.egit.github.core.service.IssueService
 import org.eclipse.egit.github.core.RepositoryId
@@ -36,9 +36,10 @@ class GitHubIssueCommenter extends ActorWithLogging {
         |(*Please note that this is a fully automated comment.*)
       """.stripMargin
 
-      log.info(s"Posting comment for ${mention}")
-      val commentTry = tryToCommentOn(repo.id, issue, commentMarkdown)
-      log.info(s"Result of comment attempt:\n${commentTry}")
+      tryToCommentOn(repo.id, issue, commentMarkdown) match {
+        case Success(comment) => log.info(s"Successfully posted comment ${comment.getUrl} for ${mention}")
+        case Failure(exc) => log.error(exc, s"Error posting comment for ${mention}")
+      }
     }
   }
 }
