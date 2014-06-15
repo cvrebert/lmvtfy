@@ -1,4 +1,4 @@
-package com.chrisrebert.lmvtfy
+package com.chrisrebert.lmvtfy.live_examples
 
 import scala.util.Try
 import spray.http.Uri

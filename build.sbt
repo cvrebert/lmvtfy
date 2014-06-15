@@ -26,7 +26,7 @@ libraryDependencies ++= {
   )
 }
 
-scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
+scalacOptions := Seq("-unchecked", "-deprecation", "-feature", "-encoding", "utf8")
 
 scalacOptions in Test ++= Seq("-Yrangepos")
 

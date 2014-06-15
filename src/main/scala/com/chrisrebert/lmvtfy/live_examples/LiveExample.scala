@@ -1,4 +1,4 @@
-package com.chrisrebert.lmvtfy
+package com.chrisrebert.lmvtfy.live_examples
 
 import spray.http.Uri
 import spray.http.Uri.{Path, NamedHost}

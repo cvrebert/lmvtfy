@@ -1,21 +1,23 @@
 package com.chrisrebert.lmvtfy.server
 
-import akka.actor.Actor
+import akka.event.Logging
+import akka.actor.ActorRef
 import spray.routing._
 import spray.routing.directives.DebuggingDirectives
 import spray.http._
 import com.chrisrebert.lmvtfy.util.Utf8String
-import akka.event.Logging
 
-class LmvtfyActor extends Actor with Lmvtfy {
-  def actorRefFactory = context
+class LmvtfyActor(protected override val issueCommentEventHandler: ActorRef) extends ActorWithLogging with Lmvtfy {
+  override def actorRefFactory = context
 
   // TODO: timeout handling
-  def receive = runRoute(theOnlyRoute)
+  override def receive = runRoute(theOnlyRoute)
 }
 
 trait Lmvtfy extends HttpService {
   import GitHubIssuesWebHooksDirectives.authenticatedIssueOrCommentEvent
+
+  protected def issueCommentEventHandler: ActorRef
 
   val theOnlyRoute =
     DebuggingDirectives.logRequestResponse("get-user", Logging.InfoLevel){
@@ -30,10 +32,13 @@ trait Lmvtfy extends HttpService {
             case "issues" | "issue_comment" => {
               val secretKey = "abcdefg".utf8Bytes // FIXME
               authenticatedIssueOrCommentEvent(secretKey) { event =>
-                if (event.repository.full_name == "cvrebert/lmvtfy-test") {
+                if (event.repository.full_name == "cvrebert/lmvtfy-test") { // FIXME
                   event.message match {
-                    case Some(message) => {
-                      // FIXME: DO ACTUAL WORK
+                    case Some(_) => {
+                      issueCommentEventHandler ! event
+                      // FIXME: needs to ignore its own comments
+                      // FIXME: do throttling
+                      // FIXME: ignore examples already posted in previous comments
                       complete(StatusCodes.OK)
                     }
                     case None => complete(StatusCodes.OK, "Ignoring irrelevant action")
