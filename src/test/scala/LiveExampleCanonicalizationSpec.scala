@@ -24,7 +24,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
   "JsFiddleExample" should {
     def fiddle(url: String) = JsFiddleExample(Uri(url)).map{ _.url }
 
-    "canonicalize URLs correctly" in {
+    "canonicalize URLs for anonymous users correctly" in {
       // JS Fiddle likes trailing slashes
       val canonicalVersioned = Some(Uri("http://jsfiddle.net/wYc3u/5/show/"))
       fiddle("http://jsfiddle.net/wYc3u/5") mustEqual canonicalVersioned
@@ -41,6 +41,24 @@ class LiveExampleCanonicalizationSpec extends Specification {
       fiddle("http://jsfiddle.net/wYc3u/show/") mustEqual canonicalUnversioned
       fiddle("http://jsfiddle.net/wYc3u/embedded/result") mustEqual canonicalUnversioned
       fiddle("http://jsfiddle.net/wYc3u/embedded/result/") mustEqual canonicalUnversioned
+    }
+
+    "canonicalize URLs for logged-in users correctly" in {
+      val canonicalUnversioned = Some(Uri("http://jsfiddle.net/cvrebert/7aKxf/show/"))
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf") mustEqual canonicalUnversioned
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf/") mustEqual canonicalUnversioned
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf/show") mustEqual canonicalUnversioned
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf/show/") mustEqual canonicalUnversioned
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf/embedded/result") mustEqual canonicalUnversioned
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf/embedded/result/") mustEqual canonicalUnversioned
+
+      val canonicalVersioned = Some(Uri("http://jsfiddle.net/cvrebert/7aKxf/1/show/"))
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf/1") mustEqual canonicalVersioned
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/") mustEqual canonicalVersioned
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/show") mustEqual canonicalVersioned
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/show/") mustEqual canonicalVersioned
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/embedded/result") mustEqual canonicalVersioned
+      fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/embedded/result/") mustEqual canonicalVersioned
     }
   }
 }

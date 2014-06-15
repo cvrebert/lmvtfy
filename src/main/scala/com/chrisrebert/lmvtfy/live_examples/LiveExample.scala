@@ -1,5 +1,6 @@
 package com.chrisrebert.lmvtfy.live_examples
 
+import scala.util.Try
 import spray.http.Uri
 import spray.http.Uri.{Path, NamedHost}
 
@@ -12,6 +13,9 @@ class JsFiddleExample private(val url: Uri) extends LiveExample {
   override def equals(other: Any) = other.isInstanceOf[JsFiddleExample] && other.asInstanceOf[JsFiddleExample].url == url
 }
 object JsFiddleExample {
+  private object Revision {
+    def unapply(intStr: String): Option[String] = Try{ intStr.toInt }.toOption.map{ _ => intStr }
+  }
   def apply(uri: Uri): Option[JsFiddleExample] = canonicalize(uri).map{ new JsFiddleExample(_) }
   def unapply(uri: Uri): Option[JsFiddleExample] = {
     uri.authority.host match {
@@ -24,9 +28,17 @@ object JsFiddleExample {
       case Array("", identifier)                       => Some(Path / identifier / "show" / "")
       case Array("", identifier, "show")               => Some(Path / identifier / "show" / "")
       case Array("", identifier, "embedded", "result") => Some(Path / identifier / "show" / "")
-      case Array("", identifier, revision)                       => Some(Path / identifier / revision / "show" / "")
-      case Array("", identifier, revision, "show")               => Some(Path / identifier / revision / "show" / "")
-      case Array("", identifier, revision, "embedded", "result") => Some(Path / identifier / revision / "show" / "")
+      case Array("", identifier, Revision(revision))                       => Some(Path / identifier / revision / "show" / "")
+      case Array("", identifier, Revision(revision), "show")               => Some(Path / identifier / revision / "show" / "")
+      case Array("", identifier, Revision(revision), "embedded", "result") => Some(Path / identifier / revision / "show" / "")
+
+      case Array("", username, identifier)                       => Some(Path / username / identifier / "show" / "")
+      case Array("", username, identifier, "show")               => Some(Path / username / identifier / "show" / "")
+      case Array("", username, identifier, "embedded", "result") => Some(Path / username / identifier / "show" / "")
+
+      case Array("", username, identifier, Revision(revision))                       => Some(Path / username / identifier / revision / "show" / "")
+      case Array("", username, identifier, Revision(revision), "show")               => Some(Path / username / identifier / revision / "show" / "")
+      case Array("", username, identifier, Revision(revision), "embedded", "result") => Some(Path / username / identifier / revision / "show" / "")
       case _ => None
     }
     newPath.map{ uri.withPath(_) }
