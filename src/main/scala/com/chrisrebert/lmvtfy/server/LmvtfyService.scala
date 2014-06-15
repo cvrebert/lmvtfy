@@ -5,18 +5,18 @@ import akka.actor.ActorRef
 import spray.routing._
 import spray.routing.directives.DebuggingDirectives
 import spray.http._
-import com.chrisrebert.lmvtfy.util.Utf8String
 
 class LmvtfyActor(protected override val issueCommentEventHandler: ActorRef) extends ActorWithLogging with Lmvtfy {
   override def actorRefFactory = context
-
-  // TODO: timeout handling
+  override val settings = Settings(context.system)
   override def receive = runRoute(theOnlyRoute)
+  // TODO: timeout handling
 }
 
 trait Lmvtfy extends HttpService {
   import GitHubIssuesWebHooksDirectives.authenticatedIssueOrCommentEvent
 
+  protected def settings: SettingsImpl
   protected def issueCommentEventHandler: ActorRef
 
   val theOnlyRoute =
@@ -30,8 +30,7 @@ trait Lmvtfy extends HttpService {
               complete(StatusCodes.OK)
             }
             case "issues" | "issue_comment" => {
-              val secretKey = "abcdefg".utf8Bytes // FIXME
-              authenticatedIssueOrCommentEvent(secretKey) { event =>
+              authenticatedIssueOrCommentEvent(settings.WebHookSecretKey.toArray) { event =>
                 if (event.repository.fullName == "cvrebert/lmvtfy-test") { // FIXME
                   event.message match {
                     case Some(_) => {
