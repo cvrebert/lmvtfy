@@ -4,7 +4,7 @@ version := "1.0"
 
 scalaVersion := "2.10.3"
 
-mainClass := Some("com.getbootstrap.lmvtfy.server.Boot")
+mainClass := Some("com.chrisrebert.lmvtfy.server.Boot")
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
