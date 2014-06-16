@@ -3,6 +3,8 @@ LMVTFY: Let Me Validate That For You
 
 LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain (links to) live Web examples (e.g. a [jsFiddle](http://jsfiddle.net)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
 
+Affectionately named after [LMGTFY](http://knowyourmeme.com/memes/sites/let-me-google-that-for-you-lmgtfy).
+
 ## Supported live example types
 * [jsFiddle](http://jsfiddle.net)
 * [JS Bin](http://jsbin.com)
