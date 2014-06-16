@@ -1,3 +1,4 @@
+# Written against Docker v1.0.0
 FROM dockerfile/java
 MAINTAINER Chris Rebert <code@rebertia.com>
 
