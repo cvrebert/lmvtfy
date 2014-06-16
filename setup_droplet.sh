@@ -5,7 +5,6 @@ ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
 
 # remove useless crap
 aptitude remove wpasupplicant wireless-tools
-aptitude remove ntfs-3g dosfstools
 aptitude remove pppconfig pppoeconf ppp
 
 # setup firewall
