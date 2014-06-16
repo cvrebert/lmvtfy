@@ -3,6 +3,7 @@ package com.chrisrebert.lmvtfy.live_examples
 import scala.util.Try
 import spray.http.Uri
 import spray.http.Uri.{Path, NamedHost}
+import com.chrisrebert.lmvtfy.util.RichUri
 
 sealed trait LiveExample {
   def url: Uri
@@ -70,7 +71,6 @@ object JsBinExample {
   }
 }
 
-
 class BootplyExample private(val url: Uri) extends LiveExample {
   override def toString = s"BootplyExample(${url})"
   override def hashCode = url.hashCode
@@ -88,15 +88,48 @@ object BootplyExample {
   }
   private def canonicalizedHost(host: Uri.Host) = {
     host match {
-      case NamedHost("bootply.com") | NamedHost("www.bootply.com") | NamedHost("s.bootply.com") => Some("s.bootply.com")
+      case NamedHost("bootply.com") | NamedHost("www.bootply.com") | NamedHost("s.bootply.com") => Some(NamedHost("s.bootply.com"))
       case _ => None
     }
   }
   private def canonicalizedPath(path: Uri.Path) = {
-    path.toString.split('/') match {
-      case Array("", "render", identifier) => Some(Path / "render" / identifier)
-      case Array("", identifier)           => Some(Path / "render" / identifier)
+    val maybeIdentifier = path.toString.split('/') match {
+      case Array("", "render", identifier) => Some(identifier)
+      case Array("", identifier)           => Some(identifier)
       case _ => None
     }
+    maybeIdentifier.map{ Path / "render" / _ }
+  }
+}
+
+class PlunkerExample private(val url: Uri) extends LiveExample {
+  override def toString = s"PlunkerExample(${url}})"
+  override def hashCode = url.hashCode
+  override def equals(other: Any) = other.isInstanceOf[PlunkerExample] && other.asInstanceOf[PlunkerExample].url == url
+}
+object PlunkerExample {
+  def apply(uri: Uri): Option[PlunkerExample] = canonicalize(uri).map{ new PlunkerExample(_) }
+  def unapply(uri: Uri): Option[PlunkerExample] = PlunkerExample(uri)
+  private def canonicalize(uri: Uri) = {
+    canonicalizedHost(uri.authority.host).flatMap{ newHost =>
+      canonicalizedPath(uri.path).map { newPath =>
+        uri.withHost(newHost).withPath(newPath)
+      }
+    }.map{ _.withoutQuery }
+  }
+  private def canonicalizedHost(host: Uri.Host) = {
+    host match {
+      case NamedHost("plnkr.co") | NamedHost("embed.plnkr.co") | NamedHost("run.plnkr.co") => Some(NamedHost("run.plnkr.co"))
+      case _ => None
+    }
+  }
+  private def canonicalizedPath(path: Uri.Path) = {
+    val maybeIdentifier = path.toString.split('/') match {
+      case Array("", "edit", identifier) => Some(identifier)
+      case Array("", "plunks", identifier) => Some(identifier)
+      case Array("", identifier, "preview") => Some(identifier)
+      case _ => None
+    }
+    maybeIdentifier.map{ Path / "plunks" / _ / "" }
   }
 }

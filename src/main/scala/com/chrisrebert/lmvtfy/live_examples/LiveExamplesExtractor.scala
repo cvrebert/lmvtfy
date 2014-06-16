@@ -2,7 +2,7 @@ package com.chrisrebert.lmvtfy.live_examples
 
 import scala.util.Try
 import spray.http.Uri
-import spray.http.Uri.NamedHost
+import com.chrisrebert.lmvtfy.util.RichUri
 
 /**
  * Wrap the raw com.twitter.Extractor
@@ -15,17 +15,6 @@ private object UrlExtractor {
 }
 
 object LiveExamplesExtractor {
-  private implicit class RichUri(uri: Uri) {
-    import spray.http.Uri.Query.{Empty=>EmptyQuery}
-
-    def isHttp = uri.scheme == "http" || uri.scheme == "https"
-    def lacksUserInfo = uri.authority.userinfo.isEmpty
-    def lacksNonDefaultPort = uri.authority.port <= 0
-    def hasNamedHost = uri.authority.host.isInstanceOf[NamedHost]
-    def isSafe = uri.isHttp && uri.lacksUserInfo && uri.hasNamedHost && uri.lacksNonDefaultPort && uri.isAbsolute
-    def withoutQuery = uri.withQuery(EmptyQuery)
-  }
-
   private def safeHttpUrlsFromWithin(text: String): Set[Uri] = {
     UrlExtractor.extractAllUrls(text).flatMap{ urlStr =>
       Try{ Uri(urlStr) }.toOption
@@ -38,6 +27,7 @@ object LiveExamplesExtractor {
         case JsFiddleExample(fiddle) => Some(fiddle)
         case JsBinExample(bin) => Some(bin)
         case BootplyExample(ply) => Some(ply)
+        case PlunkerExample(plunk) => Some(plunk)
         case _ => None
       }
     }

@@ -77,4 +77,23 @@ class LiveExampleCanonicalizationSpec extends Specification {
       ply("http://s.bootply.com/render/yo7LnP42F7") mustEqual canonical
     }
   }
+
+  "PlunkerExample" should {
+    def plunk(url: String) = PlunkerExample(Uri(url)).map{ _.url }
+
+    "canonicalize URLs correctly" in {
+      // Plunker has no in-URL versioning, and logged-in users don't get different URLs
+      val canonical = Some(Uri("http://run.plnkr.co/plunks/XRNnDt/"))
+
+      plunk("http://plnkr.co/edit/XRNnDt") mustEqual canonical
+      plunk("http://plnkr.co/edit/XRNnDt/") mustEqual canonical
+      plunk("http://plnkr.co/edit/XRNnDt?p=preview") mustEqual canonical
+      plunk("http://plnkr.co/edit/XRNnDt?p=info") mustEqual canonical
+      plunk("http://plnkr.co/edit/XRNnDt/?p=info") mustEqual canonical
+      plunk("http://embed.plnkr.co/XRNnDt/preview") mustEqual canonical
+      plunk("http://embed.plnkr.co/XRNnDt/preview/") mustEqual canonical
+      plunk("http://run.plnkr.co/plunks/XRNnDt") mustEqual canonical
+      plunk("http://run.plnkr.co/plunks/XRNnDt/") mustEqual canonical
+    }
+  }
 }
