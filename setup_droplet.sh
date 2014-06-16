@@ -17,7 +17,7 @@ ufw allow www
 ufw enable
 ufw status verbose
 
-# setup Docker
+# setup Docker; written against Docker v1.0.0
 docker build . 2>&1 | tee > docker.build.log
 IMAGE_ID="$(tail -n 1 docker.build.log | cut -d ' ' -f 3)"
 docker run -d -p 80:8080 $IMAGE_ID
