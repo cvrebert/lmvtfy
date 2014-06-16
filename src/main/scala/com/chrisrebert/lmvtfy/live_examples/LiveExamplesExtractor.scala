@@ -33,5 +33,3 @@ object LiveExamplesExtractor {
     }
   }
 }
-
-//FIXME: look for HTML code blocks
