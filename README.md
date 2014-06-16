@@ -1,7 +1,7 @@
 LMVTFY: Let Me Validate That For You
 ======
 
-LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain live Web examples (e.g. a [jsFiddle](http://jsfiddle.net) or [JS Bin](http://jsbin.com)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
+LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain live Web examples (e.g. a [jsFiddle](http://jsfiddle.net)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
 
 ## Supported live example types
 * [jsFiddle](http://jsfiddle.net)
