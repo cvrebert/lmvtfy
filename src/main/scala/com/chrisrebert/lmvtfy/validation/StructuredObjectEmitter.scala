@@ -1,11 +1,12 @@
 package com.chrisrebert.lmvtfy.validation
 
 import scala.collection.mutable
+import org.xml.sax.SAXException
 import nu.validator.messages.MessageTextHandler
 import nu.validator.messages.types.MessageType
+import com.chrisrebert.lmvtfy.util.RichStack
 
 class StructuredObjectEmitter() extends nu.validator.messages.MessageEmitter {
-  // FIXME: catch NoSuchElementException on pop
   private val messagesStack = new mutable.Stack[ValidationMessage]()
   def messages: Seq[ValidationMessage] = messagesStack.to[Vector].reverse
 
@@ -33,8 +34,17 @@ class StructuredObjectEmitter() extends nu.validator.messages.MessageEmitter {
     handler
   }
 
+  /**
+   * @see nu.validator.messages.MessageEmitter#startText()
+   * @throws SAXException
+   */
   override def endText() {
-    handler.end()
+    try {
+      handler.end()
+    }
+    catch {
+      case stateExc: IllegalStateException => throw new SAXException("In illegal state when trying to end text of message", stateExc)
+    }
   }
 
   /**
@@ -54,11 +64,16 @@ class StructuredObjectEmitter() extends nu.validator.messages.MessageEmitter {
 
   /**
    * @see nu.validator.messages.MessageEmitter#endMessage()
+   * @throws SAXException
    */
   override def endMessage() {
-    val blankMsg = messagesStack.pop()
-    val fullMsg = new ValidationMessage(blankMsg.locationSpan, handler.message)
-    messagesStack.push(fullMsg)
+    messagesStack.popOption() match {
+      case None => throw new SAXException("No message was in progress")
+      case Some(blankMsg) => {
+        val fullMsg = new ValidationMessage(blankMsg.locationSpan, handler.message)
+        messagesStack.push(fullMsg)
+      }
+    }
   }
 
   /*

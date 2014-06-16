@@ -23,12 +23,13 @@
 
 package com.chrisrebert.lmvtfy.validation
 
+import scala.util.{Try,Success,Failure}
 import nu.validator.messages._
 import nu.validator.servlet.imagereview.ImageCollector
 import nu.validator.source.SourceCode
 import nu.validator.validation.SimpleDocumentValidator
-import org.xml.sax.InputSource
 import nu.validator.xml.SystemErrErrorHandler
+import org.xml.sax.InputSource
 
 // java -Xss512k
 object Html5Validator {
@@ -37,7 +38,7 @@ object Html5Validator {
   private val showSource = false
   System.setProperty("org.whattf.datatype.warn", errorsOnly.toString)
 
-  def validationErrorsFor(inputSource: InputSource): Seq[ValidationMessage] = {
+  def validationErrorsFor(inputSource: InputSource): Try[Seq[ValidationMessage]] = {
     (new Html5Validator(inputSource)).validationErrors
   }
 }
@@ -47,14 +48,15 @@ private class Html5Validator(inputSource: InputSource) {
 
   private val emitter = new StructuredObjectEmitter()
 
-  lazy val validationErrors: Seq[ValidationMessage] = {
+  lazy val validationErrors: Try[Seq[ValidationMessage]] = {
     validator.checkHtmlInputSource(inputSource)
-    end() // FIXME: catch error
-    emitter.messages.filter{ msg =>
-      msg.parts match {
-        case Seq(PlainText("Bad value "), CodeText("X-UA-Compatible"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on HTML element "), CodeText("meta"), PlainText(".")) => false
-        case _ => true
-      }
+    end().flatMap{ _ =>
+      Success(emitter.messages.filter{ msg =>
+        msg.parts match {
+          case Seq(PlainText("Bad value "), CodeText("X-UA-Compatible"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on HTML element "), CodeText("meta"), PlainText(".")) => false
+          case _ => true
+        }
+      })
     }
   }
 
@@ -86,7 +88,5 @@ private class Html5Validator(inputSource: InputSource) {
   /**
    * @throws SAXException
    */
-  private def end() {
-    errorHandler.end("Document checking completed. No errors found.", "Document checking completed.")
-  }
+  private def end(): Try[Unit] = Try{ errorHandler.end("Document checking completed. No errors found.", "Document checking completed.") }
 }

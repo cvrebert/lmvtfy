@@ -3,40 +3,50 @@ package com.chrisrebert.lmvtfy.validation
 import scala.collection.mutable
 import org.xml.sax.SAXException
 import nu.validator.messages.MessageTextHandler
+import com.chrisrebert.lmvtfy.util.RichStack
 
 class StructuredObjectMessageHandler extends MessageTextHandler {
   private val stateStack = new mutable.Stack[State]().push(NeutralState)
   private val parts = new mutable.ListBuffer[MessagePart]()
   private var buffer = new StringBuffer()
 
+  /**
+   * @see nu.validator.messages.MessageTextHandler#characters
+   */
   override def characters(ch: Array[Char], start: Int, length: Int) {
     buffer.append(ch)
   }
-// FIXME: catch NoSuchElementException on pop
+
   /**
-   * @throws SAXException
+   * @throws IllegalStateException
    */
   def end() {
-    val state = stateStack.pop()
+    val state = stateStack.popOption()
     if (!stateStack.isEmpty) {
-      throw new SAXException("Unexpected extra states left on stack")
+      throw new IllegalStateException("Unexpected extra states left on stack")
     }
 
     state match {
-      case NeutralState => {
+      case Some(NeutralState) => {
         if (buffer.length > 0) {
           parts += PlainText(buffer.toString)
           buffer = null
         }
       }
-      case CodeState => throw new SAXException("Base state at end of handling should be NeutralState, not CodeState")
+      case Some(CodeState) => throw new IllegalStateException("Base state at end of handling should be NeutralState, not CodeState")
+      case None => throw new IllegalStateException("State stack is empty, which should never happen")
     }
   }
 
+  /**
+   * @see nu.validator.messages.MessageTextHandler#startCode()
+   * @throws SAXException
+   */
   override def startCode() {
-    stateStack.top match {
-      case CodeState => throw new SAXException("Unexpected nested code")
-      case NeutralState => {
+    stateStack.topOption match {
+      case None => throw new SAXException("State stack is empty, which should never happen")
+      case Some(CodeState) => throw new SAXException("Unexpected nested code")
+      case Some(NeutralState) => {
         if (buffer.length > 0) {
           parts += PlainText(buffer.toString)
           buffer = new StringBuffer()
@@ -46,20 +56,31 @@ class StructuredObjectMessageHandler extends MessageTextHandler {
     stateStack.push(CodeState)
   }
 
+  /**
+   * @see nu.validator.messages.MessageTextHandler#endCode()
+   * @throws SAXException
+   */
   override def endCode() {
-    stateStack.pop() match {
-      case CodeState => {
+    stateStack.popOption() match {
+      case Some(CodeState) => {
         parts += CodeText(buffer.toString)
         buffer = new StringBuffer()
       }
-      case NeutralState => throw new SAXException(s"Expected CodeState, got NeutralState")
+      case Some(NeutralState) => throw new SAXException("Expected CodeState, got NeutralState")
+      case None => throw new SAXException("Expected CodeState, but stack was empty")
     }
   }
 
+  /**
+   * @see nu.validator.messages.MessageTextHandler#startLink
+   */
   override def startLink(href: String, title: String) {
     parts += Link(href, title)
   }
 
+  /**
+   * @see nu.validator.messages.MessageTextHandler#endLink()
+   */
   override def endLink() {
     // deliberately do nothing
   }
