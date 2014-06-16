@@ -96,4 +96,24 @@ class LiveExampleCanonicalizationSpec extends Specification {
       plunk("http://run.plnkr.co/plunks/XRNnDt/") mustEqual canonical
     }
   }
+
+  "CodePenExample" should {
+    // Doesn't appear to support versioning
+    // URLs for anonymous users follow the same scheme, with the username being "anon"
+
+    def pen(url: String) = CodePenExample(Uri(url)).map{ _.url }
+
+    "canonicalize URLs for logged-in users correctly" in {
+      val canonical = Some(Uri("http://s.codepen.io/shdigitaldesign/fullpage/KsFqH"))
+
+      pen("http://codepen.io/shdigitaldesign/pen/KsFqH") mustEqual canonical
+      pen("http://codepen.io/shdigitaldesign/pen/KsFqH/") mustEqual canonical
+      pen("http://codepen.io/shdigitaldesign/details/KsFqH") mustEqual canonical
+      pen("http://codepen.io/shdigitaldesign/details/KsFqH/") mustEqual canonical
+      pen("http://codepen.io/shdigitaldesign/full/KsFqH") mustEqual canonical
+      pen("http://codepen.io/shdigitaldesign/full/KsFqH/") mustEqual canonical
+      pen("http://s.codepen.io/shdigitaldesign/fullpage/KsFqH") mustEqual canonical
+      pen("http://s.codepen.io/shdigitaldesign/fullpage/KsFqH/") mustEqual canonical
+    }
+  }
 }

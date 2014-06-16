@@ -133,3 +133,32 @@ object PlunkerExample {
     maybeIdentifier.map{ Path / "plunks" / _ / "" }
   }
 }
+
+class CodePenExample private(val url: Uri) extends LiveExample {
+  override def toString = s"CodePenExample(${url}})"
+  override def hashCode = url.hashCode
+  override def equals(other: Any) = other.isInstanceOf[CodePenExample] && other.asInstanceOf[CodePenExample].url == url
+}
+object CodePenExample {
+  def apply(uri: Uri): Option[CodePenExample] = canonicalize(uri).map{ new CodePenExample(_) }
+  def unapply(uri: Uri): Option[CodePenExample] = CodePenExample(uri)
+  private def canonicalize(uri: Uri) = {
+    canonicalizedHost(uri.authority.host).flatMap{ newHost =>
+      canonicalizedPath(uri.path).map { newPath =>
+        uri.withHost(newHost).withPath(newPath)
+      }
+    }
+  }
+  private def canonicalizedHost(host: Uri.Host) = {
+    host match {
+      case NamedHost("codepen.io") | NamedHost("s.codepen.io") => Some(NamedHost("s.codepen.io"))
+      case _ => None
+    }
+  }
+  private def canonicalizedPath(path: Uri.Path) = {
+    path.toString.split('/') match {
+      case Array("", username, view, identifier) => Some(Path / username / "fullpage" / identifier)
+      case _ => None
+    }
+  }
+}

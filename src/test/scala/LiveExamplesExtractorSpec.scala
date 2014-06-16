@@ -69,6 +69,11 @@ class LiveExamplesExtractorSpec extends Specification {
       assertHasLiveExample("http://embed.plnkr.co/XRNnDt/preview")
       assertHasLiveExample("http://run.plnkr.co/plunks/SvY0dYAXkW7PIAXvdcUo/")
     }
+    "extract CodePen examples" in {
+      assertHasLiveExample("http://codepen.io/shdigitaldesign/pen/KsFqH")
+      assertHasLiveExample("http://codepen.io/shdigitaldesign/details/KsFqH")
+      assertHasLiveExample("http://s.codepen.io/shdigitaldesign/fullpage/KsFqH")
+    }
     "extract multiple examples" in {
       val examples = LiveExamplesExtractor.liveExamplesFromWithin("http://jsbin.com/mogupeli/3/   http://jsfiddle.net/wYc3u/5/")
       examples mustEqual Set(

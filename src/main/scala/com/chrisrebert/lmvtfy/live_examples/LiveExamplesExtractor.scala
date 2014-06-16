@@ -28,6 +28,7 @@ object LiveExamplesExtractor {
         case JsBinExample(bin) => Some(bin)
         case BootplyExample(ply) => Some(ply)
         case PlunkerExample(plunk) => Some(plunk)
+        case CodePenExample(pen) => Some(pen)
         case _ => None
       }
     }
