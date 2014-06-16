@@ -1,9 +1,7 @@
 package com.chrisrebert.lmvtfy.server
 
-import akka.event.Logging
 import akka.actor.ActorRef
 import spray.routing._
-import spray.routing.directives.DebuggingDirectives
 import spray.http._
 
 
@@ -15,7 +13,6 @@ class LmvtfyActor(protected val issueCommentEventHandler: ActorRef) extends Acto
   override def receive = runRoute(theOnlyRoute)
 
   val theOnlyRoute =
-    DebuggingDirectives.logRequestResponse("get-user", Logging.InfoLevel){
     path("lmvtfy") {
       post {
         headerValueByName("X-Github-Event") { githubEvent =>
@@ -41,6 +38,5 @@ class LmvtfyActor(protected val issueCommentEventHandler: ActorRef) extends Acto
           }
         }
       }
-    }
     }
 }
