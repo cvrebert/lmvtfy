@@ -8,6 +8,7 @@ LMVTFY is a service that watches for new issues and new issue comments on a give
 * [JS Bin](http://jsbin.com)
 * [Bootply](http://www.bootply.com)
 * [Plunker](http://plnkr.co)
+* [CodePen](http://codepen.io)
 * An HTML code block in the Markdown source of the issue comment [Planned]
 
 ## Motivation
