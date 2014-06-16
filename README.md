@@ -6,7 +6,7 @@ LMVTFY is a service that watches for new issues and new issue comments on a give
 ## Supported live example types
 * [jsFiddle](http://jsfiddle.net)
 * [JS Bin](http://jsbin.com)
-* [Bootply](http://www.bootply.com) [Planned]
+* [Bootply](http://www.bootply.com)
 * An HTML code block in the Markdown source of the issue comment [Planned]
 
 ## Motivation
