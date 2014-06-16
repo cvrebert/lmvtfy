@@ -59,6 +59,11 @@ class LiveExamplesExtractorSpec extends Specification {
       assertHasLiveExample("http://jsfiddle.net/wYc3u/5/embedded/result/")
       assertHasLiveExample("http://jsfiddle.net/wYc3u/5/show/")
     }
+    "extract Bootply examples" in {
+      assertHasLiveExample("http://bootply.com/yo7LnP42F7")
+      assertHasLiveExample("http://www.bootply.com/yo7LnP42F7")
+      assertHasLiveExample("http://s.bootply.com/render/yo7LnP42F7")
+    }
     "extract multiple examples" in {
       val examples = LiveExamplesExtractor.liveExamplesFromWithin("http://jsbin.com/mogupeli/3/   http://jsfiddle.net/wYc3u/5/")
       examples mustEqual Set(

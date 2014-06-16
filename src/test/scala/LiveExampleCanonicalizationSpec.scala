@@ -21,6 +21,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
       bin("http://jsbin.com/mogupeli/edit/") mustEqual canonicalUnversioned
     }
   }
+
   "JsFiddleExample" should {
     def fiddle(url: String) = JsFiddleExample(Uri(url)).map{ _.url }
 
@@ -59,6 +60,21 @@ class LiveExampleCanonicalizationSpec extends Specification {
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/show/") mustEqual canonicalVersioned
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/embedded/result") mustEqual canonicalVersioned
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/embedded/result/") mustEqual canonicalVersioned
+    }
+  }
+
+  "BootplyExample" should {
+    def ply(url: String) = BootplyExample(Uri(url)).map{ _.url }
+
+    "canonicalize URLs correctly" in {
+      // Bootply hates trailing slashes, has no versioning, and logged-in users don't get different URLs
+      val canonical = Some(Uri("http://s.bootply.com/render/yo7LnP42F7")) // NOTE: not normally user-facing
+
+      ply("http://bootply.com/yo7LnP42F7") mustEqual canonical
+      ply("http://bootply.com/yo7LnP42F7/") mustEqual canonical
+      ply("http://www.bootply.com/yo7LnP42F7")  mustEqual canonical // this one is canonical for user-facing
+      ply("http://www.bootply.com/yo7LnP42F7/") mustEqual canonical
+      ply("http://s.bootply.com/render/yo7LnP42F7") mustEqual canonical
     }
   }
 }

@@ -44,6 +44,7 @@ object JsFiddleExample {
     newPath.map{ uri.withPath(_) }
   }
 }
+
 class JsBinExample private(val url: Uri) extends LiveExample {
   override def toString = s"JsBinExample(${url})"
   override def hashCode = url.hashCode
@@ -66,5 +67,36 @@ object JsBinExample {
       case _ => None
     }
     newPath.map{ uri.withPath(_) }
+  }
+}
+
+
+class BootplyExample private(val url: Uri) extends LiveExample {
+  override def toString = s"BootplyExample(${url})"
+  override def hashCode = url.hashCode
+  override def equals(other: Any) = other.isInstanceOf[BootplyExample] && other.asInstanceOf[BootplyExample].url == url
+}
+object BootplyExample {
+  def apply(uri: Uri): Option[BootplyExample] = canonicalize(uri).map{ new BootplyExample(_) }
+  def unapply(uri: Uri): Option[BootplyExample] = BootplyExample(uri)
+  private def canonicalize(uri: Uri) = {
+    canonicalizedHost(uri.authority.host).flatMap{ newHost =>
+      canonicalizedPath(uri.path).map { newPath =>
+        uri.withHost(newHost).withPath(newPath)
+      }
+    }
+  }
+  private def canonicalizedHost(host: Uri.Host) = {
+    host match {
+      case NamedHost("bootply.com") | NamedHost("www.bootply.com") | NamedHost("s.bootply.com") => Some("s.bootply.com")
+      case _ => None
+    }
+  }
+  private def canonicalizedPath(path: Uri.Path) = {
+    path.toString.split('/') match {
+      case Array("", "render", identifier) => Some(Path / "render" / identifier)
+      case Array("", identifier)           => Some(Path / "render" / identifier)
+      case _ => None
+    }
   }
 }

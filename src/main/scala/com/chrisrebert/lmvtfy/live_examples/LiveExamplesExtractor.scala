@@ -37,6 +37,7 @@ object LiveExamplesExtractor {
       url match {
         case JsFiddleExample(fiddle) => Some(fiddle)
         case JsBinExample(bin) => Some(bin)
+        case BootplyExample(ply) => Some(ply)
         case _ => None
       }
     }
