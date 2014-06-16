@@ -14,7 +14,7 @@ class ValidatorSingletonActor(commenter: ActorRef) extends ActorWithLogging {
       val htmlByteStream = new ByteArrayInputStream(htmlBytes.toArray)
       val htmlInputSource = new InputSource(htmlByteStream)
       Html5Validator.validationErrorsFor(htmlInputSource) match {
-        case Failure(exc) => log.error(exc, "HTML5 validator threw an exception")
+        case Failure(exc) => log.error(exc, s"HTML5 validator threw an exception for ${mention}")
         case Success(validationErrs) => {
           if (validationErrs.isEmpty) {
             log.info(s"No validation errors for ${mention}")
