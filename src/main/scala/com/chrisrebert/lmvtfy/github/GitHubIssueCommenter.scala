@@ -26,8 +26,7 @@ class GitHubIssueCommenter extends ActorWithLogging {
       val commentMarkdown = s"""
         |Hi @${username}!
         |
-        |You appear to have posted a live example (${exampleUrl}), which is always a good first step.
-        |However, according to [the HTML5 validator](http://validator.nu), **your example has some validation errors**, which might be causing your issue:
+        |You appear to have posted a live example (${exampleUrl}), which is always a good first step. However, according to [the HTML5 validator](http://validator.nu), **your example has some validation errors**, which might be causing your issue:
         |${messagesMarkdown}
         |
         |You'll need to **fix these errors** and post a revised example before we can proceed further.
