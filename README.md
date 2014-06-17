@@ -22,3 +22,9 @@ By automating the process of checking the validity of HTML examples, such issues
 
 ## Used by
 * [Bootstrap](https://github.com/twbs/bootstrap); see [@twbs-lmvtfy](https://github.com/twbs-lmvtfy)
+
+## Acknowledgements
+We all stand on the shoulders of giants and get by with a little help from our friends. LMVTFY written in [Scala](http://www.scala-lang.org) and built on top of:
+* [validator.nu](https://github.com/validator/validator), the HTML5 validator
+* [Akka](http://akka.io) & [Spray](http://spray.io), for async processing & HTTP
+* [Eclipse EGit GitHub library](https://github.com/eclipse/egit-github), for working with [the GitHub API](https://developer.github.com/v3/)
