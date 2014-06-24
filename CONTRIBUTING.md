@@ -21,3 +21,6 @@ Hacking on LMVTFY
 1. Go to your `lmvtfy` directory.
 2. Run `sbt assembly`
 3. If the build is successful, the desired JAR will be generated as `target/scala-2.10/lmvtfy-assembly-1.0.jar`.
+
+## Licensing
+LMVTFY is licensed under The MIT License. By contributing to LMVTFY, you agree to license your contribution under [The MIT License](https://github.com/cvrebert/lmvtfy/blob/master/LICENSE.txt).
