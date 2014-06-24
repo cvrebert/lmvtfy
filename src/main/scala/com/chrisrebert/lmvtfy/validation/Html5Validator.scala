@@ -54,6 +54,7 @@ private class Html5Validator(inputSource: InputSource) {
       Success(emitter.messages.filter{ msg =>
         msg.parts match {
           case Seq(PlainText("Bad value "), CodeText("X-UA-Compatible"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on HTML element "), CodeText("meta"), PlainText(".")) => false
+          case Seq(PlainText("An "), CodeText("img"), PlainText(" element must have an "), CodeText("alt"), _*) => false
           case _ => true
         }
       })
