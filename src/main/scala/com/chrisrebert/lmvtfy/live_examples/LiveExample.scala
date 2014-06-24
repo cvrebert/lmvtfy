@@ -157,7 +157,7 @@ object CodePenExample {
   }
   private def canonicalizedPath(path: Uri.Path) = {
     path.toString.split('/') match {
-      case Array("", username, view, identifier) => Some(Path / username / "fullpage" / identifier)
+      case Array("", username, view, identifier) => Some(Path / username / "full" / identifier)
       case _ => None
     }
   }
