@@ -24,6 +24,27 @@ By automating the process of checking the validity of HTML examples, such issues
 ## Used by
 * [Bootstrap](https://github.com/twbs/bootstrap); see [@twbs-lmvtfy](https://github.com/twbs-lmvtfy)
 
+## Usage
+LMVTFY requires and accepts exactly one command-line argument, which is the port number to run its HTTP server on, e.g. `8080`.
+
+Other settings live in `application.conf`. In addition to the normal Akka and Spray settings, LMVTFY offers the following settings:
+```
+lmvtfy {
+    // Full name of the GitHub repo to watch for new issues and new issue comments
+    github-repo-to-watch = "twbs/bootstrap"
+    // Username of the account that reply comments will be posted from
+    username = "twbs-lmvtfy"
+    // Password for the account that reply comments will be posted from
+    password = "not-actually-the-password"
+    // This goes in the "Secret" field when setting up the Webhook
+    // in the "Webhooks & Services" part of your repo's Settings.
+    // This string will be converted to UTF-8 for the HMAC-SHA1 computation.
+    // The HMAC is used to verify that LMVTFY is really being contacted by GitHub,
+    // and not by some random hacker.
+    web-hook-secret-key = "some-random-gibberish-here"
+}
+```
+
 ## Acknowledgements
 We all stand on the shoulders of giants and get by with a little help from our friends. LMVTFY is written in [Scala](http://www.scala-lang.org) and built on top of:
 * [validator.nu](https://github.com/validator/validator), the HTML5 validator
