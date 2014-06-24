@@ -10,6 +10,12 @@ Hacking on LMVTFY
 1. Go to your `lmvtfy` directory.
 2. Run `sbt test`
 
+## How do I run the LMVTFY service locally for test purposes?
+0. Ensure that sbt is installed (see above).
+1. Go to your `lmvtfy` directory.
+2. Run `sbt`
+3. At the sbt prompt, enter `re-start`.
+
 ## How do I generate a single self-sufficient JAR that includes all of the necessary dependencies?
 0. Ensure that sbt is installed (see above).
 1. Go to your `lmvtfy` directory.
