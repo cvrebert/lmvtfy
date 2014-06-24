@@ -157,6 +157,7 @@ object CodePenExample {
   }
   private def canonicalizedPath(path: Uri.Path) = {
     path.toString.split('/') match {
+      case Array("", "anon", view, identifier) => None // "Anonymous Pens Can't Be Viewed in Full Page View" :-(
       case Array("", username, view, identifier) => Some(Path / username / "full" / identifier)
       case _ => None
     }
