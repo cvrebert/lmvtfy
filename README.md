@@ -45,6 +45,12 @@ lmvtfy {
 }
 ```
 
+### Webhook configuration
+* Payload URL: `http://your-domain.example/lmvtfy`
+* Content type: `application/json`
+* Secret: Same as your `web-hook-secret-key` config value
+* Which events would you like to trigger this webhook?: "Issues" and "Issue comment"
+
 ## Acknowledgements
 We all stand on the shoulders of giants and get by with a little help from our friends. LMVTFY is written in [Scala](http://www.scala-lang.org) and built on top of:
 * [validator.nu](https://github.com/validator/validator), the HTML5 validator
