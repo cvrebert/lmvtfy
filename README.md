@@ -30,8 +30,8 @@ LMVTFY requires and accepts exactly one command-line argument, which is the port
 Other settings live in `application.conf`. In addition to the normal Akka and Spray settings, LMVTFY offers the following settings:
 ```
 lmvtfy {
-    // Full name of the GitHub repo to watch for new issues and new issue comments
-    github-repo-to-watch = "twbs/bootstrap"
+    // List of full names of GitHub repos to watch for new issues and new issue comments
+    github-repos-to-watch = ["twbs/bootstrap"]
     // Username of the account that reply comments will be posted from
     username = "twbs-lmvtfy"
     // Password for the account that reply comments will be posted from

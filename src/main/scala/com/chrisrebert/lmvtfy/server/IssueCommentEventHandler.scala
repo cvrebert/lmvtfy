@@ -15,7 +15,7 @@ class IssueCommentEventHandler(fetcher: ActorRef) extends ActorWithLogging {
 
   override def receive = {
     case event: IssueOrCommentEvent => {
-      if (event.repository.fullName == settings.RepoFullName) {
+      if (settings.RepoFullNames contains event.repository.fullName) {
         event.gitHubIssue.map { issue =>
           event.message.map { message =>
             if (message.user.username == settings.BotUsername) {
