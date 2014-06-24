@@ -2,8 +2,8 @@
 
 # Step 0: You need to have copied the assembly JAR to lmvtfy/target/scala-2.10/lmvtfy-assembly-1.0.jar
 
-# set to Pacific Time
-ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+# set to Pacific Time (for @cvrebert)
+# ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
 
 # remove useless crap
 aptitude remove wpasupplicant wireless-tools
