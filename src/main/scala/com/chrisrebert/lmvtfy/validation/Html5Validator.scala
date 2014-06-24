@@ -53,7 +53,7 @@ private class Html5Validator(inputSource: InputSource) {
     end().flatMap{ _ =>
       Success(emitter.messages.filter{ msg =>
         msg.parts match {
-          case Seq(PlainText("Bad value "), CodeText("X-UA-Compatible"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on HTML element "), CodeText("meta"), PlainText(".")) => false
+          case Seq(PlainText("Bad value "), CodeText("X-UA-Compatible"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on element "), CodeText("meta"), PlainText(".")) => false
           case Seq(PlainText("An "), CodeText("img"), PlainText(" element must have an "), CodeText("alt"), _*) => false
           case _ => true
         }
@@ -82,6 +82,7 @@ private class Html5Validator(inputSource: InputSource) {
     val imageCollector = new ImageCollector(sourceCode)
 
     val errHandler = new MessageEmitterAdapter(sourceCode, showSource, imageCollector, lineOffset, true, emitter)
+    errHandler.setHtml(true)
     errHandler.setErrorsOnly(errorsOnly)
     errHandler
   }

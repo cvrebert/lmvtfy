@@ -3,7 +3,7 @@ package com.chrisrebert.lmvtfy.validation
 sealed trait MessagePart
 object PlainText {
   def apply(text: String): PlainText = {
-    new PlainText(SpellingErrorCorrector.correct(XhtmlRedactor.redact(text)))
+    new PlainText(SpellingErrorCorrector.correct(text))
   }
   def unapply(plainText: PlainText) = Some(plainText.text)
 }
@@ -16,17 +16,7 @@ case class Link(url: String, title: String) extends MessagePart
 case class CodeText(text: String) extends MessagePart
 
 
-object XhtmlRedactor {
-  import java.util.regex.Pattern
 
-  private val pattern = Pattern.compile("\\bXHTML\\b", Pattern.UNICODE_CHARACTER_CLASS)
-
-  /**
-   * Replaces all references to XHTML with HTML
-   * @param str
-   */
-  def redact(str: String): String = pattern.matcher(str).replaceAll("HTML")
-}
 
 object SpellingErrorCorrector {
   import java.util.regex.Pattern
