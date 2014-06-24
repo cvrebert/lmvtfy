@@ -104,7 +104,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
     def pen(url: String) = CodePenExample(Uri(url)).map{ _.url }
 
     "canonicalize URLs for logged-in users correctly" in {
-      val canonical = Some(Uri("http://s.codepen.io/shdigitaldesign/fullpage/KsFqH"))
+      val canonical = Some(Uri("http://s.codepen.io/shdigitaldesign/full/KsFqH"))
 
       pen("http://codepen.io/shdigitaldesign/pen/KsFqH") mustEqual canonical
       pen("http://codepen.io/shdigitaldesign/pen/KsFqH/") mustEqual canonical
@@ -112,8 +112,8 @@ class LiveExampleCanonicalizationSpec extends Specification {
       pen("http://codepen.io/shdigitaldesign/details/KsFqH/") mustEqual canonical
       pen("http://codepen.io/shdigitaldesign/full/KsFqH") mustEqual canonical
       pen("http://codepen.io/shdigitaldesign/full/KsFqH/") mustEqual canonical
-      pen("http://s.codepen.io/shdigitaldesign/fullpage/KsFqH") mustEqual canonical
-      pen("http://s.codepen.io/shdigitaldesign/fullpage/KsFqH/") mustEqual canonical
+      pen("http://s.codepen.io/shdigitaldesign/full/KsFqH") mustEqual canonical
+      pen("http://s.codepen.io/shdigitaldesign/full/KsFqH/") mustEqual canonical
     }
   }
 }
