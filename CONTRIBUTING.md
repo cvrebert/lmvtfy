@@ -12,6 +12,7 @@ Hacking on LMVTFY
 
 ## How do I run the LMVTFY service locally for test purposes?
 **This is not recommended for use in production deployments!**
+
 0. Ensure that sbt is installed (see above).
 1. Go to your `lmvtfy` directory.
 2. Run `sbt`
