@@ -27,7 +27,7 @@ By automating the process of checking the validity of HTML examples, such issues
 ## Usage
 Java 7+ is required to run LMVTFY. For instructions on building LMVTFY yourself, see [the Contributing docs](https://github.com/cvrebert/lmvtfy/blob/master/CONTRIBUTING.md).
 
-LMVTFY requires and accepts exactly one command-line argument, which is the port number to run its HTTP server on, e.g. `8080`.
+LMVTFY requires and accepts exactly one command-line argument, which is the port number to run its HTTP server on, e.g. `8080`. Once you've built the JAR, run `java -jar lmvtfy-assembly-1.0.jar 8080` (replace `8080` with whatever port number you want).
 
 Other settings live in `application.conf`. In addition to the normal Akka and Spray settings, LMVTFY offers the following settings:
 ```
