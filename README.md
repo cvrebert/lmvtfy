@@ -25,6 +25,8 @@ By automating the process of checking the validity of HTML examples, such issues
 * [Bootstrap](https://github.com/twbs/bootstrap); see [@twbs-lmvtfy](https://github.com/twbs-lmvtfy)
 
 ## Usage
+Java 7+ is required to run LMVTFY. For instructions on building LMVTFY yourself, see [the Contributing docs](https://github.com/cvrebert/lmvtfy/blob/master/CONTRIBUTING.md).
+
 LMVTFY requires and accepts exactly one command-line argument, which is the port number to run its HTTP server on, e.g. `8080`.
 
 Other settings live in `application.conf`. In addition to the normal Akka and Spray settings, LMVTFY offers the following settings:
