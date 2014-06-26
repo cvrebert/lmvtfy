@@ -47,7 +47,7 @@ lmvtfy {
 }
 ```
 
-### Webhook configuration
+### GitHub webhook configuration
 * Payload URL: `http://your-domain.example/lmvtfy`
 * Content type: `application/json`
 * Secret: Same as your `web-hook-secret-key` config value
