@@ -13,7 +13,10 @@ class LmvtfyActor(protected val issueCommentEventHandler: ActorRef) extends Acto
   override def receive = runRoute(theOnlyRoute)
 
   val theOnlyRoute =
-    path("lmvtfy") {
+    pathPrefix("lmvtfy") { pathEndOrSingleSlash {
+      get {
+        complete(StatusCodes.OK, "Hi! LMVTFY is online.")
+      } ~
       post {
         headerValueByName("X-Github-Event") { githubEvent =>
           githubEvent match {
@@ -38,5 +41,5 @@ class LmvtfyActor(protected val issueCommentEventHandler: ActorRef) extends Acto
           }
         }
       }
-    }
+    }}
 }
