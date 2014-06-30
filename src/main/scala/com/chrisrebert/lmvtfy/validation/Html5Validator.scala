@@ -34,7 +34,7 @@ import org.xml.sax.InputSource
 // java -Xss512k
 object Html5Validator {
   private val schemaUrl = "http://s.validator.nu/html5-rdfalite.rnc"
-  private val errorsOnly = false
+  private val errorsOnly = true
   private val showSource = false
   System.setProperty("org.whattf.datatype.warn", errorsOnly.toString)
 
