@@ -126,4 +126,24 @@ class ValidatorSpec extends Specification {
       messages must have size(0)
     }
   }
+
+  "input[type=\"date\"]" should {
+    val goodHtml =
+      """<!DOCTYPE html>
+        |<html lang="en">
+        |  <head>
+        |    <meta charset="utf-8">
+        |    <title>Title</title>
+        |  </head>
+        |  <body>
+        |    <input type="date" />
+        |  </body>
+        |</html>
+      """.stripMargin
+
+    "not cause any validation messages" in {
+      val messages = Html5Validator.validationErrorsFor(goodHtml.inputSource).get
+      messages must have size(0)
+    }
+  }
 }
