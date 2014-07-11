@@ -87,8 +87,5 @@ private class Html5Validator(inputSource: InputSource) {
     errHandler
   }
 
-  /**
-   * @throws SAXException
-   */
   private def end(): Try[Unit] = Try{ errorHandler.end("Document checking completed. No errors found.", "Document checking completed.") }
 }
