@@ -27,11 +27,13 @@ By automating the process of checking the validity of HTML examples, such issues
 ## Usage
 Java 7+ is required to run LMVTFY. For instructions on building LMVTFY yourself, see [the Contributing docs](https://github.com/cvrebert/lmvtfy/blob/master/CONTRIBUTING.md).
 
-LMVTFY requires and accepts exactly one command-line argument, which is the port number to run its HTTP server on, e.g. `8080`. Once you've built the JAR, run `java -jar lmvtfy-assembly-1.0.jar 8080` (replace `8080` with whatever port number you want). Note that running on ports <= 1024 requires root privileges (not recommended) or using port mapping.
+LMVTFY accepts exactly one optional command-line argument, which is the port number to run its HTTP server on, e.g. `8080`. If you don't provide this argument, the default port specified in `application.conf` will be used. Once you've built the JAR, run e.g. `java -jar lmvtfy-assembly-1.0.jar 8080` (replace `8080` with whatever port number you want). Note that running on ports <= 1024 requires root privileges (not recommended) or using port mapping.
 
 Other settings live in `application.conf`. In addition to the normal Akka and Spray settings, LMVTFY offers the following settings:
 ```
 lmvtfy {
+    // Port to run on, if not specified via the command line
+    default-port = 8080
     // List of full names of GitHub repos to watch for new issues and new issue comments
     github-repos-to-watch = ["twbs/bootstrap"]
     // Username of the account that reply comments will be posted from

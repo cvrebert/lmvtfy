@@ -16,7 +16,7 @@ Hacking on LMVTFY
 0. Ensure that sbt is installed (see above).
 1. Go to your `lmvtfy` directory.
 2. Run `sbt`
-3. At the sbt prompt, enter `re-start 8080` (replace `8080` with whatever port you want the HTTP server to run on).
+3. At the sbt prompt, enter `re-start 8080` (replace `8080` with whatever port you want the HTTP server to run on) or `re-start` (which will use the default port specified in `application.conf`).
 
 ## How do I generate a single self-sufficient JAR that includes all of the necessary dependencies?
 0. Ensure that sbt is installed (see above).

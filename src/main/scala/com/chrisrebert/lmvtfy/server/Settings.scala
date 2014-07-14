@@ -15,6 +15,7 @@ class SettingsImpl(config: Config) extends Extension {
   val BotUsername: String = config.getString("lmvtfy.username")
   val BotPassword: String = config.getString("lmvtfy.password")
   val WebHookSecretKey: ByteString = ByteString(config.getString("lmvtfy.web-hook-secret-key").utf8Bytes)
+  val DefaultPort: Int = config.getInt("lmvtfy.default-port")
 }
 object Settings extends ExtensionId[SettingsImpl] with ExtensionIdProvider {
   override def lookup() = Settings
