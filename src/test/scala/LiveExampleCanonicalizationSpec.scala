@@ -4,26 +4,41 @@ import com.chrisrebert.lmvtfy.live_examples._
 
 class LiveExampleCanonicalizationSpec extends Specification {
   "JsBinExample" should {
-    def bin(url: String) = JsBinExample(Uri(url)).map{ _.url }
+    def codeBin(url: String) = JsBinExample(Uri(url)).map{ _.codeUrl }
+    def displayBin(url: String) = JsBinExample(Uri(url)).map{ _.displayUrl }
 
     "canonicalize URLs correctly" in {
       // JS Bin hates trailing slashes
+      val canonicalVersioned = Some(Uri("http://jsbin.com/api/mogupeli/3"))
+      codeBin("http://jsbin.com/mogupeli/3") mustEqual canonicalVersioned
+      codeBin("http://jsbin.com/mogupeli/3/") mustEqual canonicalVersioned
+      codeBin("http://jsbin.com/mogupeli/3/edit") mustEqual canonicalVersioned
+      codeBin("http://jsbin.com/mogupeli/3/edit/") mustEqual canonicalVersioned
+
+      val canonicalUnversioned = Some(Uri("http://jsbin.com/api/mogupeli"))
+      codeBin("http://jsbin.com/mogupeli") mustEqual canonicalUnversioned
+      codeBin("http://jsbin.com/mogupeli/") mustEqual canonicalUnversioned
+      codeBin("http://jsbin.com/mogupeli/edit") mustEqual canonicalUnversioned
+      codeBin("http://jsbin.com/mogupeli/edit/") mustEqual canonicalUnversioned
+    }
+
+    "generate display URLs correctly" in {
       val canonicalVersioned = Some(Uri("http://jsbin.com/mogupeli/3"))
-      bin("http://jsbin.com/mogupeli/3") mustEqual canonicalVersioned
-      bin("http://jsbin.com/mogupeli/3/") mustEqual canonicalVersioned
-      bin("http://jsbin.com/mogupeli/3/edit") mustEqual canonicalVersioned
-      bin("http://jsbin.com/mogupeli/3/edit/") mustEqual canonicalVersioned
+      displayBin("http://jsbin.com/mogupeli/3") mustEqual canonicalVersioned
+      displayBin("http://jsbin.com/mogupeli/3/") mustEqual canonicalVersioned
+      displayBin("http://jsbin.com/mogupeli/3/edit") mustEqual canonicalVersioned
+      displayBin("http://jsbin.com/mogupeli/3/edit/") mustEqual canonicalVersioned
 
       val canonicalUnversioned = Some(Uri("http://jsbin.com/mogupeli"))
-      bin("http://jsbin.com/mogupeli") mustEqual canonicalUnversioned
-      bin("http://jsbin.com/mogupeli/") mustEqual canonicalUnversioned
-      bin("http://jsbin.com/mogupeli/edit") mustEqual canonicalUnversioned
-      bin("http://jsbin.com/mogupeli/edit/") mustEqual canonicalUnversioned
+      displayBin("http://jsbin.com/mogupeli") mustEqual canonicalUnversioned
+      displayBin("http://jsbin.com/mogupeli/") mustEqual canonicalUnversioned
+      displayBin("http://jsbin.com/mogupeli/edit") mustEqual canonicalUnversioned
+      displayBin("http://jsbin.com/mogupeli/edit/") mustEqual canonicalUnversioned
     }
   }
 
   "JsFiddleExample" should {
-    def fiddle(url: String) = JsFiddleExample(Uri(url)).map{ _.url }
+    def fiddle(url: String) = JsFiddleExample(Uri(url)).map{ _.codeUrl }
 
     "canonicalize URLs for anonymous users correctly" in {
       // JS Fiddle likes trailing slashes
@@ -64,7 +79,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
   }
 
   "BootplyExample" should {
-    def ply(url: String) = BootplyExample(Uri(url)).map{ _.url }
+    def ply(url: String) = BootplyExample(Uri(url)).map{ _.codeUrl }
 
     "canonicalize URLs correctly" in {
       // Bootply hates trailing slashes, has no versioning, and logged-in users don't get different URLs
@@ -79,7 +94,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
   }
 
   "PlunkerExample" should {
-    def plunk(url: String) = PlunkerExample(Uri(url)).map{ _.url }
+    def plunk(url: String) = PlunkerExample(Uri(url)).map{ _.codeUrl }
 
     "canonicalize URLs correctly" in {
       // Plunker has no in-URL versioning, and logged-in users don't get different URLs
@@ -101,7 +116,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
     // Doesn't appear to support versioning
     // URLs for anonymous users follow the same scheme, with the username being "anon"
 
-    def pen(url: String) = CodePenExample(Uri(url)).map{ _.url }
+    def pen(url: String) = CodePenExample(Uri(url)).map{ _.codeUrl }
 
     "canonicalize URLs for logged-in users correctly" in {
       val canonical = Some(Uri("http://s.codepen.io/shdigitaldesign/full/KsFqH"))

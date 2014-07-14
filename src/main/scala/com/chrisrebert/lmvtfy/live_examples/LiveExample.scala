@@ -5,13 +5,21 @@ import spray.http.Uri
 import spray.http.Uri.{Path, NamedHost}
 import com.chrisrebert.lmvtfy.util.RichUri
 
+sealed trait ExampleKind
+case object RawHtml extends ExampleKind
+case object JsonContainingHtml extends ExampleKind
+
 sealed trait LiveExample {
-  def url: Uri
+  def displayUrl: Uri
+  def codeUrl: Uri
+  val kind: ExampleKind
 }
-class JsFiddleExample private(val url: Uri) extends LiveExample {
-  override def toString = s"JsFiddleExample(${url})"
-  override def hashCode = url.hashCode
-  override def equals(other: Any) = other.isInstanceOf[JsFiddleExample] && other.asInstanceOf[JsFiddleExample].url == url
+class JsFiddleExample private(val codeUrl: Uri) extends LiveExample {
+  override val kind = RawHtml
+  override def displayUrl = codeUrl
+  override def toString = s"JsFiddleExample(${codeUrl})"
+  override def hashCode = codeUrl.hashCode
+  override def equals(other: Any) = other.isInstanceOf[JsFiddleExample] && other.asInstanceOf[JsFiddleExample].codeUrl == codeUrl
 }
 object JsFiddleExample {
   private object Revision {
@@ -46,10 +54,19 @@ object JsFiddleExample {
   }
 }
 
-class JsBinExample private(val url: Uri) extends LiveExample {
-  override def toString = s"JsBinExample(${url})"
-  override def hashCode = url.hashCode
-  override def equals(other: Any) = other.isInstanceOf[JsBinExample] && other.asInstanceOf[JsBinExample].url == url
+class JsBinExample private(val codeUrl: Uri) extends LiveExample {
+  override val kind = JsonContainingHtml
+  override def toString = s"JsBinExample(${codeUrl})"
+  override def hashCode = codeUrl.hashCode
+  override def equals(other: Any) = other.isInstanceOf[JsBinExample] && other.asInstanceOf[JsBinExample].codeUrl == codeUrl
+  override def displayUrl = {
+    val newPath = codeUrl.path.toString.split('/') match {
+      case Array("", "api", identifier, revision) => Path / identifier / revision
+      case Array("", "api", identifier) => Path / identifier
+      case _ => codeUrl.path
+    }
+    codeUrl.withPath(newPath)
+  }
 }
 object JsBinExample {
   def apply(uri: Uri): Option[JsBinExample] = canonicalize(uri).map{ new JsBinExample(_) }
@@ -61,20 +78,22 @@ object JsBinExample {
   }
   private def canonicalize(uri: Uri) = {
     val newPath = uri.path.toString.split('/') match {
-      case Array("", identifier)         => Some(Path / identifier)
-      case Array("", identifier, "edit") => Some(Path / identifier)
-      case Array("", identifier, revision)         => Some(Path / identifier / revision)
-      case Array("", identifier, revision, "edit") => Some(Path / identifier / revision)
+      case Array("", identifier)         => Some(Path / "api" / identifier)
+      case Array("", identifier, "edit") => Some(Path / "api" / identifier)
+      case Array("", identifier, revision)         => Some(Path / "api" / identifier / revision)
+      case Array("", identifier, revision, "edit") => Some(Path / "api" / identifier / revision)
       case _ => None
     }
     newPath.map{ uri.withPath(_) }
   }
 }
 
-class BootplyExample private(val url: Uri) extends LiveExample {
-  override def toString = s"BootplyExample(${url})"
-  override def hashCode = url.hashCode
-  override def equals(other: Any) = other.isInstanceOf[BootplyExample] && other.asInstanceOf[BootplyExample].url == url
+class BootplyExample private(val codeUrl: Uri) extends LiveExample {
+  override val kind = RawHtml
+  override def displayUrl = codeUrl
+  override def toString = s"BootplyExample(${codeUrl})"
+  override def hashCode = codeUrl.hashCode
+  override def equals(other: Any) = other.isInstanceOf[BootplyExample] && other.asInstanceOf[BootplyExample].codeUrl == codeUrl
 }
 object BootplyExample {
   def apply(uri: Uri): Option[BootplyExample] = canonicalize(uri).map{ new BootplyExample(_) }
@@ -102,10 +121,12 @@ object BootplyExample {
   }
 }
 
-class PlunkerExample private(val url: Uri) extends LiveExample {
-  override def toString = s"PlunkerExample(${url}})"
-  override def hashCode = url.hashCode
-  override def equals(other: Any) = other.isInstanceOf[PlunkerExample] && other.asInstanceOf[PlunkerExample].url == url
+class PlunkerExample private(val codeUrl: Uri) extends LiveExample {
+  override val kind = RawHtml
+  override def displayUrl = codeUrl
+  override def toString = s"PlunkerExample(${codeUrl}})"
+  override def hashCode = codeUrl.hashCode
+  override def equals(other: Any) = other.isInstanceOf[PlunkerExample] && other.asInstanceOf[PlunkerExample].codeUrl == codeUrl
 }
 object PlunkerExample {
   def apply(uri: Uri): Option[PlunkerExample] = canonicalize(uri).map{ new PlunkerExample(_) }
@@ -134,10 +155,12 @@ object PlunkerExample {
   }
 }
 
-class CodePenExample private(val url: Uri) extends LiveExample {
-  override def toString = s"CodePenExample(${url}})"
-  override def hashCode = url.hashCode
-  override def equals(other: Any) = other.isInstanceOf[CodePenExample] && other.asInstanceOf[CodePenExample].url == url
+class CodePenExample private(val codeUrl: Uri) extends LiveExample {
+  override val kind = RawHtml
+  override def displayUrl = codeUrl
+  override def toString = s"CodePenExample(${codeUrl}})"
+  override def hashCode = codeUrl.hashCode
+  override def equals(other: Any) = other.isInstanceOf[CodePenExample] && other.asInstanceOf[CodePenExample].codeUrl == codeUrl
 }
 object CodePenExample {
   def apply(uri: Uri): Option[CodePenExample] = canonicalize(uri).map{ new CodePenExample(_) }

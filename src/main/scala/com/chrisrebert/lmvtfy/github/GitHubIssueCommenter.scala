@@ -22,7 +22,7 @@ class GitHubIssueCommenter extends ActorWithLogging {
 
   override def receive = {
     case ValidationResult(messagesMarkdown, mention@LiveExampleMention(example: LiveExample, GitHubUser(username), GitHubIssue(repo, issue))) => {
-      val exampleUrl = example.url
+      val exampleUrl = example.displayUrl
       val commentMarkdown = s"""
         |Hi @${username}!
         |

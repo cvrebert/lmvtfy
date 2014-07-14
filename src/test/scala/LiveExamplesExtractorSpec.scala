@@ -44,11 +44,13 @@ class LiveExamplesExtractorSpec extends Specification {
     }
     "eliminate fragments from URLs" in {
       val example = LiveExamplesExtractor.liveExamplesFromWithin("http://jsbin.com/mogupeli/3/#frag").head
-      example.url.fragment must beNone
+      example.codeUrl.fragment must beNone
+      example.displayUrl.fragment must beNone
     }
     "eliminate querystrings from URLs" in {
       val example = LiveExamplesExtractor.liveExamplesFromWithin("http://jsbin.com/mogupeli/3/?x=y&a=1").head
-      example.url.query must beEmpty
+      example.codeUrl.query must beEmpty
+      example.displayUrl.query must beEmpty
     }
     "extract JS Bin examples" in {
       assertHasLiveExample("http://jsbin.com/mogupeli/3/edit")
