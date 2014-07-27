@@ -146,4 +146,22 @@ class ValidatorSpec extends Specification {
       messages must have size(0)
     }
   }
+
+  "missing title tag" should {
+    val mehHtml =
+      """<!DOCTYPE html>
+        |<html lang="en">
+        |  <head>
+        |    <meta charset="utf-8">
+        |  </head>
+        |  <body>
+        |  </body>
+        |</html>
+      """.stripMargin
+
+    "not be considered a validation error" in {
+      val messages = Html5Validator.validationErrorsFor(mehHtml.inputSource).get
+      messages must have size(0)
+    }
+  }
 }
