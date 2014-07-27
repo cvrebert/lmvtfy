@@ -32,7 +32,7 @@ class GitHubIssueCommenter extends ActorWithLogging {
         |You'll need to **fix these errors** and post a revised example before we can proceed further.
         |Thanks!
         |
-        |(*Please note that this is a fully automated comment.*)
+        |(*Please note that this is a [fully automated](https://github.com/cvrebert/lmvtfy) comment.*)
       """.stripMargin
 
       tryToCommentOn(repo.id, issue, commentMarkdown) match {
