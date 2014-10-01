@@ -96,6 +96,7 @@ class BootplyExample private(val codeUrl: Uri) extends LiveExample {
   override def equals(other: Any) = other.isInstanceOf[BootplyExample] && other.asInstanceOf[BootplyExample].codeUrl == codeUrl
 }
 object BootplyExample {
+  private val CanonicalHost = NamedHost("s.bootply.com")
   def apply(uri: Uri): Option[BootplyExample] = canonicalize(uri).map{ new BootplyExample(_) }
   def unapply(uri: Uri): Option[BootplyExample] = BootplyExample(uri)
   private def canonicalize(uri: Uri) = {
@@ -107,7 +108,7 @@ object BootplyExample {
   }
   private def canonicalizedHost(host: Uri.Host) = {
     host match {
-      case NamedHost("bootply.com") | NamedHost("www.bootply.com") | NamedHost("s.bootply.com") => Some(NamedHost("s.bootply.com"))
+      case NamedHost("bootply.com") | NamedHost("www.bootply.com") | CanonicalHost => Some(CanonicalHost)
       case _ => None
     }
   }
@@ -129,6 +130,7 @@ class PlunkerExample private(val codeUrl: Uri) extends LiveExample {
   override def equals(other: Any) = other.isInstanceOf[PlunkerExample] && other.asInstanceOf[PlunkerExample].codeUrl == codeUrl
 }
 object PlunkerExample {
+  private val CanonicalHost = NamedHost("run.plnkr.co")
   def apply(uri: Uri): Option[PlunkerExample] = canonicalize(uri).map{ new PlunkerExample(_) }
   def unapply(uri: Uri): Option[PlunkerExample] = PlunkerExample(uri)
   private def canonicalize(uri: Uri) = {
@@ -140,7 +142,7 @@ object PlunkerExample {
   }
   private def canonicalizedHost(host: Uri.Host) = {
     host match {
-      case NamedHost("plnkr.co") | NamedHost("embed.plnkr.co") | NamedHost("run.plnkr.co") => Some(NamedHost("run.plnkr.co"))
+      case NamedHost("plnkr.co") | NamedHost("embed.plnkr.co") | CanonicalHost => Some(CanonicalHost)
       case _ => None
     }
   }
@@ -163,6 +165,7 @@ class CodePenExample private(val codeUrl: Uri) extends LiveExample {
   override def equals(other: Any) = other.isInstanceOf[CodePenExample] && other.asInstanceOf[CodePenExample].codeUrl == codeUrl
 }
 object CodePenExample {
+  private val CanonicalHost = NamedHost("s.codepen.io")
   def apply(uri: Uri): Option[CodePenExample] = canonicalize(uri).map{ new CodePenExample(_) }
   def unapply(uri: Uri): Option[CodePenExample] = CodePenExample(uri)
   private def canonicalize(uri: Uri) = {
@@ -174,7 +177,7 @@ object CodePenExample {
   }
   private def canonicalizedHost(host: Uri.Host) = {
     host match {
-      case NamedHost("codepen.io") | NamedHost("s.codepen.io") => Some(NamedHost("s.codepen.io"))
+      case NamedHost("codepen.io") | CanonicalHost => Some(CanonicalHost)
       case _ => None
     }
   }
