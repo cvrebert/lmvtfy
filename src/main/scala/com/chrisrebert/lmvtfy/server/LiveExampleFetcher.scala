@@ -11,9 +11,18 @@ import spray.can.Http
 import spray.http.HttpResponse
 import spray.httpx.RequestBuilding._
 import com.chrisrebert.lmvtfy.ValidationRequest
-import com.chrisrebert.lmvtfy.live_examples.{LiveExampleMention, RawHtml, JsonContainingHtml}
+import com.chrisrebert.lmvtfy.live_examples.{LiveExampleMention, CompleteRawHtml, RawHtmlFragment, JsonContainingHtml}
 import com.chrisrebert.lmvtfy.live_examples.jsbin.JsBin
+import com.chrisrebert.lmvtfy.util.RichResponse
 
+object HtmlFragment {
+  private val htmlPrefix = ByteString("""<!DOCTYPE html>\n<html>\n<head><meta charset="utf-8" /><title>Untitled</title></head>\n<body>\n""")
+  private val htmlSuffix = ByteString("""\n</body>\n</html>""")
+  def apply(fragment: ByteString) = new HtmlFragment(fragment)
+}
+class HtmlFragment(val fragment: ByteString) extends AnyVal {
+  def asCompleteHtmlDoc = HtmlFragment.htmlPrefix ++ fragment ++ HtmlFragment.htmlSuffix
+}
 class LiveExampleFetcher(validator: ActorRef) extends ActorWithLogging {
   implicit val timeout = Timeout(30.seconds)
 
@@ -27,7 +36,8 @@ class LiveExampleFetcher(validator: ActorRef) extends ActorWithLogging {
         case Success(response) => {
           if (response.status.isSuccess) {
             val maybeHtmlBytes = mention.example.kind match {
-              case RawHtml => Some(response.entity.data.toByteString)
+              case CompleteRawHtml => Some(response.entityByteString)
+              case RawHtmlFragment => Some(HtmlFragment(response.entityByteString).asCompleteHtmlDoc)
               case JsonContainingHtml => {
                 import spray.httpx.unmarshalling._
                 import spray.httpx.SprayJsonSupport._

@@ -3,7 +3,9 @@ package com.chrisrebert.lmvtfy
 import java.nio.charset.Charset
 import scala.collection.mutable
 import scala.util.Try
+import akka.util.ByteString
 import spray.http.Uri
+import spray.http.HttpResponse
 
 package object util {
   private val utf8 = Charset.forName("UTF-8")
@@ -14,6 +16,10 @@ package object util {
 
   implicit class Utf8ByteArray(bytes: Array[Byte]) {
     def utf8String: Try[String] = Try { new String(bytes, utf8) }
+  }
+
+  implicit class RichResponse(response: HttpResponse) {
+    def entityByteString: ByteString = response.entity.data.toByteString
   }
 
   implicit class RichStack[T](stack: mutable.Stack[T]) {
@@ -31,5 +37,10 @@ package object util {
     def hasNamedHost = uri.authority.host.isInstanceOf[NamedHost]
     def isSafe = uri.isHttp && uri.lacksUserInfo && uri.hasNamedHost && uri.lacksNonDefaultPort && uri.isAbsolute
     def withoutQuery = uri.withQuery(EmptyQuery)
+  }
+
+  object HtmlSuffixed {
+    private val extension = ".html"
+    def unapply(filename: String): Option[String] = Some(if (filename.endsWith(extension)) filename else (filename + extension))
   }
 }
