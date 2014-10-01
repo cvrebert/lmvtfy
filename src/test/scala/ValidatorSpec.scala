@@ -186,4 +186,23 @@ class ValidatorSpec extends Specification {
       messages must have size(0)
     }
   }
+
+  "JS Fiddle's weird meta tag" should {
+    val fiddlyHtml =
+      """<!DOCTYPE html>
+        |<html lang="en">
+        |  <head>
+        |    <meta charset="utf-8">
+        |    <meta http-equiv="edit-Type" edit="text/html; charset=utf-8" />
+        |    <title>Title</title>
+        |  </head>
+        |  <body></body>
+        |</html>
+      """.stripMargin
+
+    "not be considered a validation error" in {
+      val messages = Html5Validator.validationErrorsFor(fiddlyHtml.inputSource).get
+      messages must have size(0)
+    }
+  }
 }

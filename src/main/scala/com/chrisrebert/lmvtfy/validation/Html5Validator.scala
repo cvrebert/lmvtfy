@@ -57,6 +57,8 @@ private class Html5Validator(inputSource: InputSource) {
           case Seq(PlainText("An "), CodeText("img"), PlainText(" element must have an "), CodeText("alt"), _*) => false
           case Seq(PlainText("Element "), CodeText("head"), PlainText(" is missing a required instance of child element "), CodeText("title"), PlainText(".")) => false
           case Seq(PlainText("Attribute "), CodeText(attrName), PlainText(" not allowed on element "), _*) if attrName.startsWith("data-") => false
+          case Seq(PlainText("Bad value "), CodeText("edit-Type"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on element "), CodeText("meta"), PlainText(".")) => false
+          case Seq(PlainText("Attribute "), CodeText("edit"), PlainText(" not allowed on element "), CodeText("meta"), PlainText(" at this point.")) => false
           case _ => true
         }
       })
