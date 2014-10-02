@@ -3,10 +3,11 @@ package com.chrisrebert.lmvtfy.live_examples
 import scala.util.Try
 import spray.http.Uri
 import spray.http.Uri.{Path, NamedHost}
-import com.chrisrebert.lmvtfy.util.RichUri
+import com.chrisrebert.lmvtfy.util.{HtmlSuffixed, RichUri}
 
 sealed trait ExampleKind
-case object RawHtml extends ExampleKind
+case object CompleteRawHtml extends ExampleKind
+case object RawHtmlFragment extends ExampleKind
 case object JsonContainingHtml extends ExampleKind
 
 sealed trait LiveExample {
@@ -15,7 +16,7 @@ sealed trait LiveExample {
   val kind: ExampleKind
 }
 class JsFiddleExample private(val codeUrl: Uri) extends LiveExample {
-  override val kind = RawHtml
+  override val kind = CompleteRawHtml
   override def displayUrl = codeUrl
   override def toString = s"JsFiddleExample(${codeUrl})"
   override def hashCode = codeUrl.hashCode
@@ -89,7 +90,7 @@ object JsBinExample {
 }
 
 class BootplyExample private(val codeUrl: Uri) extends LiveExample {
-  override val kind = RawHtml
+  override val kind = CompleteRawHtml
   override def displayUrl = codeUrl
   override def toString = s"BootplyExample(${codeUrl})"
   override def hashCode = codeUrl.hashCode
@@ -123,7 +124,7 @@ object BootplyExample {
 }
 
 class PlunkerExample private(val codeUrl: Uri) extends LiveExample {
-  override val kind = RawHtml
+  override val kind = CompleteRawHtml
   override def displayUrl = codeUrl
   override def toString = s"PlunkerExample(${codeUrl}})"
   override def hashCode = codeUrl.hashCode
@@ -158,14 +159,14 @@ object PlunkerExample {
 }
 
 class CodePenExample private(val codeUrl: Uri) extends LiveExample {
-  override val kind = RawHtml
+  override val kind = RawHtmlFragment
   override def displayUrl = codeUrl
   override def toString = s"CodePenExample(${codeUrl}})"
   override def hashCode = codeUrl.hashCode
   override def equals(other: Any) = other.isInstanceOf[CodePenExample] && other.asInstanceOf[CodePenExample].codeUrl == codeUrl
 }
 object CodePenExample {
-  private val CanonicalHost = NamedHost("s.codepen.io")
+  private val CanonicalHost = NamedHost("codepen.io")
   def apply(uri: Uri): Option[CodePenExample] = canonicalize(uri).map{ new CodePenExample(_) }
   def unapply(uri: Uri): Option[CodePenExample] = CodePenExample(uri)
   private def canonicalize(uri: Uri) = {
@@ -177,14 +178,13 @@ object CodePenExample {
   }
   private def canonicalizedHost(host: Uri.Host) = {
     host match {
-      case NamedHost("codepen.io") | CanonicalHost => Some(CanonicalHost)
+      case CanonicalHost | NamedHost("s.codepen.io") => Some(CanonicalHost)
       case _ => None
     }
   }
   private def canonicalizedPath(path: Uri.Path) = {
     path.toString.split('/') match {
-      case Array("", "anon", view, identifier) => None // "Anonymous Pens Can't Be Viewed in Full Page View" :-(
-      case Array("", username, view, identifier) => Some(Path / username / "full" / identifier)
+      case Array("", username, view, HtmlSuffixed(identifier)) => Some(Path / username / "pen" / identifier)
       case _ => None
     }
   }
