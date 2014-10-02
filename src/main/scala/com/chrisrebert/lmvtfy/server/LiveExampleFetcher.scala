@@ -37,7 +37,9 @@ class LiveExampleFetcher(validator: ActorRef) extends ActorWithLogging {
   override def receive = {
     case mention: LiveExampleMention => {
       implicit val system = context.system
-      val respFuture = (IO(Http) ? Get(mention.example.codeUrl)).mapTo[HttpResponse]
+      val settings = Settings(context.system)
+      val url = mention.example.codeUrl
+      val respFuture = (IO(Http) ? Get(url)).mapTo[HttpResponse]
 
       // gotta block somewhere
       Try{ Await.result(respFuture, timeout.duration) } match {
@@ -61,6 +63,9 @@ class LiveExampleFetcher(validator: ActorRef) extends ActorWithLogging {
               }
             }
             maybeHtmlBytes.foreach{ htmlBytes =>
+              if (settings.DebugHtml) {
+                log.info(s"Fetched HTML for ${url} :\n${htmlBytes.utf8String}\n====END HTML====")
+              }
               log.info(s"Sending ValidationRequest for ${mention} with fetched HTML.")
               validator ! ValidationRequest(htmlBytes, mention)
             }
