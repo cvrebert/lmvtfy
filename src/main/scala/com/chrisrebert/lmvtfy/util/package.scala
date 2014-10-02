@@ -8,14 +8,20 @@ import spray.http.Uri
 import spray.http.HttpResponse
 
 package object util {
-  private val utf8 = Charset.forName("UTF-8")
+  private val utf8name = "UTF-8"
+  private val utf8Charset = Charset.forName(utf8name)
 
   implicit class Utf8String(str: String) {
-    def utf8Bytes: Array[Byte] = str.getBytes(utf8)
+    def utf8Bytes: Array[Byte] = str.getBytes(utf8Charset)
+    def utf8ByteString: ByteString = ByteString(this.utf8Bytes)
   }
 
   implicit class Utf8ByteArray(bytes: Array[Byte]) {
-    def utf8String: Try[String] = Try { new String(bytes, utf8) }
+    def utf8String: Try[String] = Try { new String(bytes, utf8Charset) }
+  }
+
+  implicit class Utf8ByteString(byteStr: ByteString) {
+    def utf8String: String = byteStr.decodeString(utf8name)
   }
 
   implicit class RichResponse(response: HttpResponse) {

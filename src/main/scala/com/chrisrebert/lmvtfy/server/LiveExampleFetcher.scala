@@ -16,8 +16,16 @@ import com.chrisrebert.lmvtfy.live_examples.jsbin.JsBin
 import com.chrisrebert.lmvtfy.util.RichResponse
 
 object HtmlFragment {
-  private val htmlPrefix = ByteString("""<!DOCTYPE html>\n<html>\n<head><meta charset="utf-8" /><title>Untitled</title></head>\n<body>\n""")
-  private val htmlSuffix = ByteString("""\n</body>\n</html>""")
+  private val htmlPrefix = ByteString(
+    """<!DOCTYPE html>
+      |<html>
+      |<head>
+      |    <meta charset="utf-8" />
+      |    <title>Untitled</title>
+      |</head>
+      |<body>
+      |""".stripMargin)
+  private val htmlSuffix = ByteString("\n</body>\n</html>")
   def apply(fragment: ByteString) = new HtmlFragment(fragment)
 }
 class HtmlFragment(val fragment: ByteString) extends AnyVal {
