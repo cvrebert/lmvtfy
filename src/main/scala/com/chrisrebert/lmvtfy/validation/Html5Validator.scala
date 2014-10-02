@@ -88,6 +88,7 @@ private class Html5Validator(inputSource: InputSource) {
     val errHandler = new MessageEmitterAdapter(sourceCode, showSource, imageCollector, lineOffset, true, emitter)
     errHandler.setHtml(true)
     errHandler.setErrorsOnly(errorsOnly)
+    errHandler.start(null)
     errHandler
   }
 
