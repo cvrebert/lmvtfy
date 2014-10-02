@@ -42,7 +42,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
 
     "canonicalize URLs for anonymous users correctly" in {
       // JS Fiddle likes trailing slashes
-      val canonicalVersioned = Some(Uri("http://jsfiddle.net/wYc3u/5/show/"))
+      val canonicalVersioned = Some(Uri("http://fiddle.jshell.net/wYc3u/5/show/light/"))
       fiddle("http://jsfiddle.net/wYc3u/5") mustEqual canonicalVersioned
       fiddle("http://jsfiddle.net/wYc3u/5/") mustEqual canonicalVersioned
       fiddle("http://jsfiddle.net/wYc3u/5/show") mustEqual canonicalVersioned
@@ -50,7 +50,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
       fiddle("http://jsfiddle.net/wYc3u/5/embedded/result") mustEqual canonicalVersioned
       fiddle("http://jsfiddle.net/wYc3u/5/embedded/result/") mustEqual canonicalVersioned
 
-      val canonicalUnversioned = Some(Uri("http://jsfiddle.net/wYc3u/show/"))
+      val canonicalUnversioned = Some(Uri("http://fiddle.jshell.net/wYc3u/show/light/"))
       fiddle("http://jsfiddle.net/wYc3u") mustEqual canonicalUnversioned
       fiddle("http://jsfiddle.net/wYc3u/") mustEqual canonicalUnversioned
       fiddle("http://jsfiddle.net/wYc3u/show") mustEqual canonicalUnversioned
@@ -60,7 +60,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
     }
 
     "canonicalize URLs for logged-in users correctly" in {
-      val canonicalUnversioned = Some(Uri("http://jsfiddle.net/cvrebert/7aKxf/show/"))
+      val canonicalUnversioned = Some(Uri("http://fiddle.jshell.net/cvrebert/7aKxf/show/light/"))
       fiddle("http://jsfiddle.net/cvrebert/7aKxf") mustEqual canonicalUnversioned
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/") mustEqual canonicalUnversioned
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/show") mustEqual canonicalUnversioned
@@ -68,7 +68,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/embedded/result") mustEqual canonicalUnversioned
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/embedded/result/") mustEqual canonicalUnversioned
 
-      val canonicalVersioned = Some(Uri("http://jsfiddle.net/cvrebert/7aKxf/1/show/"))
+      val canonicalVersioned = Some(Uri("http://fiddle.jshell.net/cvrebert/7aKxf/1/show/light/"))
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/1") mustEqual canonicalVersioned
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/") mustEqual canonicalVersioned
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/show") mustEqual canonicalVersioned
