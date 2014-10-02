@@ -39,7 +39,8 @@ class LiveExampleFetcher(validator: ActorRef) extends ActorWithLogging {
       implicit val system = context.system
       val settings = Settings(context.system)
       val url = mention.example.codeUrl
-      val respFuture = (IO(Http) ? Get(url)).mapTo[HttpResponse]
+      val request = Get(url) ~> addHeader("Referer", mention.example.displayUrl.toString)
+      val respFuture = (IO(Http) ? request).mapTo[HttpResponse]
 
       // gotta block somewhere
       Try{ Await.result(respFuture, timeout.duration) } match {
