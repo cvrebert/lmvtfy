@@ -14,7 +14,7 @@ class StructuredObjectMessageHandler extends MessageTextHandler {
    * @see nu.validator.messages.MessageTextHandler#characters
    */
   override def characters(ch: Array[Char], start: Int, length: Int) {
-    buffer.append(ch)
+    buffer.append(ch, start, length)
   }
 
   /**
