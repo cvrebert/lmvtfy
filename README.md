@@ -55,6 +55,24 @@ lmvtfy {
 * Secret: Same as your `web-hook-secret-key` config value
 * Which events would you like to trigger this webhook?: "Issues" and "Issue comment"
 
+## Deliberately ignored errors
+The following validation errors are deliberately ignored by LMVTFY for pragmatic reasons:
+* "Bad value `X-UA-Compatible` for attribute `http-equiv` on element `meta`."
+  * This error is regarding `<meta http-equiv="X-UA-Compatible" content="IE=edge">`
+  * This `<meta>` tag (or its HTTP header equivalent) [is a best-practice for dealing with Internet Explorer](http://getbootstrap.com/getting-started/#support-ie-compatibility-modes), but is currently flagged by validator.nu because `X-UA-Compatible` isn't standardized. The tag causes no problems in practice; indeed, its purpose is to *prevent* IE problems.
+* "An `img` element must have an `alt` attribute, except under certain conditions. [...]"
+  * This is an accessibility problem, but typically doesn't cause any other problems.
+  * Most folks don't include `alt`s for `<img>`s in live examples since it's almost never relevant to their problem and thus not worth the extra work to add them.
+* "Element `head` is missing a required instance of child element `title`."
+  * Again, folks often don't include a `<title>` in live examples since it's presence or absence is almost never relevant to their problem and its absence almost never causes any other problems.
+* "Attribute `data-foo` not allowed on element `bar` at this point."
+  * Typically the element is an SVG element. These HTML5 `data-*` attributes can be useful and in practice don't seem to cause any problems.
+* Errors due to the nonstandard `<meta>` that jsFiddle uses on its pages.
+  * "Bad value `edit-Type` for attribute `http-equiv` on element `meta`."
+  * "Attribute `edit` not allowed on element `meta` at this point."
+  * These aren't errors in the jsFiddle user's code, so nothing can be done about them and it's pointless to complain about them.
+  * In practice, this nonstandard `<meta>` causes no problems.
+
 ## Acknowledgements
 We all stand on the shoulders of giants and get by with a little help from our friends. LMVTFY is written in [Scala](http://www.scala-lang.org) and built on top of:
 * [validator.nu](https://github.com/validator/validator), the HTML5 validator
