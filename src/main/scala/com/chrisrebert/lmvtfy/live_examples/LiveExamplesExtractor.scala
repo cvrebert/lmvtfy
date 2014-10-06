@@ -22,15 +22,6 @@ object LiveExamplesExtractor {
   }
 
   def liveExamplesFromWithin(text: String): Set[LiveExample] = {
-    safeHttpUrlsFromWithin(text).flatMap{ url =>
-      url match {
-        case JsFiddleExample(fiddle) => Some(fiddle)
-        case JsBinExample(bin) => Some(bin)
-        case BootplyExample(ply) => Some(ply)
-        case PlunkerExample(plunk) => Some(plunk)
-        case CodePenExample(pen) => Some(pen)
-        case _ => None
-      }
-    }
+    safeHttpUrlsFromWithin(text).flatMap{ LiveExample(_) }
   }
 }

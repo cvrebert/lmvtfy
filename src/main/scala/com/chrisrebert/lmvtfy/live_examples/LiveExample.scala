@@ -10,6 +10,18 @@ case object CompleteRawHtml extends ExampleKind
 case object RawHtmlFragment extends ExampleKind
 case object JsonContainingHtml extends ExampleKind
 
+object LiveExample {
+  def apply(url: Uri): Option[LiveExample] = {
+    url match {
+      case JsFiddleExample(fiddle) => Some(fiddle)
+      case JsBinExample(bin) => Some(bin)
+      case BootplyExample(ply) => Some(ply)
+      case PlunkerExample(plunk) => Some(plunk)
+      case CodePenExample(pen) => Some(pen)
+      case _ => None
+    }
+  }
+}
 sealed trait LiveExample {
   def displayUrl: Uri
   def codeUrl: Uri
