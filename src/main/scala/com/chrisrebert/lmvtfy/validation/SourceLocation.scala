@@ -25,9 +25,4 @@ sealed case class SourceLocation private(lineNum: Int, columnNum: Option[Int]) e
       this.columnNum.getOrElse(-1) - that.columnNum.getOrElse(-1)
     }
   }
-
-  override def equals(other: Any) = other != null && other.isInstanceOf[SourceLocation] && {
-    val otherLoc = other.asInstanceOf[SourceLocation]
-    otherLoc.lineNum == lineNum && otherLoc.columnNum == columnNum
-  }
 }
