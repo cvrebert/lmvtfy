@@ -53,10 +53,15 @@ private class Html5Validator(inputSource: InputSource) {
     end().flatMap{ _ =>
       Success(emitter.messages.filter{ msg =>
         msg.parts match {
+          // Exempt X-UA-Compatible <meta> as it's best-practice for dealing with IE
           case Seq(PlainText("Bad value "), CodeText("X-UA-Compatible"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on element "), CodeText("meta"), PlainText(".")) => false
+          // Exempt <img>s without alt attributes as they typically don't cause any problems besides decreasing accessibility, and most live examples lack them due to irrelevance and extra effort
           case Seq(PlainText("An "), CodeText("img"), PlainText(" element must have an "), CodeText("alt"), _*) => false
+          // Exempt missing <title> as it is very common in live examples but typically doesn't cause any problem
           case Seq(PlainText("Element "), CodeText("head"), PlainText(" is missing a required instance of child element "), CodeText("title"), PlainText(".")) => false
+          // Exempt data-* attributes on non-HTML (e.g. SVG) elements as they typically don't cause any problems
           case Seq(PlainText("Attribute "), CodeText(attrName), PlainText(" not allowed on element "), _*) if attrName.startsWith("data-") => false
+          // Exempt nonstandard <meta> used by jsFiddle
           case Seq(PlainText("Bad value "), CodeText("edit-Type"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on element "), CodeText("meta"), PlainText(".")) => false
           case Seq(PlainText("Attribute "), CodeText("edit"), PlainText(" not allowed on element "), CodeText("meta"), PlainText(" at this point.")) => false
           case _ => true
