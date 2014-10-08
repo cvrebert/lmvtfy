@@ -15,7 +15,7 @@ Affectionately named after [LMGTFY](http://knowyourmeme.com/memes/sites/let-me-g
 * An HTML code block in the Markdown source of the issue comment [Planned]
 
 ## Motivation
-You're a member of a popular open source project that involves Web technologies. Cool.
+You're a member of a popular open source project that involves front-end Web technologies. Cool.
 
 But due to the project's popularity, you will get some issues reported by newbies who think that they're encountering some bug in your code, when in fact the problem is due to their invalid HTML. And sometimes the validity error is not obvious, so it won't occur to you to try checking their HTML's validity in the first place.
 
