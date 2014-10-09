@@ -16,6 +16,22 @@ package object util {
     def utf8ByteString: ByteString = ByteString(this.utf8Bytes)
   }
 
+  implicit class ConvenientString(str: String) {
+    def rindex(substr: String): Option[Int] = {
+      str.lastIndexOf(substr) match {
+        case -1 => None
+        case validIndex => Some(validIndex)
+      }
+    }
+
+    def thruFinal(substr: String): String = {
+      str.rindex(substr) match {
+        case None => str
+        case Some(index) => str.substring(0, index + 1)
+      }
+    }
+  }
+
   implicit class Utf8ByteArray(bytes: Array[Byte]) {
     def utf8String: Try[String] = Try { new String(bytes, utf8Charset) }
   }
@@ -26,6 +42,7 @@ package object util {
 
   implicit class RichResponse(response: HttpResponse) {
     def entityByteString: ByteString = response.entity.data.toByteString
+    def entityUtf8String: String = response.entity.data.asString(utf8Charset)
   }
 
   implicit class RichStack[T](stack: mutable.Stack[T]) {

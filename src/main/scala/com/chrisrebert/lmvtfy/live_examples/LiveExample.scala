@@ -8,7 +8,7 @@ import com.chrisrebert.lmvtfy.util.{HtmlSuffixed, RichUri}
 sealed trait ExampleKind
 case object CompleteRawHtml extends ExampleKind
 case object RawHtmlFragment extends ExampleKind
-case object JsonContainingHtml extends ExampleKind
+case object HtmlWithinJavaScriptWithinHtml extends ExampleKind
 
 object LiveExample {
   def apply(url: Uri): Option[LiveExample] = {
@@ -69,18 +69,11 @@ object JsFiddleExample {
 }
 
 class JsBinExample private(val codeUrl: Uri) extends LiveExample {
-  override val kind = JsonContainingHtml
+  override val kind = HtmlWithinJavaScriptWithinHtml
+  override def displayUrl = codeUrl
   override def toString = s"JsBinExample(${codeUrl})"
   override def hashCode = codeUrl.hashCode
   override def equals(other: Any) = other.isInstanceOf[JsBinExample] && other.asInstanceOf[JsBinExample].codeUrl == codeUrl
-  override def displayUrl = {
-    val newPath = codeUrl.path.toString.split('/') match {
-      case Array("", "api", identifier, revision) => Path / identifier / revision
-      case Array("", "api", identifier) => Path / identifier
-      case _ => codeUrl.path
-    }
-    codeUrl.withPath(newPath)
-  }
 }
 object JsBinExample {
   def apply(uri: Uri): Option[JsBinExample] = canonicalize(uri).map{ new JsBinExample(_) }
@@ -92,10 +85,10 @@ object JsBinExample {
   }
   private def canonicalize(uri: Uri) = {
     val newPath = uri.path.toString.split('/') match {
-      case Array("", identifier)         => Some(Path / "api" / identifier)
-      case Array("", identifier, "edit") => Some(Path / "api" / identifier)
-      case Array("", identifier, revision)         => Some(Path / "api" / identifier / revision)
-      case Array("", identifier, revision, "edit") => Some(Path / "api" / identifier / revision)
+      case Array("", identifier)         => Some(Path / identifier / "edit")
+      case Array("", identifier, "edit") => Some(Path / identifier / "edit")
+      case Array("", identifier, revision)         => Some(Path / identifier / revision / "edit")
+      case Array("", identifier, revision, "edit") => Some(Path / identifier / revision / "edit")
       case _ => None
     }
     newPath.map{ uri.withPath(_) }

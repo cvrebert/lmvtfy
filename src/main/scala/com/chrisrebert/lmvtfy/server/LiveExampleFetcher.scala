@@ -11,8 +11,8 @@ import spray.can.Http
 import spray.http.HttpResponse
 import spray.httpx.RequestBuilding._
 import com.chrisrebert.lmvtfy.ValidationRequest
-import com.chrisrebert.lmvtfy.live_examples.{LiveExampleMention, CompleteRawHtml, RawHtmlFragment, JsonContainingHtml}
-import com.chrisrebert.lmvtfy.live_examples.jsbin.JsBin
+import com.chrisrebert.lmvtfy.live_examples.{CompleteRawHtml, RawHtmlFragment, HtmlWithinJavaScriptWithinHtml}
+import com.chrisrebert.lmvtfy.live_examples.{LiveExampleMention, JsBinUserHtml}
 import com.chrisrebert.lmvtfy.util.RichResponse
 
 object HtmlFragment {
@@ -49,17 +49,14 @@ class LiveExampleFetcher(validator: ActorRef) extends ActorWithLogging {
             val maybeHtmlBytes = mention.example.kind match {
               case CompleteRawHtml => Some(response.entityByteString)
               case RawHtmlFragment => Some(HtmlFragment(response.entityByteString).asCompleteHtmlDoc)
-              case JsonContainingHtml => {
-                import spray.httpx.unmarshalling._
-                import spray.httpx.SprayJsonSupport._
-                import com.chrisrebert.lmvtfy.live_examples.jsbin.JsBinJsonProtocol._
+              case HtmlWithinJavaScriptWithinHtml => {
                 import com.chrisrebert.lmvtfy.util.Utf8String
-                response.entity.as[JsBin] match {
-                  case Left(err) => {
-                    log.error(s"Error deserializing JS Bin JSON: ${err}")
+                response.entityUtf8String match {
+                  case JsBinUserHtml(userHtml) => Some(userHtml.utf8ByteString)
+                  case _ => {
+                    log.error(s"Unable to extract user HTML from JS Bin page ${url}")
                     None
                   }
-                  case Right(actualBin) => Some(ByteString(actualBin.html.utf8Bytes))
                 }
               }
             }
