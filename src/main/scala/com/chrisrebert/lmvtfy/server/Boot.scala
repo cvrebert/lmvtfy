@@ -35,7 +35,12 @@ object Boot extends App {
     // import actorSystem.dispatcher
 
     val commenter = system.actorOf(Props(classOf[GitHubIssueCommenter]))
-    val localValidator = system.actorOf(Props(classOf[ValidatorSingletonActor], commenter), "validator-service")
+    val bootlinter = if (settings.EnableBootlint) {
+      Some(system.actorOf(Props(classOf[BootlintActor], commenter), "bootlinter-service"))
+    } else {
+      None
+    }
+    val localValidator = system.actorOf(Props(classOf[ValidatorSingletonActor], bootlinter, commenter), "validator-service")
     val exampleFetcherPool = system.actorOf(SmallestMailboxPool(5).props(Props(classOf[LiveExampleFetcher], localValidator)), "example-fetcher-pool")
     val issueCommentEventHandler = system.actorOf(Props(classOf[IssueCommentEventHandler], exampleFetcherPool), "issue-comment-event-handler")
     val webService = system.actorOf(Props(classOf[LmvtfyActor], issueCommentEventHandler), "lmvtfy-service")

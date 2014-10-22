@@ -1,6 +1,5 @@
-package com.chrisrebert.lmvtfy
+package com.chrisrebert.lmvtfy.validation
 
-import com.chrisrebert.lmvtfy.validation._
 import java.util.regex.Pattern
 
 object MarkdownRenderer {

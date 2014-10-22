@@ -17,6 +17,8 @@ class SettingsImpl(config: Config) extends Extension {
   val WebHookSecretKey: ByteString = ByteString(config.getString("lmvtfy.web-hook-secret-key").utf8Bytes)
   val DefaultPort: Int = config.getInt("lmvtfy.default-port")
   val DebugHtml: Boolean = config.getBoolean("lmvtfy.debug-html")
+  val EnableBootlint: Boolean = config.getBoolean("lmvtfy.bootlint.enabled")
+  val BootlintPort: Int = config.getInt("lmvtfy.bootlint.port")
 }
 object Settings extends ExtensionId[SettingsImpl] with ExtensionIdProvider {
   override def lookup() = Settings

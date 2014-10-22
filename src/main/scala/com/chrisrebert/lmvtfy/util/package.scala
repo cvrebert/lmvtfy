@@ -4,8 +4,7 @@ import java.nio.charset.Charset
 import scala.collection.mutable
 import scala.util.Try
 import akka.util.ByteString
-import spray.http.Uri
-import spray.http.HttpResponse
+import spray.http.{Uri, ContentType, MediaTypes, HttpCharsets, HttpEntity, HttpResponse}
 
 package object util {
   private val utf8name = "UTF-8"
@@ -38,6 +37,7 @@ package object util {
 
   implicit class Utf8ByteString(byteStr: ByteString) {
     def utf8String: String = byteStr.decodeString(utf8name)
+    def asUtf8HtmlHttpEntity: HttpEntity = HttpEntity(ContentType(MediaTypes.`text/html`, HttpCharsets.`UTF-8`), byteStr)
   }
 
   implicit class RichResponse(response: HttpResponse) {
