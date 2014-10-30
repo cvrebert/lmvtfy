@@ -79,3 +79,6 @@ We all stand on the shoulders of giants and get by with a little help from our f
 * [Akka](http://akka.io) & [Spray](http://spray.io), for async processing & HTTP
 * [Eclipse EGit GitHub library](https://github.com/eclipse/egit-github), for working with [the GitHub API](https://developer.github.com/v3/)
 * [twitter-text-java](https://github.com/twitter/twitter-text-java), for extracting URLs from comment text
+
+## See also
+* [Rorschach](https://github.com/twbs/rorschach), LMVTFY's sister bot who sanity-checks Bootstrap pull requests
