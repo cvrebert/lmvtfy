@@ -15,7 +15,7 @@ object JsBinUserHtml {
         val jsonish = "[" + funcall.thruFinal("}") + "]" // funcall contains two comma-separated JSON objects
         val json = jsonish.replace("\\!", "!") // JS Bin escapes exclamation points, probably to avoid interpretation as an HTML comment
         Try { json.parseJson } match {
-          case Success(JsArray(contentJson::_)) => {
+          case Success(JsArray(Vector(contentJson, _*))) => {
             Try { contentJson.convertTo[JsBin] } match {
               case Failure(structureExc) => None
               case Success(jsBin) => Some(jsBin.html)
