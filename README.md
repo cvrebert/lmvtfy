@@ -73,7 +73,7 @@ The following validation errors are deliberately ignored by LMVTFY for pragmatic
   * These aren't errors in the jsFiddle user's code, so nothing can be done about them and it's pointless to complain about them.
   * In practice, this nonstandard `<meta>` causes no problems.
 
-## Acknowledgements
+## Acknowledgments
 We all stand on the shoulders of giants and get by with a little help from our friends. LMVTFY is written in [Scala](http://www.scala-lang.org) and built on top of:
 * [validator.nu](https://github.com/validator/validator), the HTML5 validator
 * [Akka](http://akka.io) & [Spray](http://spray.io), for async processing & HTTP
