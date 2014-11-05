@@ -1,5 +1,4 @@
 import org.specs2.mutable._
-import com.chrisrebert.lmvtfy.MarkdownRenderer
 import com.chrisrebert.lmvtfy.validation._
 
 class MarkdownSpec extends Specification {

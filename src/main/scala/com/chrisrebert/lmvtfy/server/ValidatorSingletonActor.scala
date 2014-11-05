@@ -4,13 +4,12 @@ import java.io.ByteArrayInputStream
 import org.xml.sax.InputSource
 import scala.util.{Success,Failure}
 import akka.actor.ActorRef
-import com.chrisrebert.lmvtfy.validation.Html5Validator
-import com.chrisrebert.lmvtfy.MarkdownRenderer
-import com.chrisrebert.lmvtfy.{ValidationRequest, ValidationResult}
+import com.chrisrebert.lmvtfy.validation.{MarkdownRenderer, Html5Validator}
+import com.chrisrebert.lmvtfy.{MarkdownAboutHtml, ValidationRequest, ValidationResult}
 
-class ValidatorSingletonActor(commenter: ActorRef) extends ActorWithLogging {
+class ValidatorSingletonActor(maybeBootlinter: Option[ActorRef], commenter: ActorRef) extends ActorWithLogging {
   override def receive = {
-    case ValidationRequest(htmlBytes, mention) => {
+    case req@ValidationRequest(htmlBytes, mention) => {
       val htmlByteStream = new ByteArrayInputStream(htmlBytes.toArray)
       val htmlInputSource = new InputSource(htmlByteStream)
       Html5Validator.validationErrorsFor(htmlInputSource) match {
@@ -18,10 +17,11 @@ class ValidatorSingletonActor(commenter: ActorRef) extends ActorWithLogging {
         case Success(validationErrs) => {
           if (validationErrs.isEmpty) {
             log.info(s"No validation errors for ${mention}")
+            maybeBootlinter.map{ _ ! req }
           }
           else {
             log.info(s"${validationErrs.length} validation errors for ${mention}")
-            val validationMessagesAsMarkdown = MarkdownRenderer.markdownFor(validationErrs)
+            val validationMessagesAsMarkdown = MarkdownAboutHtml(MarkdownRenderer.markdownFor(validationErrs))
             commenter ! ValidationResult(validationMessagesAsMarkdown, mention)
           }
         }

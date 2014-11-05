@@ -4,6 +4,8 @@ LMVTFY: Let Me Validate That For You
 
 LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain (links to) live Web examples (e.g. a [jsFiddle](http://jsfiddle.net)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment ([such as this one](https://github.com/twbs/bootstrap/issues/11984#issuecomment-46140343)) on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
 
+Also, you can optionally enable [Bootlint](https://github.com/twbs/bootlint) integration, which will make LMVTFY run valid HTML documents through Bootlint (via its [HTTP API](https://github.com/twbs/bootlint#http-api)) to check for [Bootstrap](https://github.com/twbs/bootstrap) usage errors.
+
 Affectionately named after [LMGTFY](http://knowyourmeme.com/memes/sites/let-me-google-that-for-you-lmgtfy).
 
 ## Supported live example types
@@ -46,6 +48,13 @@ lmvtfy {
     // The HMAC is used to verify that LMVTFY is really being contacted by GitHub,
     // and not by some random hacker.
     web-hook-secret-key = "some-random-gibberish-here"
+    // Bootlint integration settings
+    bootlint {
+        // Enable Bootlint integration?
+        enabled = true
+        // Local port that Bootlint is running on
+        port = 7070
+    }
 }
 ```
 
