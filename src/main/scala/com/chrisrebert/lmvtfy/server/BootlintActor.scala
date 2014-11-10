@@ -19,12 +19,18 @@ import com.chrisrebert.lmvtfy.util.Utf8ByteString
 
 class BootlintActor(commenter: ActorRef) extends ActorWithLogging {
   implicit val timeout = Timeout(30.seconds)
-  private val localhost = Uri.NamedHost("localhost")
 
-  private def bootlintUrl: Uri = {
+  private lazy val bootlintUrl: Uri = {
     val settings = Settings(context.system)
-    val authority = Uri.Authority(localhost, settings.BootlintPort)
-    Uri(Uri.httpScheme(securedConnection = false), authority, Uri.Path.Empty)
+    val dockerEnvVar = s"BOOTLINT_PORT_${settings.BootlintPort}_TCP_ADDR"
+    val host = System.getenv(dockerEnvVar) match {
+      case null => Uri.NamedHost("localhost")
+      case ipAddr => Uri.IPv4Host(ipAddr)
+    }
+    val authority = Uri.Authority(host, settings.BootlintPort)
+    val url = Uri(Uri.httpScheme(securedConnection = false), authority, Uri.Path.Empty)
+    log.info(s"Using Bootlint URL: ${url}")
+    url
   }
 
   private def lintFor(html: ByteString, mention: LiveExampleMention): Seq[BootlintProblem] = {
