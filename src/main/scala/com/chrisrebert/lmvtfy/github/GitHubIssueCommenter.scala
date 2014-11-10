@@ -35,7 +35,7 @@ class GitHubIssueCommenter extends ActorWithLogging {
         |Hi @${username}!
         |
         |You appear to have posted a live example (${exampleUrl}), which is always a good first step. ${intro}, which might potentially be causing your issue:
-        |${messagesMarkdown}
+        |${messagesMarkdown.markdown}
         |
         |You'll need to **fix these errors** and post a revised example before we can proceed further.
         |Thanks!
