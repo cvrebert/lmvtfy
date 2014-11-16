@@ -91,3 +91,4 @@ We all stand on the shoulders of giants and get by with a little help from our f
 
 ## See also
 * [Rorschach](https://github.com/twbs/rorschach), LMVTFY's sister bot who sanity-checks Bootstrap pull requests
+* [Savage](https://github.com/cvrebert/savage), LMVTFY's sister bot who runs cross-browser JS tests on Sauce Labs
