@@ -13,7 +13,7 @@ import spray.httpx.RequestBuilding._
 import spray.json._
 import com.chrisrebert.lmvtfy.{MarkdownAboutBootstrap, ValidationRequest, ValidationResult}
 import com.chrisrebert.lmvtfy.bootlint.{BootlintProblem, BootlintJsonProtocol, MarkdownRenderer}
-import com.chrisrebert.lmvtfy.live_examples.{JsFiddleExample, BootplyExample, LiveExample, LiveExampleMention}
+import com.chrisrebert.lmvtfy.live_examples._
 import com.chrisrebert.lmvtfy.util.Utf8ByteString
 
 
@@ -68,10 +68,13 @@ class BootlintActor(commenter: ActorRef) extends ActorWithLogging {
 
   private val bootplyLintIdToIgnore = "W002"
   private val jsFiddleLintIdsToIgnore = Set("W001", "W002", "W003")
+  private val codePenLintIdsToIgnore = Set("W002", "W003", "W005")
+
   private def withoutIrrelevantLints(lintProblems: Seq[BootlintProblem], example: LiveExample): Seq[BootlintProblem] = {
     example match {
       case _:BootplyExample => lintProblems.filter{ _.id != bootplyLintIdToIgnore }
       case _:JsFiddleExample => lintProblems.filter{ problem => !(jsFiddleLintIdsToIgnore contains problem.id) }
+      case _:CodePenExample => lintProblems.filter{ problem => !(codePenLintIdsToIgnore contains problem.id) }
       case _ => lintProblems
     }
   }
