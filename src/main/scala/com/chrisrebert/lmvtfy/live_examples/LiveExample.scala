@@ -64,7 +64,7 @@ object JsFiddleExample {
       case Array("", username, identifier, Revision(revision), "embedded", "result") => Some(Path / username / identifier / revision / "show" / "light" / "")
       case _ => None
     }
-    newPath.map{ uri.withPath(_).withHost(CanonicalHost) }
+    newPath.map{ uri.withPath(_).withHost(CanonicalHost).withoutFragment }
   }
 }
 
@@ -91,7 +91,7 @@ object JsBinExample {
       case Array("", identifier, revision, "edit") => Some(Path / identifier / revision / "edit")
       case _ => None
     }
-    newPath.map{ uri.withPath(_) }
+    newPath.map{ uri.withPath(_).withoutFragment }
   }
 }
 
@@ -109,7 +109,7 @@ object BootplyExample {
   private def canonicalize(uri: Uri) = {
     canonicalizedHost(uri.authority.host).flatMap{ newHost =>
       canonicalizedPath(uri.path).map { newPath =>
-        uri.withHost(newHost).withPath(newPath)
+        uri.withHost(newHost).withPath(newPath).withoutFragment
       }
     }
   }
@@ -143,7 +143,7 @@ object PlunkerExample {
   private def canonicalize(uri: Uri) = {
     canonicalizedHost(uri.authority.host).flatMap{ newHost =>
       canonicalizedPath(uri.path).map { newPath =>
-        uri.withHost(newHost).withPath(newPath)
+        uri.withHost(newHost).withPath(newPath).withoutFragment
       }
     }.map{ _.withoutQuery }
   }
@@ -178,7 +178,7 @@ object CodePenExample {
   private def canonicalize(uri: Uri) = {
     canonicalizedHost(uri.authority.host).flatMap{ newHost =>
       canonicalizedPath(uri.path).map { newPath =>
-        uri.withHost(newHost).withPath(newPath)
+        uri.withHost(newHost).withPath(newPath).withoutFragment
       }
     }
   }
