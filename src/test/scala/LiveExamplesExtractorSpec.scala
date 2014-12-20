@@ -76,6 +76,13 @@ class LiveExamplesExtractorSpec extends Specification {
       assertHasLiveExample("http://codepen.io/shdigitaldesign/details/KsFqH")
       assertHasLiveExample("http://s.codepen.io/shdigitaldesign/fullpage/KsFqH")
     }
+    "extract Gist examples" in {
+      assertHasLiveExample("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f")
+      assertHasLiveExample("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/5e1f8c484ebbd2b0e6784942bd51bee1f780cc23")
+      assertHasLiveExample("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw")
+      assertHasLiveExample("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c")
+      assertHasLiveExample("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/example.html")
+    }
     "extract multiple examples" in {
       val examples = LiveExamplesExtractor.liveExamplesFromWithin("http://jsbin.com/mogupeli/3/   http://jsfiddle.net/wYc3u/5/")
       examples mustEqual Set(

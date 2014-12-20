@@ -18,6 +18,7 @@ object LiveExample {
       case BootplyExample(ply) => Some(ply)
       case PlunkerExample(plunk) => Some(plunk)
       case CodePenExample(pen) => Some(pen)
+      case GistExample(gist) => Some(gist)
       case _ => None
     }
   }
@@ -64,7 +65,7 @@ object JsFiddleExample {
       case Array("", username, identifier, Revision(revision), "embedded", "result") => Some(Path / username / identifier / revision / "show" / "light" / "")
       case _ => None
     }
-    newPath.map{ uri.withPath(_).withHost(CanonicalHost) }
+    newPath.map{ uri.withPath(_).withHost(CanonicalHost).withoutFragment }
   }
 }
 
@@ -91,7 +92,7 @@ object JsBinExample {
       case Array("", identifier, revision, "edit") => Some(Path / identifier / revision / "edit")
       case _ => None
     }
-    newPath.map{ uri.withPath(_) }
+    newPath.map{ uri.withPath(_).withoutFragment }
   }
 }
 
@@ -109,7 +110,7 @@ object BootplyExample {
   private def canonicalize(uri: Uri) = {
     canonicalizedHost(uri.authority.host).flatMap{ newHost =>
       canonicalizedPath(uri.path).map { newPath =>
-        uri.withHost(newHost).withPath(newPath)
+        uri.withHost(newHost).withPath(newPath).withoutFragment
       }
     }
   }
@@ -143,7 +144,7 @@ object PlunkerExample {
   private def canonicalize(uri: Uri) = {
     canonicalizedHost(uri.authority.host).flatMap{ newHost =>
       canonicalizedPath(uri.path).map { newPath =>
-        uri.withHost(newHost).withPath(newPath)
+        uri.withHost(newHost).withPath(newPath).withoutFragment
       }
     }.map{ _.withoutQuery }
   }
@@ -178,7 +179,7 @@ object CodePenExample {
   private def canonicalize(uri: Uri) = {
     canonicalizedHost(uri.authority.host).flatMap{ newHost =>
       canonicalizedPath(uri.path).map { newPath =>
-        uri.withHost(newHost).withPath(newPath)
+        uri.withHost(newHost).withPath(newPath).withoutFragment
       }
     }
   }
@@ -193,5 +194,49 @@ object CodePenExample {
       case Array("", username, view, HtmlSuffixed(identifier)) => Some(Path / username / "pen" / identifier)
       case _ => None
     }
+  }
+}
+
+class GistExample private(val codeUrl: Uri) extends LiveExample {
+  import GistExample.{CanonicalHost,DisplayHost,Https}
+
+  override val kind = CompleteRawHtml
+  override lazy val displayUrl = {
+    codeUrl.path.toString.split('/') match {
+      case Array("", username, gistId, "raw") => {
+        val displayPath = Path / username / gistId
+        Uri(scheme = Https, authority = Uri.Authority(DisplayHost), path = displayPath)
+      }
+      case Array("", username, gistId, "raw", fileSha) => codeUrl
+      case _ => throw new IllegalStateException(s"Invalid Gist code URL: ${codeUrl}")
+    }
+  }
+  override def toString = s"GistExample(${codeUrl})"
+  override def hashCode = codeUrl.hashCode
+  override def equals(other: Any) = other.isInstanceOf[GistExample] && other.asInstanceOf[GistExample].codeUrl == codeUrl
+}
+object GistExample {
+  private val CanonicalHost = NamedHost("gist.githubusercontent.com")
+  private val DisplayHost = NamedHost("gist.github.com")
+  private val Https = Uri.httpScheme(securedConnection = true)
+  def apply(uri: Uri): Option[GistExample] = canonicalize(uri).map{ new GistExample(_) }
+  def unapply(uri: Uri): Option[GistExample] = {
+    uri.authority.host match {
+      case DisplayHost | CanonicalHost => GistExample(uri)
+      case _ => None
+    }
+  }
+  private def canonicalize(uri: Uri) = {
+    val newPath = uri.path.toString.split('/') match {
+      case Array("", username, gistId)            => Some(Path / username / gistId / "raw")
+      case Array("", username, gistId, "raw")     => Some(Path / username / gistId / "raw")
+      // technically, the user did specify a specific revision, but getting the corresponding fileSha would involve hitting the GitHub Gist JSON API
+      // plus, it's unlikely they gave us a link to the non-current revision anyway
+      case Array("", username, gistId, commitSha) => Some(Path / username / gistId / "raw")
+      case Array("", username, gistId, "raw", fileSha)           => Some(Path / username / gistId / "raw" / fileSha)
+      case Array("", username, gistId, "raw", fileSha, fileName) => Some(Path / username / gistId / "raw" / fileSha)
+      case _ => None
+    }
+    newPath.map{ uri.withScheme(Https).withPath(_).withHost(CanonicalHost).withoutFragment }
   }
 }

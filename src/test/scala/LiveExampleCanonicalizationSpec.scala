@@ -4,22 +4,21 @@ import com.chrisrebert.lmvtfy.live_examples._
 
 class LiveExampleCanonicalizationSpec extends Specification {
   "JsBinExample" should {
-    def codeBin(url: String) = JsBinExample(Uri(url)).map{ _.codeUrl }
-    def displayBin(url: String) = JsBinExample(Uri(url)).map{ _.displayUrl }
+    def bin(url: String) = JsBinExample(Uri(url)).map{ _.codeUrl }
 
     "canonicalize URLs correctly" in {
       // JS Bin hates trailing slashes
       val canonicalVersioned = Some(Uri("http://jsbin.com/mogupeli/3/edit"))
-      codeBin("http://jsbin.com/mogupeli/3") mustEqual canonicalVersioned
-      codeBin("http://jsbin.com/mogupeli/3/") mustEqual canonicalVersioned
-      codeBin("http://jsbin.com/mogupeli/3/edit") mustEqual canonicalVersioned
-      codeBin("http://jsbin.com/mogupeli/3/edit/") mustEqual canonicalVersioned
+      bin("http://jsbin.com/mogupeli/3") mustEqual canonicalVersioned
+      bin("http://jsbin.com/mogupeli/3/") mustEqual canonicalVersioned
+      bin("http://jsbin.com/mogupeli/3/edit") mustEqual canonicalVersioned
+      bin("http://jsbin.com/mogupeli/3/edit/") mustEqual canonicalVersioned
 
       val canonicalUnversioned = Some(Uri("http://jsbin.com/mogupeli/edit"))
-      codeBin("http://jsbin.com/mogupeli") mustEqual canonicalUnversioned
-      codeBin("http://jsbin.com/mogupeli/") mustEqual canonicalUnversioned
-      codeBin("http://jsbin.com/mogupeli/edit") mustEqual canonicalUnversioned
-      codeBin("http://jsbin.com/mogupeli/edit/") mustEqual canonicalUnversioned
+      bin("http://jsbin.com/mogupeli") mustEqual canonicalUnversioned
+      bin("http://jsbin.com/mogupeli/") mustEqual canonicalUnversioned
+      bin("http://jsbin.com/mogupeli/edit") mustEqual canonicalUnversioned
+      bin("http://jsbin.com/mogupeli/edit/") mustEqual canonicalUnversioned
     }
   }
 
@@ -115,6 +114,48 @@ class LiveExampleCanonicalizationSpec extends Specification {
       pen("http://codepen.io/shdigitaldesign/full/KsFqH/") mustEqual canonical
       pen("http://s.codepen.io/shdigitaldesign/full/KsFqH") mustEqual canonical
       pen("http://s.codepen.io/shdigitaldesign/full/KsFqH/") mustEqual canonical
+    }
+  }
+
+  "GistExample" should {
+    def codeGist(url: String) = GistExample(Uri(url)).map{ _.codeUrl }
+    def dispGist(url: String) = GistExample(Uri(url)).map{ _.displayUrl }
+
+    val canonicalVersionedCode = Some(Uri("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c"))
+    val canonicalUnversionedCode = Some(Uri("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw"))
+
+    // val canonicalVersionedDisplay = Some(Uri("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/5e1f8c484ebbd2b0e6784942bd51bee1f780cc23"))
+    val canonicalUnversionedDisplay = Some(Uri("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f"))
+
+    "canonicalize unversioned URLs correctly" in {
+      val canonicalCode = Some(Uri("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw"))
+      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw") mustEqual canonicalCode
+      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/") mustEqual canonicalCode
+      codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f") mustEqual canonicalCode
+      codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/") mustEqual canonicalCode
+
+      val canonicalDisplay = Some(Uri("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f"))
+      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw") mustEqual canonicalCode
+      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/") mustEqual canonicalCode
+      codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f") mustEqual canonicalCode
+      codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/") mustEqual canonicalCode
+    }
+
+    "canonicalize versioned URLs correctly" in {
+      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c") mustEqual canonicalVersionedCode
+      dispGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c") mustEqual canonicalVersionedCode
+
+      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/") mustEqual canonicalVersionedCode
+      dispGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/") mustEqual canonicalVersionedCode
+
+      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/example.html") mustEqual canonicalVersionedCode
+      dispGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/example.html") mustEqual canonicalVersionedCode
+
+      codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/5e1f8c484ebbd2b0e6784942bd51bee1f780cc23") mustEqual canonicalUnversionedCode
+      dispGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/5e1f8c484ebbd2b0e6784942bd51bee1f780cc23") mustEqual canonicalUnversionedDisplay
+
+      codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/5e1f8c484ebbd2b0e6784942bd51bee1f780cc23/") mustEqual canonicalUnversionedCode
+      dispGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/5e1f8c484ebbd2b0e6784942bd51bee1f780cc23/") mustEqual canonicalUnversionedDisplay
     }
   }
 }
