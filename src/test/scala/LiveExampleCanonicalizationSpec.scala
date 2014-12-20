@@ -4,22 +4,21 @@ import com.chrisrebert.lmvtfy.live_examples._
 
 class LiveExampleCanonicalizationSpec extends Specification {
   "JsBinExample" should {
-    def codeBin(url: String) = JsBinExample(Uri(url)).map{ _.codeUrl }
-    def displayBin(url: String) = JsBinExample(Uri(url)).map{ _.displayUrl }
+    def bin(url: String) = JsBinExample(Uri(url)).map{ _.codeUrl }
 
     "canonicalize URLs correctly" in {
       // JS Bin hates trailing slashes
       val canonicalVersioned = Some(Uri("http://jsbin.com/mogupeli/3/edit"))
-      codeBin("http://jsbin.com/mogupeli/3") mustEqual canonicalVersioned
-      codeBin("http://jsbin.com/mogupeli/3/") mustEqual canonicalVersioned
-      codeBin("http://jsbin.com/mogupeli/3/edit") mustEqual canonicalVersioned
-      codeBin("http://jsbin.com/mogupeli/3/edit/") mustEqual canonicalVersioned
+      bin("http://jsbin.com/mogupeli/3") mustEqual canonicalVersioned
+      bin("http://jsbin.com/mogupeli/3/") mustEqual canonicalVersioned
+      bin("http://jsbin.com/mogupeli/3/edit") mustEqual canonicalVersioned
+      bin("http://jsbin.com/mogupeli/3/edit/") mustEqual canonicalVersioned
 
       val canonicalUnversioned = Some(Uri("http://jsbin.com/mogupeli/edit"))
-      codeBin("http://jsbin.com/mogupeli") mustEqual canonicalUnversioned
-      codeBin("http://jsbin.com/mogupeli/") mustEqual canonicalUnversioned
-      codeBin("http://jsbin.com/mogupeli/edit") mustEqual canonicalUnversioned
-      codeBin("http://jsbin.com/mogupeli/edit/") mustEqual canonicalUnversioned
+      bin("http://jsbin.com/mogupeli") mustEqual canonicalUnversioned
+      bin("http://jsbin.com/mogupeli/") mustEqual canonicalUnversioned
+      bin("http://jsbin.com/mogupeli/edit") mustEqual canonicalUnversioned
+      bin("http://jsbin.com/mogupeli/edit/") mustEqual canonicalUnversioned
     }
   }
 
