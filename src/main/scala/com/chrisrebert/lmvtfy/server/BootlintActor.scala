@@ -66,17 +66,21 @@ class BootlintActor(commenter: ActorRef) extends ActorWithLogging {
     }
   }
 
+  private def isUnnecessaryWarningAboutMissingJquery(problem: BootlintProblem): Boolean = {
+    problem.id == "W005" && problem.message == "Unable to locate jQuery, which is required for Bootstrap's JavaScript plugins to work; however, you might not be using Bootstrap's JavaScript"
+  }
+
   private val bootplyLintIdToIgnore = "W002"
   private val jsFiddleLintIdsToIgnore = Set("W001", "W002", "W003")
   private val codePenLintIdsToIgnore = Set("W002", "W003", "W005")
 
   private def withoutIrrelevantLints(lintProblems: Seq[BootlintProblem], example: LiveExample): Seq[BootlintProblem] = {
-    example match {
+    (example match {
       case _:BootplyExample => lintProblems.filter{ _.id != bootplyLintIdToIgnore }
       case _:JsFiddleExample => lintProblems.filter{ problem => !(jsFiddleLintIdsToIgnore contains problem.id) }
       case _:CodePenExample => lintProblems.filter{ problem => !(codePenLintIdsToIgnore contains problem.id) }
       case _ => lintProblems
-    }
+    }).filter{ !isUnnecessaryWarningAboutMissingJquery(_) }
   }
 
   override def receive = {
