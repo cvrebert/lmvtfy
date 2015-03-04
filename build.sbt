@@ -2,7 +2,7 @@ name := "lmvtfy"
 
 version := "1.0"
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.11.5"
 
 mainClass := Some("com.chrisrebert.lmvtfy.server.Boot")
 
@@ -13,7 +13,7 @@ libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.cor
 libraryDependencies += "com.twitter" % "twitter-text" % "1.11.1"
 
 libraryDependencies ++= {
-  val akkaV = "2.3.6"
+  val akkaV = "2.3.9"
   val sprayV = "1.3.2"
   Seq(
     "io.spray"            %%  "spray-can"     % sprayV,
