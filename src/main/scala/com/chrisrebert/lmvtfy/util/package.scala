@@ -29,6 +29,13 @@ package object util {
         case Some(index) => str.substring(0, index + 1)
       }
     }
+
+    def matches(regex: scala.util.matching.Regex): Boolean = {
+      str match {
+        case regex(_*) => true
+        case _ => false
+      }
+    }
   }
 
   implicit class Utf8ByteArray(bytes: Array[Byte]) {

@@ -11,9 +11,8 @@ import spray.can.Http
 import spray.http.HttpResponse
 import spray.httpx.RequestBuilding._
 import com.chrisrebert.lmvtfy.ValidationRequest
-import com.chrisrebert.lmvtfy.live_examples.{CompleteRawHtml, RawHtmlFragment, HtmlWithinJavaScriptWithinHtml}
-import com.chrisrebert.lmvtfy.live_examples.{LiveExampleMention, JsBinUserHtml}
-import com.chrisrebert.lmvtfy.util.RichResponse
+import com.chrisrebert.lmvtfy.live_examples._
+import com.chrisrebert.lmvtfy.util.{IsHtmlish, RichResponse}
 
 object HtmlFragment {
   private val htmlPrefix = ByteString(
@@ -49,6 +48,16 @@ class LiveExampleFetcher(validator: ActorRef) extends ActorWithLogging {
             val maybeHtmlBytes = mention.example.kind match {
               case CompleteRawHtml => Some(response.entityByteString)
               case RawHtmlFragment => Some(HtmlFragment(response.entityByteString).asCompleteHtmlDoc)
+              case CompleteRawHtmlMaybe => {
+                val entityBytes = response.entityByteString
+                entityBytes.utf8String match {
+                  case IsHtmlish() => Some(entityBytes)
+                  case _ => {
+                    log.info(s"Ignoring apparent non-HTML from ${url}")
+                    None
+                  }
+                }
+              }
               case HtmlWithinJavaScriptWithinHtml => {
                 import com.chrisrebert.lmvtfy.util.Utf8String
                 response.entityUtf8String match {

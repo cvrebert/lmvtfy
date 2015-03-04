@@ -7,6 +7,7 @@ import com.chrisrebert.lmvtfy.util.{HtmlSuffixed, RichUri}
 
 sealed trait ExampleKind
 case object CompleteRawHtml extends ExampleKind
+case object CompleteRawHtmlMaybe extends ExampleKind
 case object RawHtmlFragment extends ExampleKind
 case object HtmlWithinJavaScriptWithinHtml extends ExampleKind
 
@@ -200,7 +201,7 @@ object CodePenExample {
 class GistExample private(val codeUrl: Uri) extends LiveExample {
   import GistExample.{CanonicalHost,DisplayHost,Https}
 
-  override val kind = CompleteRawHtml
+  override val kind = CompleteRawHtmlMaybe
   override lazy val displayUrl = {
     codeUrl.path.toString.split('/') match {
       case Array("", username, gistId, "raw") => {
