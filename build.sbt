@@ -8,6 +8,10 @@ mainClass := Some("com.chrisrebert.lmvtfy.server.Boot")
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
+resolvers += "Eclipse Foundation Releases" at "https://repo.eclipse.org/content/repositories/releases/"
+
+resolvers += "Eclipse Foundation Snapshots" at "https://repo.eclipse.org/content/repositories/snapshots/"
+
 libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.core" % "2.1.5"
 
 libraryDependencies += "com.twitter" % "twitter-text" % "1.11.1"
