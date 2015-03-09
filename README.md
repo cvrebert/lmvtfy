@@ -37,6 +37,11 @@ Other settings live in `application.conf`. In addition to the normal Akka and Sp
 lmvtfy {
     // Port to run on, if not specified via the command line
     default-port = 8080
+    // Log the HTML being validated, for debugging purposes?
+    debug-html = false
+    // Suppress Spray's logging of malformed HTTP requests/headers?
+    // (Enable this to avoid floods in your log output when your LMVTFY instance gets weird requests from crackers.)
+    squelch-invalid-http-logging = true
     // List of full names of GitHub repos to watch for new issues and new issue comments
     github-repos-to-watch = ["twbs/bootstrap"]
     // Username of the account that reply comments will be posted from
