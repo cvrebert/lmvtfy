@@ -16,6 +16,8 @@ libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.cor
 
 libraryDependencies += "com.twitter" % "twitter-text" % "1.11.1"
 
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.2"
+
 libraryDependencies ++= {
   val akkaV = "2.3.9"
   val sprayV = "1.3.2"
@@ -25,6 +27,7 @@ libraryDependencies ++= {
     "io.spray"            %%  "spray-testkit" % sprayV  % "test",
     "io.spray"            %%  "spray-json"    % "1.3.1",
     "com.typesafe.akka"   %%  "akka-actor"    % akkaV,
+    "com.typesafe.akka"   %%  "akka-slf4j"    % akkaV,
     "com.typesafe.akka"   %%  "akka-testkit"  % akkaV   % "test",
     "org.specs2"          %%  "specs2"        % "2.3.12" % "test"
   )
