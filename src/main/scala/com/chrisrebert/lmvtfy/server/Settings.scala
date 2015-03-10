@@ -15,6 +15,7 @@ class SettingsImpl(config: Config) extends Extension {
   val BotUsername: String = config.getString("lmvtfy.username")
   val BotPassword: String = config.getString("lmvtfy.password")
   val WebHookSecretKey: ByteString = ByteString(config.getString("lmvtfy.web-hook-secret-key").utf8Bytes)
+  val UserAgent: String = config.getString("spray.can.client.user-agent-header")
   val DefaultPort: Int = config.getInt("lmvtfy.default-port")
   val SquelchInvalidHttpLogging: Boolean = config.getBoolean("lmvtfy.squelch-invalid-http-logging")
   val DebugHtml: Boolean = config.getBoolean("lmvtfy.debug-html")

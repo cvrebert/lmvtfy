@@ -13,6 +13,7 @@ class GitHubIssueCommenter extends ActorWithLogging {
   val settings = Settings(context.system)
 
   private val client = new GitHubClient()
+  client.setUserAgent(settings.UserAgent)
   client.setCredentials(settings.BotUsername, settings.BotPassword)
 
   private def tryToCommentOn(repo: RepositoryId, issue: IssueNumber, commentMarkdown: String) = {
