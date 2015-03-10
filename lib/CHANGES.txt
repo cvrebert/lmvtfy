@@ -1,1 +1,0 @@
-Deleted log4j from the JAR to avoid conflicts with other more recent log4j/logback versions.
