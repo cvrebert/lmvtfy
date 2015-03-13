@@ -77,7 +77,7 @@ class StructuredObjectEmitter() extends nu.validator.messages.MessageEmitter {
   }
 
   /*
-  public nu.validator.messages.ResultHandler startResult() throws org.xml.sax.SAXException { /* compiled code */ }
-  public void endResult() throws org.xml.sax.SAXException { /* compiled code */ }
+  public nu.validator.messages.ResultHandler startResult() throws org.xml.sax.SAXException { ... }
+  public void endResult() throws org.xml.sax.SAXException { ... }
   */
 }
