@@ -205,4 +205,39 @@ class ValidatorSpec extends Specification {
       messages must have size(0)
     }
   }
+
+  "autocomplete attribute" should {
+    "not be considered a validation error on an input" in {
+      val autoInputHtml =
+        """<!DOCTYPE html>
+          |<html lang="en">
+          |  <head>
+          |    <meta charset="utf-8">
+          |    <title>Title</title>
+          |  </head>
+          |  <body>
+          |    <input type="radio" autocomplete="off" name="telegraph" value="SOS" />
+          |  </body>
+          |</html>
+        """.stripMargin
+      val messages = Html5Validator.validationErrorsFor(autoInputHtml.inputSource).get
+      messages must have size(0)
+    }
+    "not be considered a validation error on a button" in {
+      val autoButtonHtml =
+        """<!DOCTYPE html>
+          |<html lang="en">
+          |  <head>
+          |    <meta charset="utf-8">
+          |    <title>Title</title>
+          |  </head>
+          |  <body>
+          |    <button type="button" autocomplete="off">Click me</button>
+          |  </body>
+          |</html>
+        """.stripMargin
+      val messages = Html5Validator.validationErrorsFor(autoButtonHtml.inputSource).get
+      messages must have size(0)
+    }
+  }
 }

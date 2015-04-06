@@ -64,6 +64,9 @@ private class Html5Validator(inputSource: InputSource) {
           // Exempt nonstandard <meta> used by jsFiddle
           case Seq(PlainText("Bad value "), CodeText("edit-Type"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on element "), CodeText("meta"), PlainText(".")) => false
           case Seq(PlainText("Attribute "), CodeText("edit"), PlainText(" not allowed on element "), CodeText("meta"), PlainText(" at this point.")) => false
+          // Exempt nonstandard usage of autocomplete attribute because of Firefox bug: https://bugzilla.mozilla.org/show_bug.cgi?id=654072
+          case Seq(PlainText("Attribute "), CodeText("autocomplete"), PlainText(" not allowed on element "), CodeText("input"), PlainText(" at this point.")) => false
+          case Seq(PlainText("Attribute "), CodeText("autocomplete"), PlainText(" not allowed on element "), CodeText("button"), PlainText(" at this point.")) => false
           case _ => true
         }
       })
