@@ -19,7 +19,7 @@ libraryDependencies += "nu.validator" % "validator" % "15.3.28" excludeAll(
   ExclusionRule(organization = "commons-httpclient")
 )
 
-libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.core" % "4.0.0-SNAPSHOT"
+libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.core" % "4.0.0.201503231230-m1"
 
 libraryDependencies += "com.twitter" % "twitter-text" % "1.11.1"
 
