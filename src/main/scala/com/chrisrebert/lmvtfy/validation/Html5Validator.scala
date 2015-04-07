@@ -55,6 +55,8 @@ private class Html5Validator(inputSource: InputSource) {
         msg.parts match {
           // Exempt <img>s without alt attributes as they typically don't cause any problems besides decreasing accessibility, and most live examples lack them due to irrelevance and extra effort
           case Seq(PlainText("An "), CodeText("img"), PlainText(" element must have an "), CodeText("alt"), _*) => false
+          // Ditto for <area>s without alt attributes
+          case Seq(PlainText("Element "), CodeText("area"), PlainText(" is missing required attribute "), CodeText("alt"), PlainText(".")) => false
           // Exempt missing <title> as it is very common in live examples but typically doesn't cause any problem
           case Seq(PlainText("Element "), CodeText("head"), PlainText(" is missing a required instance of child element "), CodeText("title"), PlainText(".")) => false
           // Exempt data-* attributes on non-HTML (e.g. SVG) elements as they typically don't cause any problems

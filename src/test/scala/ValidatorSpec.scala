@@ -240,4 +240,25 @@ class ValidatorSpec extends Specification {
       messages must have size(0)
     }
   }
+
+  "area tag missing an alt attribute" should {
+    "not be considered a validation error" in {
+      val areaWithoutAltHtml =
+        """<!DOCTYPE html>
+          |<html lang="en">
+          |  <head>
+          |    <meta charset="utf-8">
+          |    <title>Title</title>
+          |  </head>
+          |  <body>
+          |    <map name="not-the-territory">
+          |      <area id="abstraction" shape="circle" coords="90,90,50" href="#" />
+          |    </map>
+          |  </body>
+          |</html>
+        """.stripMargin
+      val messages = Html5Validator.validationErrorsFor(areaWithoutAltHtml.inputSource).get
+      messages must have size(0)
+    }
+  }
 }
