@@ -12,7 +12,7 @@ resolvers += "Eclipse Foundation Releases" at "https://repo.eclipse.org/content/
 
 resolvers += "Eclipse Foundation Snapshots" at "https://repo.eclipse.org/content/repositories/snapshots/"
 
-libraryDependencies += "nu.validator" % "validator" % "15.3.11" excludeAll(
+libraryDependencies += "nu.validator" % "validator" % "15.3.28" excludeAll(
   ExclusionRule(organization = "org.eclipse.jetty"),
   ExclusionRule(organization = "javax.servlet"),
   ExclusionRule(organization = "commons-fileupload"),
