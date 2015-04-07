@@ -72,9 +72,6 @@ lmvtfy {
 
 ## Deliberately ignored errors
 The following validation errors are deliberately ignored by LMVTFY for pragmatic reasons:
-* "Bad value `X-UA-Compatible` for attribute `http-equiv` on element `meta`."
-  * This error is regarding `<meta http-equiv="X-UA-Compatible" content="IE=edge">`
-  * This `<meta>` tag (or its HTTP header equivalent) [is a best-practice for dealing with Internet Explorer](http://getbootstrap.com/getting-started/#support-ie-compatibility-modes), but is currently flagged by validator.nu because `X-UA-Compatible` isn't standardized. The tag causes no problems in practice; indeed, its purpose is to *prevent* IE problems.
 * "An `img` element must have an `alt` attribute, except under certain conditions. [...]"
   * This is an accessibility problem, but typically doesn't cause any other problems.
   * Most folks don't include `alt`s for `<img>`s in live examples since it's almost never relevant to their problem and thus not worth the extra work to add them.
