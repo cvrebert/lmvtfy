@@ -9,7 +9,7 @@ class ValidatorSpec extends Specification {
   }
 
   val httpEquivErrText = Vector(PlainText("Bad value "), CodeText("Gibberish"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on element "), CodeText("meta"), PlainText("."))
-  val httpEquivErrSpan = SourceSpan(5, 56, 5, 56).get
+  val httpEquivErrSpan = SourceSpan(5, 5, 5, 56).get
   val httpEquivValidationMsg = ValidationMessage(Some(httpEquivErrSpan), httpEquivErrText)
 
   "Bad meta http-equiv" should {
@@ -50,7 +50,7 @@ class ValidatorSpec extends Specification {
       """.stripMargin
 
     "cause 2 validation errors" in {
-      val pInUlMsg = ValidationMessage(SourceSpan(10, 9, -1, -1), Vector(PlainText("Element "), CodeText("p"), PlainText(" not allowed as child of element "), CodeText("ul"), PlainText(" in this context. (Suppressing further errors from this subtree.)")))
+      val pInUlMsg = ValidationMessage(SourceSpan(10, 7, 10, 9), Vector(PlainText("Element "), CodeText("p"), PlainText(" not allowed as child of element "), CodeText("ul"), PlainText(" in this context. (Suppressing further errors from this subtree.)")))
 
       val messages = Html5Validator.validationErrorsFor(badHtml.inputSource).get
       messages must have size(2)
@@ -74,7 +74,7 @@ class ValidatorSpec extends Specification {
       """.stripMargin
 
     "result in a properly-spelled validation error message" in {
-      val expectedMsg = ValidationMessage(SourceSpan(8, 36, -1, -1), Vector(PlainText("Attribute "), CodeText("href"), PlainText(" not allowed on element "), CodeText("span"), PlainText(" at this point.")))
+      val expectedMsg = ValidationMessage(SourceSpan(8, 5, 8, 36), Vector(PlainText("Attribute "), CodeText("href"), PlainText(" not allowed on element "), CodeText("span"), PlainText(" at this point.")))
 
       val messages = Html5Validator.validationErrorsFor(badHtml.inputSource).get
       messages must have size(1)

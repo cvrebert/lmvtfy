@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 Christopher Rebert
- * Copyright (c) 2013-2014 Mozilla Foundation
+ * Copyright (c) 2014-2015 Christopher Rebert
+ * Copyright (c) 2013-2015 Mozilla Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -74,24 +74,25 @@ private class Html5Validator(inputSource: InputSource) {
     }
   }
 
+  private lazy val _validator: SimpleDocumentValidator = new SimpleDocumentValidator()
+  private lazy val sourceCode: SourceCode = _validator.getSourceCode
+
   /**
    * @throws SAXException, Exception
    * @throws SimpleDocumentValidator.SchemaReadException, StackOverflowError
    */
   private lazy val validator: SimpleDocumentValidator = {
-    val simpleDocValidator = new SimpleDocumentValidator()
-    simpleDocValidator.setUpMainSchema(schemaUrl, new SystemErrErrorHandler())
+    _validator.setUpMainSchema(schemaUrl, new SystemErrErrorHandler())
 
     val loadEntities = false
     val noStream = false
-    simpleDocValidator.setUpValidatorAndParsers(errorHandler, noStream, loadEntities)
+    _validator.setUpValidatorAndParsers(errorHandler, noStream, loadEntities)
 
-    simpleDocValidator
+    _validator
   }
 
   private lazy val errorHandler: MessageEmitterAdapter = {
     val lineOffset = 0
-    val sourceCode = new SourceCode()
     val imageCollector = new ImageCollector(sourceCode)
 
     val errHandler = new MessageEmitterAdapter(sourceCode, showSource, imageCollector, lineOffset, true, emitter)
