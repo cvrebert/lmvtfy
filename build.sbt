@@ -21,6 +21,9 @@ libraryDependencies += "nu.validator" % "validator" % "15.4.12" excludeAll(
 
 libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.core" % "4.0.0.201503231230-m1"
 
+// egit-github needs Gson, but doesn't explicitly require it
+libraryDependencies += "com.google.code.gson" % "gson" % "2.3.1"
+
 libraryDependencies += "com.twitter" % "twitter-text" % "1.11.1"
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.2"
