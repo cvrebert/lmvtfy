@@ -162,4 +162,41 @@ class LiveExampleCanonicalizationSpec extends Specification {
       dispGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/5e1f8c484ebbd2b0e6784942bd51bee1f780cc23/") mustEqual canonicalUnversionedDisplay
     }
   }
+
+  "BlOcksExample" should {
+    def codeBlock(url: String) = BlOcksExample(Uri(url)).map{ _.codeUrl }
+    def dispBlock(url: String) = BlOcksExample(Uri(url)).map{ _.displayUrl }
+
+    "canonicalize unversioned URLs correctly" in {
+      val canonical = Some(Uri("http://bl.ocks.org/mbostock/raw/1353700/"))
+
+      codeBlock("http://bl.ocks.org/mbostock/1353700") mustEqual canonical
+      codeBlock("http://bl.ocks.org/mbostock/1353700/") mustEqual canonical
+      codeBlock("http://bl.ocks.org/mbostock/raw/1353700") mustEqual canonical
+      codeBlock("http://bl.ocks.org/mbostock/raw/1353700/") mustEqual canonical
+      codeBlock("http://bl.ocks.org/mbostock/raw/1353700/index.html") mustEqual canonical
+
+      dispBlock("http://bl.ocks.org/mbostock/1353700") mustEqual canonical
+      dispBlock("http://bl.ocks.org/mbostock/1353700/") mustEqual canonical
+      dispBlock("http://bl.ocks.org/mbostock/raw/1353700") mustEqual canonical
+      dispBlock("http://bl.ocks.org/mbostock/raw/1353700/") mustEqual canonical
+      dispBlock("http://bl.ocks.org/mbostock/raw/1353700/index.html") mustEqual canonical
+    }
+
+    "canonicalize versioned URLs correctly" in {
+      val canonical = Some(Uri("http://bl.ocks.org/mbostock/raw/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675/"))
+
+      codeBlock("http://bl.ocks.org/mbostock/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675") mustEqual canonical
+      codeBlock("http://bl.ocks.org/mbostock/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675/") mustEqual canonical
+      codeBlock("http://bl.ocks.org/mbostock/raw/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675") mustEqual canonical
+      codeBlock("http://bl.ocks.org/mbostock/raw/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675/") mustEqual canonical
+      codeBlock("http://bl.ocks.org/mbostock/raw/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675/index.html") mustEqual canonical
+
+      dispBlock("http://bl.ocks.org/mbostock/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675") mustEqual canonical
+      dispBlock("http://bl.ocks.org/mbostock/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675/") mustEqual canonical
+      dispBlock("http://bl.ocks.org/mbostock/raw/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675") mustEqual canonical
+      dispBlock("http://bl.ocks.org/mbostock/raw/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675/") mustEqual canonical
+      dispBlock("http://bl.ocks.org/mbostock/raw/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675/index.html") mustEqual canonical
+    }
+  }
 }

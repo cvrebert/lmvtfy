@@ -20,6 +20,7 @@ object LiveExample {
       case PlunkerExample(plunk) => Some(plunk)
       case CodePenExample(pen) => Some(pen)
       case GistExample(gist) => Some(gist)
+      case BlOcksExample(block) => Some(block)
       case _ => None
     }
   }
@@ -240,5 +241,36 @@ object GistExample {
       case _ => None
     }
     newPath.map{ uri.withScheme(Https).withPath(_).withHost(CanonicalHost).withoutFragment }
+  }
+}
+
+class BlOcksExample private(val codeUrl: Uri) extends LiveExample {
+  override val kind = CompleteRawHtml
+  override def displayUrl = codeUrl
+  override def toString = s"BlOcksExample(${codeUrl})"
+  override def hashCode = codeUrl.hashCode
+  override def equals(other: Any) = other.isInstanceOf[BlOcksExample] && other.asInstanceOf[BlOcksExample].codeUrl == codeUrl
+}
+object BlOcksExample {
+  private val Http = Uri.httpScheme(securedConnection = false)
+  private val CanonicalHost = NamedHost("bl.ocks.org")
+  def apply(uri: Uri): Option[BlOcksExample] = canonicalize(uri).map{ new BlOcksExample(_) }
+  def unapply(uri: Uri): Option[BlOcksExample] = {
+    uri.authority.host match {
+      case CanonicalHost => BlOcksExample(uri)
+      case _ => None
+    }
+  }
+  private def canonicalize(uri: Uri) = {
+    val newPath = uri.path.toString.split('/') match {
+      case Array("", username, "raw", gistId)               => Some(Path / username / "raw" / gistId / "")
+      case Array("", username, "raw", gistId, "index.html") => Some(Path / username / "raw" / gistId / "")
+      case Array("", username, "raw", gistId, commitSha)               => Some(Path / username / "raw" / gistId / commitSha / "")
+      case Array("", username, "raw", gistId, commitSha, "index.html") => Some(Path / username / "raw" / gistId / commitSha / "")
+      case Array("", username, gistId)                      => Some(Path / username / "raw" / gistId / "")
+      case Array("", username, gistId, commitSha)                      => Some(Path / username / "raw" / gistId / commitSha / "")
+      case _ => None
+    }
+    newPath.map{ uri.withScheme(Http).withPath(_).withoutFragment }
   }
 }
