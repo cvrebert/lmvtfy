@@ -135,10 +135,10 @@ class LiveExampleCanonicalizationSpec extends Specification {
       codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/") mustEqual canonicalCode
 
       val canonicalDisplay = Some(Uri("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f"))
-      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw") mustEqual canonicalCode
-      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/") mustEqual canonicalCode
-      codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f") mustEqual canonicalCode
-      codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/") mustEqual canonicalCode
+      dispGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw") mustEqual canonicalDisplay
+      dispGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/") mustEqual canonicalDisplay
+      dispGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f") mustEqual canonicalDisplay
+      dispGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/") mustEqual canonicalDisplay
     }
 
     "canonicalize versioned URLs correctly" in {
