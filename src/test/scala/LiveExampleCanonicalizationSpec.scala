@@ -122,6 +122,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
     def dispGist(url: String) = GistExample(Uri(url)).map{ _.displayUrl }
 
     val canonicalVersionedCode = Some(Uri("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c"))
+    val canonicalVersionedCodeWithFilename = Some(Uri("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/example.html"))
     val canonicalUnversionedCode = Some(Uri("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw"))
 
     // val canonicalVersionedDisplay = Some(Uri("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/5e1f8c484ebbd2b0e6784942bd51bee1f780cc23"))
@@ -129,16 +130,19 @@ class LiveExampleCanonicalizationSpec extends Specification {
 
     "canonicalize unversioned URLs correctly" in {
       val canonicalCode = Some(Uri("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw"))
+      val canonicalCodeWithFilename = Some(Uri("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/example.html"))
       codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw") mustEqual canonicalCode
       codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/") mustEqual canonicalCode
       codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f") mustEqual canonicalCode
       codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/") mustEqual canonicalCode
+      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/example.html") mustEqual canonicalCodeWithFilename
 
       val canonicalDisplay = Some(Uri("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f"))
       dispGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw") mustEqual canonicalDisplay
       dispGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/") mustEqual canonicalDisplay
       dispGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f") mustEqual canonicalDisplay
       dispGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/") mustEqual canonicalDisplay
+      dispGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/example.html") mustEqual canonicalCodeWithFilename
     }
 
     "canonicalize versioned URLs correctly" in {
@@ -148,8 +152,8 @@ class LiveExampleCanonicalizationSpec extends Specification {
       codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/") mustEqual canonicalVersionedCode
       dispGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/") mustEqual canonicalVersionedCode
 
-      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/example.html") mustEqual canonicalVersionedCode
-      dispGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/example.html") mustEqual canonicalVersionedCode
+      codeGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/example.html") mustEqual canonicalVersionedCodeWithFilename
+      dispGist("https://gist.githubusercontent.com/anonymous/de6e64bd8b3b01eefa2f/raw/487e0f2eb3d3d39d3f4555e1407089845943579c/example.html") mustEqual canonicalVersionedCodeWithFilename
 
       codeGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/5e1f8c484ebbd2b0e6784942bd51bee1f780cc23") mustEqual canonicalUnversionedCode
       dispGist("https://gist.github.com/anonymous/de6e64bd8b3b01eefa2f/5e1f8c484ebbd2b0e6784942bd51bee1f780cc23") mustEqual canonicalUnversionedDisplay

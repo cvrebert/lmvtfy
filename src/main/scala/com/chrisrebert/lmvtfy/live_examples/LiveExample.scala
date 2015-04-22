@@ -199,7 +199,7 @@ object CodePenExample {
 }
 
 class GistExample private(val codeUrl: Uri) extends LiveExample {
-  import GistExample.{CanonicalHost,DisplayHost,Https}
+  import GistExample.{DisplayHost,Https}
 
   override val kind = CompleteRawHtmlMaybe
   override lazy val displayUrl = {
@@ -209,6 +209,7 @@ class GistExample private(val codeUrl: Uri) extends LiveExample {
         Uri(scheme = Https, authority = Uri.Authority(DisplayHost), path = displayPath)
       }
       case Array("", username, gistId, "raw", fileSha) => codeUrl
+      case Array("", username, gistId, "raw", fileSha, fileName) => codeUrl
       case _ => throw new IllegalStateException(s"Invalid Gist code URL: ${codeUrl}")
     }
   }
@@ -235,7 +236,7 @@ object GistExample {
       // plus, it's unlikely they gave us a link to the non-current revision anyway
       case Array("", username, gistId, commitSha) => Some(Path / username / gistId / "raw")
       case Array("", username, gistId, "raw", fileSha)           => Some(Path / username / gistId / "raw" / fileSha)
-      case Array("", username, gistId, "raw", fileSha, fileName) => Some(Path / username / gistId / "raw" / fileSha)
+      case Array("", username, gistId, "raw", fileSha, fileName) => Some(Path / username / gistId / "raw" / fileSha / fileName)
       case _ => None
     }
     newPath.map{ uri.withScheme(Https).withPath(_).withHost(CanonicalHost).withoutFragment }
