@@ -14,7 +14,8 @@ Affectionately named after [LMGTFY](http://knowyourmeme.com/memes/sites/let-me-g
 * [Bootply](http://www.bootply.com)
 * [Plunker](http://plnkr.co)
 * [CodePen](http://codepen.io)
-* [GitHub Gist](https://gist.github.com/)
+* [GitHub Gist](https://gist.github.com)
+* [bl.ocks.org](bl.ocks.org)
 * An HTML code block in the Markdown source of the issue comment [Planned]
 
 ## Motivation
