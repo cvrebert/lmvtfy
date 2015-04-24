@@ -2,20 +2,23 @@ LMVTFY: Let Me Validate That For You
 ======
 [![Build Status](https://travis-ci.org/cvrebert/lmvtfy.svg?branch=master)](https://travis-ci.org/cvrebert/lmvtfy)
 
-LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain (links to) live Web examples (e.g. a [jsFiddle](http://jsfiddle.net)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment ([such as this one](https://github.com/twbs/bootstrap/issues/11984#issuecomment-46140343)) on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
+LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain (links to) Web examples (e.g. a [jsFiddle](http://jsfiddle.net)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment ([such as this one](https://github.com/twbs/bootstrap/issues/11984#issuecomment-46140343)) on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
 
 Also, you can optionally enable [Bootlint](https://github.com/twbs/bootlint) integration, which will make LMVTFY run valid HTML documents through Bootlint (via its [HTTP API](https://github.com/twbs/bootlint#http-api)) to check for [Bootstrap](https://github.com/twbs/bootstrap) usage errors.
 
 Affectionately named after [LMGTFY](http://knowyourmeme.com/memes/sites/let-me-google-that-for-you-lmgtfy).
 
-## Supported live example types
+## Supported example types
+### Live
 * [jsFiddle](http://jsfiddle.net)
 * [JS Bin](http://jsbin.com)
 * [Bootply](http://www.bootply.com)
 * [Plunker](http://plnkr.co)
 * [CodePen](http://codepen.io)
-* [GitHub Gist](https://gist.github.com)
 * [bl.ocks.org](http://bl.ocks.org)
+
+### Non-live
+* [GitHub Gist](https://gist.github.com)
 * An HTML code block in the Markdown source of the issue comment [Planned]
 
 ## Motivation
