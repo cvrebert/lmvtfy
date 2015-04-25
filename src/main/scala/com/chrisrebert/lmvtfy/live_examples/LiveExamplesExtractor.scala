@@ -18,7 +18,7 @@ object LiveExamplesExtractor {
   private def safeHttpUrlsFromWithin(text: String): Set[Uri] = {
     UrlExtractor.extractAllUrls(text).flatMap{ urlStr =>
       Try{ Uri(urlStr) }.toOption
-    }.filter{ uri => uri.isSafe }.map{ _.withoutQuery.withoutFragment }
+    }.filter{ uri => uri.isSafe }.map{ _.withoutFragment }
   }
 
   def liveExamplesFromWithin(text: String): Set[LiveExample] = {

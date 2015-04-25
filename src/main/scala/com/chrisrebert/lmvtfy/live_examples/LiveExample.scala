@@ -68,7 +68,7 @@ object JsFiddleExample {
       case Array("", username, identifier, Revision(revision), "embedded", "result") => Some(Path / username / identifier / revision / "show" / "light" / "")
       case _ => None
     }
-    newPath.map{ uri.withPath(_).withHost(CanonicalHost).withoutFragment }
+    newPath.map{ uri.withPath(_).withHost(CanonicalHost).withoutQuery.withoutFragment }
   }
 }
 
@@ -95,7 +95,7 @@ object JsBinExample {
       case Array("", identifier, revision, "edit") => Some(Path / identifier / revision / "edit")
       case _ => None
     }
-    newPath.map{ uri.withPath(_).withoutFragment }
+    newPath.map{ uri.withPath(_).withoutQuery.withoutFragment }
   }
 }
 
@@ -113,7 +113,7 @@ object BootplyExample {
   private def canonicalize(uri: Uri) = {
     canonicalizedHost(uri.authority.host).flatMap{ newHost =>
       canonicalizedPath(uri.path).map { newPath =>
-        uri.withHost(newHost).withPath(newPath).withoutFragment
+        uri.withHost(newHost).withPath(newPath).withoutQuery.withoutFragment
       }
     }
   }
@@ -147,9 +147,9 @@ object PlunkerExample {
   private def canonicalize(uri: Uri) = {
     canonicalizedHost(uri.authority.host).flatMap{ newHost =>
       canonicalizedPath(uri.path).map { newPath =>
-        uri.withHost(newHost).withPath(newPath).withoutFragment
+        uri.withHost(newHost).withPath(newPath).withoutQuery.withoutFragment
       }
-    }.map{ _.withoutQuery }
+    }
   }
   private def canonicalizedHost(host: Uri.Host) = {
     host match {
@@ -182,7 +182,7 @@ object CodePenExample {
   private def canonicalize(uri: Uri) = {
     canonicalizedHost(uri.authority.host).flatMap{ newHost =>
       canonicalizedPath(uri.path).map { newPath =>
-        uri.withHost(newHost).withPath(newPath).withoutFragment
+        uri.withHost(newHost).withPath(newPath).withoutQuery.withoutFragment
       }
     }
   }
@@ -241,7 +241,7 @@ object GistExample {
       case Array("", username, gistId, "raw", fileSha, fileName) => Some(Path / username / gistId / "raw" / fileSha / fileName)
       case _ => None
     }
-    newPath.map{ uri.withScheme(Https).withPath(_).withHost(CanonicalHost).withoutFragment }
+    newPath.map{ uri.withScheme(Https).withHost(CanonicalHost).withPath(_).withoutQuery.withoutFragment }
   }
 }
 
@@ -272,7 +272,7 @@ object BlOcksExample {
       case Array("", username, gistId, commitSha)                      => Some(Path / username / "raw" / gistId / commitSha / "")
       case _ => None
     }
-    newPath.map{ uri.withScheme(Http).withPath(_).withoutFragment }
+    newPath.map{ uri.withScheme(Http).withPath(_).withoutQuery.withoutFragment }
   }
 }
 
