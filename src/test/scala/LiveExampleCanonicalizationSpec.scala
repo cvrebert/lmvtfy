@@ -199,4 +199,33 @@ class LiveExampleCanonicalizationSpec extends Specification {
       dispBlock("http://bl.ocks.org/mbostock/raw/1353700/190ad80b4eb9c5e6daa7d4f210d263cbfb6db675/index.html") mustEqual canonical
     }
   }
+
+  "PastebinExample" should {
+    def codePaste(url: String) = PastebinExample(Uri(url)).map{ _.codeUrl }
+    def dispPaste(url: String) = PastebinExample(Uri(url)).map{ _.displayUrl }
+
+    "canonicalize URLs correctly" in {
+      val canonicalDisplay = Some(Uri("http://pastebin.com/wjhfEzeE"))
+      val canonicalCode = Some(Uri("http://pastebin.com/raw.php?i=wjhfEzeE"))
+
+      codePaste("http://pastebin.com/wjhfEzeE") mustEqual canonicalCode
+      codePaste("http://pastebin.com/raw.php?i=wjhfEzeE") mustEqual canonicalCode
+
+      dispPaste("http://pastebin.com/wjhfEzeE") mustEqual canonicalDisplay
+      dispPaste("http://pastebin.com/raw.php?i=wjhfEzeE") mustEqual canonicalDisplay
+
+    }
+
+    "discard invalid URLs" in {
+      codePaste("http://pastebin.com/wjhfEzeE/Bar") must beNone
+      codePaste("http://pastebin.com/wjhf.EzeE") must beNone
+      codePaste("http://pastebin.com/raw.php?i=wjhf.EzeE") must beNone
+      codePaste("http://pastebin.com/raw.php?z=wjhfEzeE") must beNone
+
+      dispPaste("http://pastebin.com/wjhfEzeE/Bar") must beNone
+      dispPaste("http://pastebin.com/wjhf.EzeE") must beNone
+      dispPaste("http://pastebin.com/raw.php?i=wjhf.EzeE") must beNone
+      dispPaste("http://pastebin.com/raw.php?z=wjhfEzeE") must beNone
+    }
+  }
 }

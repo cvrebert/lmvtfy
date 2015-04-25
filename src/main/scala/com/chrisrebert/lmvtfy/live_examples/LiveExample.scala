@@ -2,7 +2,7 @@ package com.chrisrebert.lmvtfy.live_examples
 
 import scala.util.Try
 import spray.http.Uri
-import spray.http.Uri.{Path, NamedHost}
+import spray.http.Uri.{Authority, NamedHost, Path, Query}
 import com.chrisrebert.lmvtfy.util.{HtmlSuffixed, RichUri}
 
 sealed trait ExampleKind
@@ -21,6 +21,7 @@ object LiveExample {
       case CodePenExample(pen) => Some(pen)
       case GistExample(gist) => Some(gist)
       case BlOcksExample(block) => Some(block)
+      case PastebinExample(paste) => Some(paste)
       case _ => None
     }
   }
@@ -272,5 +273,39 @@ object BlOcksExample {
       case _ => None
     }
     newPath.map{ uri.withScheme(Http).withPath(_).withoutFragment }
+  }
+}
+
+class PastebinExample private(val id: String) extends LiveExample {
+  import PastebinExample._
+
+  override val kind = CompleteRawHtmlMaybe
+  override val codeUrl = BaseUrl.withPath(Path / "raw.php").withQuery(("i", id))
+  override val displayUrl = BaseUrl.withPath(Path / id)
+  override def toString = s"PastebinExample(${displayUrl})"
+  override def hashCode = id.hashCode
+  override def equals(other: Any) = other.isInstanceOf[PastebinExample] && other.asInstanceOf[PastebinExample].id == id
+}
+object PastebinExample {
+  private val Http = Uri.httpScheme(securedConnection = false)
+  private val CanonicalHost = NamedHost("pastebin.com")
+  private val BaseUrl = Uri(Http, Authority(CanonicalHost), Path.Empty, Query.Empty)
+  private val SafeIdentifier = "[0-9a-zA-Z_-]+".r
+  def apply(uri: Uri): Option[PastebinExample] = idFrom(uri).map{ new PastebinExample(_) }
+  def unapply(uri: Uri): Option[PastebinExample] = {
+    uri.authority.host match {
+      case CanonicalHost => PastebinExample(uri)
+      case _ => None
+    }
+  }
+  private def idFrom(uri: Uri): Option[String] = {
+    (uri.path.toString.split('/') match {
+      case Array("", "raw.php") => uri.query.toMap.get("i")
+      case Array("", id) => Some(id)
+      case _ => None
+    }).filter{
+      case SafeIdentifier(_*) => true
+      case _ => false
+    }
   }
 }
