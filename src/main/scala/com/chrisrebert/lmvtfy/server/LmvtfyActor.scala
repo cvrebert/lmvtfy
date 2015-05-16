@@ -29,7 +29,6 @@ class LmvtfyActor(protected val issueCommentEventHandler: ActorRef) extends Acto
                 event.message match {
                   case Some(_) => {
                     issueCommentEventHandler ! event
-                    // FIXME: do throttling
                     // FIXME: ignore examples already posted in previous comments
                     complete(StatusCodes.OK)
                   }

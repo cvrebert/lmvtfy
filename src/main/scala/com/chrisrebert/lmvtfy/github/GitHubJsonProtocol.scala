@@ -1,12 +1,12 @@
 package com.chrisrebert.lmvtfy.github
 
 import spray.json._
-import org.eclipse.egit.github.core.RepositoryId
+import com.jcabi.github.Coordinates.{Simple=>RepoId}
 
-case class GitHubRepository(val fullName: String) extends AnyVal {
-  def id: RepositoryId = RepositoryId.createFromId(fullName)
+case class GitHubRepository(fullName: String) extends AnyVal {
+  def id: RepoId = new RepoId(fullName)
 }
-case class GitHubUser(val username: String) extends AnyVal
+case class GitHubUser(username: String) extends AnyVal
 case class IssueOrComment(
   number: Option[Int], // issue number
   body: String,

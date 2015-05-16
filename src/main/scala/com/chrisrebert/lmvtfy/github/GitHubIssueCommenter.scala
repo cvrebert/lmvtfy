@@ -1,24 +1,20 @@
 package com.chrisrebert.lmvtfy.github
 
 import scala.util.{Try,Failure,Success}
-import org.eclipse.egit.github.core.client.GitHubClient
-import org.eclipse.egit.github.core.service.IssueService
-import org.eclipse.egit.github.core.RepositoryId
+import com.jcabi.github.Coordinates.{Simple=>RepoId}
 import com.chrisrebert.lmvtfy.{MarkdownAboutHtml, MarkdownAboutBootstrap, Markdown, ValidationResult}
 import com.chrisrebert.lmvtfy.live_examples.{LiveExampleMention, LiveExample}
+import com.chrisrebert.lmvtfy.github.implicits._
 import com.chrisrebert.lmvtfy.server.{ActorWithLogging, Settings}
 
 
 class GitHubIssueCommenter extends ActorWithLogging {
   val settings = Settings(context.system)
 
-  private val client = new GitHubClient()
-  client.setUserAgent(settings.UserAgent)
-  client.setCredentials(settings.BotUsername, settings.BotPassword)
+  private val client = settings.github()
 
-  private def tryToCommentOn(repo: RepositoryId, issue: IssueNumber, commentMarkdown: String) = {
-    val issueService = new IssueService(client)
-    Try { issueService.createComment(repo, issue.number, commentMarkdown) }
+  private def tryToCommentOn(repo: RepoId, issue: IssueNumber, commentMarkdown: String) = {
+    Try { client.repos.get(repo).issues.get(issue.number).comments.post(commentMarkdown) }
   }
 
   private def introFor(markdown: Markdown): String = {
@@ -45,7 +41,7 @@ class GitHubIssueCommenter extends ActorWithLogging {
       """.stripMargin
 
       tryToCommentOn(repo.id, issue, commentMarkdown) match {
-        case Success(comment) => log.info(s"Successfully posted comment ${comment.getUrl} for ${mention}")
+        case Success(comment) => log.info(s"Successfully posted comment ${comment.smart.url} for ${mention}")
         case Failure(exc) => log.error(exc, s"Error posting comment for ${mention}")
       }
     }

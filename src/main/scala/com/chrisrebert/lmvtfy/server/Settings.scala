@@ -8,14 +8,21 @@ import akka.actor.ExtensionId
 import akka.actor.ExtensionIdProvider
 import akka.actor.ExtendedActorSystem
 import akka.util.ByteString
+import com.jcabi.github.Github
+import com.jcabi.github.Coordinates.{Simple=>RepoId}
+import com.chrisrebert.lmvtfy.github.Credentials
+import com.chrisrebert.lmvtfy.http.{UserAgent=>UA}
 import com.chrisrebert.lmvtfy.util.Utf8String
 
 class SettingsImpl(config: Config) extends Extension {
-  val RepoFullNames: Set[String] = config.getStringList("lmvtfy.github-repos-to-watch").toSet
+  val RepoIds: Set[RepoId] = config.getStringList("lmvtfy.github-repos-to-watch").toSet[String].map{ new RepoId(_) }
   val BotUsername: String = config.getString("lmvtfy.username")
-  val BotPassword: String = config.getString("lmvtfy.password")
+  private val botPassword: String = config.getString("lmvtfy.password")
+  private val botCredentials: Credentials = Credentials(username = BotUsername, password = botPassword)
+  private val githubRateLimitThreshold: Int = config.getInt("lmvtfy.github-rate-limit-threshold")
+  def github(): Github = botCredentials.github(githubRateLimitThreshold)(UserAgent)
   val WebHookSecretKey: ByteString = ByteString(config.getString("lmvtfy.web-hook-secret-key").utf8Bytes)
-  val UserAgent: String = config.getString("spray.can.client.user-agent-header")
+  val UserAgent: UA = UA(config.getString("spray.can.client.user-agent-header"))
   val DefaultPort: Int = config.getInt("lmvtfy.default-port")
   val SquelchInvalidHttpLogging: Boolean = config.getBoolean("lmvtfy.squelch-invalid-http-logging")
   val DebugHtml: Boolean = config.getBoolean("lmvtfy.debug-html")
