@@ -1,6 +1,7 @@
 LMVTFY: Let Me Validate That For You
 ======
 [![Build Status](https://travis-ci.org/cvrebert/lmvtfy.svg?branch=master)](https://travis-ci.org/cvrebert/lmvtfy)
+[![MIT License](https://img.shields.io/github/license/cvrebert/lmvtfy.svg)](https://github.com/cvrebert/lmvtfy/blob/master/LICENSE.txt)
 
 LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain (links to) Web examples (e.g. a [jsFiddle](http://jsfiddle.net)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment ([such as this one](https://github.com/twbs/bootstrap/issues/11984#issuecomment-46140343)) on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
 
