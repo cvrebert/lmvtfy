@@ -21,7 +21,7 @@ libraryDependencies += "nu.validator" % "validator" % "15.4.12" excludeAll(
 
 libraryDependencies += "com.jcabi" % "jcabi-github" % "0.23"
 
-libraryDependencies += "com.twitter" % "twitter-text" % "1.11.1"
+libraryDependencies += "com.twitter" % "twitter-text" % "1.12.1"
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.2"
 
