@@ -5,7 +5,8 @@ MAINTAINER Chris Rebert <code@rebertia.com>
 WORKDIR /
 USER daemon
 
+ADD application.conf /app/application.conf
 ADD target/scala-2.11/lmvtfy-assembly-1.0.jar /app/server.jar
 
-CMD ["java", "-jar", "/app/server.jar", "8080"]
+CMD ["java", "-Dconfig.resource=/app/application.conf", "-jar", "/app/server.jar", "8080"]
 EXPOSE 8080
