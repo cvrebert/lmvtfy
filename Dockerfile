@@ -1,5 +1,5 @@
 # Written against Docker v1.5.0
-FROM dockerfile/java
+FROM java:8
 MAINTAINER Chris Rebert <code@rebertia.com>
 
 WORKDIR /
