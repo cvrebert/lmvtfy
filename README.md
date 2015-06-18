@@ -35,39 +35,9 @@ By automating the process of checking the validity of HTML examples, such issues
 ## Usage
 Java 7+ is required to run LMVTFY. For instructions on building LMVTFY yourself, see [the Contributing docs](https://github.com/cvrebert/lmvtfy/blob/master/CONTRIBUTING.md).
 
-LMVTFY accepts exactly one optional command-line argument, which is the port number to run its HTTP server on, e.g. `8080`. If you don't provide this argument, the default port specified in `application.conf` will be used. Once you've built the JAR, run e.g. `java -jar lmvtfy-assembly-1.0.jar 8080` (replace `8080` with whatever port number you want). Note that running on ports <= 1024 requires root privileges (not recommended) or using port mapping.
+You will need to setup an `application.conf` file in order to run LMVTFY. See [`example.conf`](https://github.com/cvrebert/lmvtfy/blob/master/src/main/resources/example.conf) for info on LMVTFY's available settings. At a minimum, you will need to set `lmvtfy.github-repos-to-watch`, `lmvtfy.username`, `lmvtfy.password`, and `lmvtfy.web-hook-secret-key`. LMVTFY's default settings can be found in [`reference.conf`](https://github.com/cvrebert/lmvtfy/blob/master/src/main/resources/reference.conf). Akka and Spray settings can also be set in your `application.conf`.
 
-Other settings live in `application.conf`. In addition to the normal Akka and Spray settings, LMVTFY offers the following settings:
-```
-lmvtfy {
-    // Port to run on, if not specified via the command line
-    default-port = 8080
-    // Log the HTML being validated, for debugging purposes?
-    debug-html = false
-    // Suppress Spray's logging of malformed HTTP requests/headers?
-    // (Enable this to avoid floods in your log output when your LMVTFY instance gets weird requests from crackers.)
-    squelch-invalid-http-logging = true
-    // List of full names of GitHub repos to watch for new issues and new issue comments
-    github-repos-to-watch = ["twbs/bootstrap"]
-    // Username of the account that reply comments will be posted from
-    username = "twbs-lmvtfy"
-    // Password for the account that reply comments will be posted from
-    password = "not-actually-the-password"
-    // This goes in the "Secret" field when setting up the Webhook
-    // in the "Webhooks & Services" part of your repo's Settings.
-    // This string will be converted to UTF-8 for the HMAC-SHA1 computation.
-    // The HMAC is used to verify that LMVTFY is really being contacted by GitHub,
-    // and not by some random hacker.
-    web-hook-secret-key = "some-random-gibberish-here"
-    // Bootlint integration settings
-    bootlint {
-        // Enable Bootlint integration?
-        enabled = true
-        // Local port that Bootlint is running on
-        port = 7070
-    }
-}
-```
+LMVTFY accepts exactly one optional command-line argument, which is the port number to run its HTTP server on, e.g. `8080`. If you don't provide this argument, the default port specified in `application.conf` will be used. Once you've built the JAR, run e.g. `java -Dconfig.resource=/path/to/your/application.conf -jar lmvtfy-assembly-1.0.jar 8080` (replace `8080` with whatever port number you want and replace `/path/to/your/application.conf` with the actual path to your `application.conf`). Note that running on ports <= 1024 requires root privileges (not recommended) or using port mapping.
 
 ### GitHub webhook configuration
 * Payload URL: `http://your-domain.example/lmvtfy`

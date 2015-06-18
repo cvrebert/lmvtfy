@@ -13,11 +13,12 @@ Hacking on LMVTFY
 ## How do I run the LMVTFY service locally for test purposes?
 **This method is not recommended for use in production deployments!**
 
-0. If Bootlint integration is enabled, start Bootlint's server.
-1. Ensure that sbt is installed (see above).
-2. Go to your `lmvtfy` directory.
-3. Run `sbt`
-4. At the sbt prompt, enter `re-start 8080` (replace `8080` with whatever port you want the HTTP server to run on) or `re-start` (which will use the default port specified in `application.conf`). Note that running on ports <= 1024 requires root privileges (not recommended) or using port mapping.
+0. Uncomment the `javaOptions +=` line in `build.sbt` and adjust the `application.conf` path in that line.
+1. If Bootlint integration is enabled, start Bootlint's server.
+2. Ensure that sbt is installed (see above).
+3. Go to your `lmvtfy` directory.
+4. Run `sbt`
+5. At the sbt prompt, enter `re-start 8080` (replace `8080` with whatever port you want the HTTP server to run on) or `re-start` (which will use the default port specified in `application.conf`). Note that running on ports <= 1024 requires root privileges (not recommended) or using port mapping.
 
 ## How do I generate a single self-sufficient JAR that includes all of the necessary dependencies?
 0. Ensure that sbt is installed (see above).

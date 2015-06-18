@@ -42,6 +42,8 @@ libraryDependencies ++= {
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-feature", "–Xlint", "-encoding", "utf8")
 
+// javaOptions += "-Dconfig.resource=/path/to/your/application.conf"
+
 scalacOptions in Test ++= Seq("-Yrangepos")
 
 // parallelExecution in Test := false
