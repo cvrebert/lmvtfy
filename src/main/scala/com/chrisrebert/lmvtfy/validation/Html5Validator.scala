@@ -23,13 +23,13 @@
 
 package com.chrisrebert.lmvtfy.validation
 
-import scala.util.{Try,Success,Failure}
+import scala.util.{Try,Success}
 import nu.validator.messages._
 import nu.validator.servlet.imagereview.ImageCollector
 import nu.validator.source.SourceCode
 import nu.validator.validation.SimpleDocumentValidator
 import nu.validator.xml.SystemErrErrorHandler
-import org.xml.sax.InputSource
+import org.xml.sax.{SAXException, InputSource}
 
 // java -Xss512k
 object Html5Validator {
