@@ -19,7 +19,7 @@ libraryDependencies += "nu.validator" % "validator" % "15.6.29" excludeAll(
   ExclusionRule(organization = "commons-httpclient")
 )
 
-libraryDependencies += "com.jcabi" % "jcabi-github" % "0.23"
+libraryDependencies += "com.jcabi" % "jcabi-github" % "0.24"
 
 libraryDependencies += "com.twitter" % "twitter-text" % "1.12.1"
 
