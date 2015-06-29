@@ -55,6 +55,8 @@ class LiveExamplesExtractorSpec extends Specification {
     "extract JS Bin examples" in {
       assertHasLiveExample("http://jsbin.com/mogupeli/3/edit")
       assertHasLiveExample("http://jsbin.com/mogupeli/3/")
+      assertHasLiveExample("http://output.jsbin.com/qavisi/4")
+      assertHasLiveExample("http://output.jsbin.com/qavisi")
     }
     "extract JS Fiddle examples" in {
       assertHasLiveExample("http://jsfiddle.net/wYc3u/5/")

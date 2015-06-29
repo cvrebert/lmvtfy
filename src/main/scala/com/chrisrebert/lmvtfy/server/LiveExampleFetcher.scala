@@ -58,16 +58,6 @@ class LiveExampleFetcher(validator: ActorRef) extends ActorWithLogging {
                   }
                 }
               }
-              case HtmlWithinJavaScriptWithinHtml => {
-                import com.chrisrebert.lmvtfy.util.Utf8String
-                response.entityUtf8String match {
-                  case JsBinUserHtml(userHtml) => Some(userHtml.utf8ByteString)
-                  case _ => {
-                    log.error(s"Unable to extract user HTML from JS Bin page ${url}")
-                    None
-                  }
-                }
-              }
             }
             maybeHtmlBytes.foreach{ htmlBytes =>
               if (settings.DebugHtml) {
