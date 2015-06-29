@@ -36,5 +36,12 @@ object SourceSpan {
   }
 }
 sealed case class SourceSpan private(start: SourceLocation, end: Option[SourceLocation]) {
-  override def toString: String = s"${start}" + end.map{ s" thru " + _ }.getOrElse("")
+  override def toString: String = {
+    val StartLineNum = start.lineNum
+    val terminus = end.map{ _ match {
+      case SourceLocation(StartLineNum, Some(endColNum)) => s"column ${endColNum}"
+      case endLoc@SourceLocation(_, _) => endLoc.toString
+    } }
+    s"${start}" + terminus.map{ s" thru " + _ }.getOrElse("")
+  }
 }

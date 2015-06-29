@@ -37,6 +37,11 @@ class SourceSpanSpec extends Specification {
       SourceSpan(2, 3, 4, 5).get.toString mustEqual "line 2, column 3 thru line 4, column 5"
     }
   }
+  "Valid start and end in correct order on the same line" should {
+    "stringify using a special more compact less redundant format" in {
+      SourceSpan(2, 4, 2, 7).get.toString mustEqual "line 2, column 4 thru column 7"
+    }
+  }
   "Both start and end valid but in wrong order" should {
     "get flipped" in {
       SourceSpan(4, 5, 2, 3) must beSome.which{ span =>
