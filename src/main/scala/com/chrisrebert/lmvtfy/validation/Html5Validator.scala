@@ -60,8 +60,6 @@ private class Html5Validator(inputSource: InputSource) {
           // Exempt missing/empty <title> as it is very common in live examples but typically doesn't cause any problem
           case Seq(PlainText("Element "), CodeText("head"), PlainText(" is missing a required instance of child element "), CodeText("title"), PlainText(".")) => false
           case Seq(PlainText("Element "), CodeText("title"), PlainText(" must not be empty.")) => false
-          // Exempt data-* attributes on non-HTML (e.g. SVG) elements as they typically don't cause any problems
-          case Seq(PlainText("Attribute "), CodeText(attrName), PlainText(" not allowed on element "), _*) if attrName.startsWith("data-") => false
           // Exempt nonstandard <meta> used by jsFiddle
           case Seq(PlainText("Bad value "), CodeText("edit-Type"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on element "), CodeText("meta"), PlainText(".")) => false
           case Seq(PlainText("Attribute "), CodeText("edit"), PlainText(" not allowed on element "), CodeText("meta"), PlainText(" at this point.")) => false
