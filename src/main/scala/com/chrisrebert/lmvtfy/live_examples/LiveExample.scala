@@ -9,6 +9,7 @@ sealed trait ExampleKind
 case object CompleteRawHtml extends ExampleKind
 case object CompleteRawHtmlMaybe extends ExampleKind
 case object RawHtmlFragment extends ExampleKind
+case object HtmlWithinJavaScriptWithinHtml extends ExampleKind
 
 object LiveExample {
   def apply(url: Uri): Option[LiveExample] = {
@@ -72,14 +73,14 @@ object JsFiddleExample {
 }
 
 class JsBinExample private(val codeUrl: Uri) extends LiveExample {
-  override val kind = CompleteRawHtml
+  override val kind = HtmlWithinJavaScriptWithinHtml
   override def displayUrl = codeUrl
   override def toString = s"JsBinExample(${codeUrl})"
   override def hashCode = codeUrl.hashCode
   override def equals(other: Any) = other.isInstanceOf[JsBinExample] && other.asInstanceOf[JsBinExample].codeUrl == codeUrl
 }
 object JsBinExample {
-  private val CanonicalHost = NamedHost("output.jsbin.com")
+  private val CanonicalHost = NamedHost("jsbin.com")
   def apply(uri: Uri): Option[JsBinExample] = canonicalize(uri).map{ new JsBinExample(_) }
   def unapply(uri: Uri): Option[JsBinExample] = JsBinExample(uri)
   private def canonicalize(uri: Uri) = {
@@ -91,16 +92,16 @@ object JsBinExample {
   }
   private def canonicalizedHost(host: Uri.Host) = {
     host match {
-      case NamedHost("jsbin.com") | CanonicalHost => Some(CanonicalHost)
+      case NamedHost("output.jsbin.com") | CanonicalHost => Some(CanonicalHost)
       case _ => None
     }
   }
   private def canonicalizedPath(path: Uri.Path) = {
     path.toString.split('/') match {
-      case Array("", identifier)         => Some(Path / identifier)
-      case Array("", identifier, "edit") => Some(Path / identifier)
-      case Array("", identifier, revision)         => Some(Path / identifier / revision)
-      case Array("", identifier, revision, "edit") => Some(Path / identifier / revision)
+      case Array("", identifier)         => Some(Path / identifier / "edit")
+      case Array("", identifier, "edit") => Some(Path / identifier / "edit")
+      case Array("", identifier, revision)         => Some(Path / identifier / revision / "edit")
+      case Array("", identifier, revision, "edit") => Some(Path / identifier / revision / "edit")
       case _ => None
     }
   }

@@ -8,14 +8,14 @@ class LiveExampleCanonicalizationSpec extends Specification {
 
     "canonicalize URLs correctly" in {
       // JS Bin hates trailing slashes
-      val canonicalVersioned = Some(Uri("http://output.jsbin.com/mogupeli/3"))
+      val canonicalVersioned = Some(Uri("http://jsbin.com/mogupeli/3/edit"))
       bin("http://jsbin.com/mogupeli/3") mustEqual canonicalVersioned
       bin("http://jsbin.com/mogupeli/3/") mustEqual canonicalVersioned
       bin("http://jsbin.com/mogupeli/3/edit") mustEqual canonicalVersioned
       bin("http://jsbin.com/mogupeli/3/edit/") mustEqual canonicalVersioned
       bin("http://output.jsbin.com/mogupeli/3") mustEqual canonicalVersioned
 
-      val canonicalUnversioned = Some(Uri("http://output.jsbin.com/mogupeli"))
+      val canonicalUnversioned = Some(Uri("http://jsbin.com/mogupeli/edit"))
       bin("http://jsbin.com/mogupeli") mustEqual canonicalUnversioned
       bin("http://jsbin.com/mogupeli/") mustEqual canonicalUnversioned
       bin("http://jsbin.com/mogupeli/edit") mustEqual canonicalUnversioned
