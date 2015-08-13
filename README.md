@@ -85,8 +85,6 @@ The following validation errors are deliberately ignored by LMVTFY for pragmatic
   * Again, folks often don't include a `<title>` in live examples since its presence or absence is almost never relevant to their problem and its absence almost never causes any other problems.
 * "Attribute `autocomplete` not allowed on element [`input` or `button`] at this point."
   * This nonstandard usage of the `autocomplete` attribute is currently the only good workaround for a [bizarre Firefox bug](https://bugzilla.mozilla.org/show_bug.cgi?id=654072).
-* "Attribute `data-foo` not allowed on element `bar` at this point."
-  * Typically the element is an SVG element. These HTML5 `data-*` attributes can be useful and in practice don't seem to cause any problems.
 * Errors due to the nonstandard `<meta>` that jsFiddle uses on its pages.
   * "Bad value `edit-Type` for attribute `http-equiv` on element `meta`."
   * "Attribute `edit` not allowed on element `meta` at this point."
