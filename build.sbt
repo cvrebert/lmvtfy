@@ -12,6 +12,8 @@ resolvers += "Eclipse Foundation Releases" at "https://repo.eclipse.org/content/
 
 resolvers += "Eclipse Foundation Snapshots" at "https://repo.eclipse.org/content/repositories/snapshots/"
 
+val jcabiV = "0.24"
+
 libraryDependencies += "nu.validator" % "validator" % "15.6.29" excludeAll(
   ExclusionRule(organization = "org.eclipse.jetty"),
   ExclusionRule(organization = "javax.servlet"),
@@ -19,7 +21,7 @@ libraryDependencies += "nu.validator" % "validator" % "15.6.29" excludeAll(
   ExclusionRule(organization = "commons-httpclient")
 )
 
-libraryDependencies += "com.jcabi" % "jcabi-github" % "0.24"
+libraryDependencies += "com.jcabi" % "jcabi-github" % jcabiV
 
 libraryDependencies += "com.twitter" % "twitter-text" % "1.12.1"
 
@@ -37,6 +39,14 @@ libraryDependencies ++= {
     "com.typesafe.akka"   %%  "akka-slf4j"    % akkaV,
     "com.typesafe.akka"   %%  "akka-testkit"  % akkaV   % "test",
     "org.specs2"          %%  "specs2"        % "2.3.12" % "test"
+  )
+}
+
+packageOptions in (Compile, packageBin) ++= {
+  Seq(
+    Package.ManifestAttributes("JCabi-Version" -> jcabiV),
+    Package.ManifestAttributes("JCabi-Build" -> "abcdef"),
+    Package.ManifestAttributes("JCabi-Date" -> "2015-08-01")
   )
 }
 
