@@ -88,18 +88,18 @@ class LiveExamplesExtractorSpec extends Specification {
     "extract multiple examples" in {
       val examples = LiveExamplesExtractor.liveExamplesFromWithin("http://jsbin.com/mogupeli/3/   http://jsfiddle.net/wYc3u/5/")
       examples mustEqual Set(
-        JsBinExample(Uri("http://jsbin.com/mogupeli/3/")).get,
+        JsBinUrlExample(Uri("http://jsbin.com/mogupeli/3/")).get,
         JsFiddleExample(Uri("http://jsfiddle.net/wYc3u/5/")).get
       )
     }
     "extract examples within brackets" in {
-      onlyLiveExampleIn("[http://jsbin.com/mogupeli/3/]") mustEqual JsBinExample(Uri("http://jsbin.com/mogupeli/3/")).get
+      onlyLiveExampleIn("[http://jsbin.com/mogupeli/3/]") mustEqual JsBinUrlExample(Uri("http://jsbin.com/mogupeli/3/")).get
     }
     "extract examples within parentheses" in {
-      onlyLiveExampleIn("(http://jsbin.com/mogupeli/3/)") mustEqual JsBinExample(Uri("http://jsbin.com/mogupeli/3/")).get
+      onlyLiveExampleIn("(http://jsbin.com/mogupeli/3/)") mustEqual JsBinUrlExample(Uri("http://jsbin.com/mogupeli/3/")).get
     }
     "extract examples near commas" in {
-      onlyLiveExampleIn(",http://jsbin.com/mogupeli/3/,") mustEqual JsBinExample(Uri("http://jsbin.com/mogupeli/3/")).get
+      onlyLiveExampleIn(",http://jsbin.com/mogupeli/3/,") mustEqual JsBinUrlExample(Uri("http://jsbin.com/mogupeli/3/")).get
     }
   }
 }

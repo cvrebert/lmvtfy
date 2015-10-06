@@ -6,8 +6,8 @@ import com.chrisrebert.lmvtfy.live_examples.jsbin.JsBin
 import com.chrisrebert.lmvtfy.live_examples.jsbin.JsBinJsonProtocol._
 import com.chrisrebert.lmvtfy.util.ConvenientString
 
-object JsBinUserHtml {
-  private val ScriptCodeRegex = "(?s).*<script>(?:\\s|\n)*start[(]([^\n]+).*".r
+object JsBinUserHtmlFromStartJs {
+  private val ScriptCodeRegex = "(?s)^start[(](.+)".r
 
   def unapply(binPageHtml: String): Option[String] = {
     binPageHtml match {
