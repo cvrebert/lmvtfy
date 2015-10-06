@@ -12,7 +12,7 @@ import spray.http.HttpResponse
 import spray.httpx.RequestBuilding._
 import com.chrisrebert.lmvtfy.ValidationRequest
 import com.chrisrebert.lmvtfy.live_examples._
-import com.chrisrebert.lmvtfy.util.{IsHtmlish, RichResponse}
+import com.chrisrebert.lmvtfy.util.{IsHtmlish, RichResponse, Utf8String}
 
 object HtmlFragment {
   private val htmlPrefix = ByteString(
@@ -58,12 +58,33 @@ class LiveExampleFetcher(validator: ActorRef) extends ActorWithLogging {
                   }
                 }
               }
-              case HtmlWithinJavaScriptWithinHtml => {
-                import com.chrisrebert.lmvtfy.util.Utf8String
+              case HtmlWithinJavaScriptReferencedInScriptTag => {
                 response.entityUtf8String match {
-                  case JsBinUserHtml(userHtml) => Some(userHtml.utf8ByteString)
+                  case JsBinScriptUrl(scriptUrl) => {
+                    JsBinUrlExample(scriptUrl) match {
+                      case None => {
+                        log.error(s"Unable to extract script src URL from JS Bin page ${url}")
+                        None
+                      }
+                      case Some(unfetchedJsBinExample) => {
+                        // do another fetch because extra level of indirection
+                        // FIXME: ideally, this should be sent to the pool of fetchers instead of to the current fetcher
+                        self ! LiveExampleMention(unfetchedJsBinExample, mention.user, mention.issue)
+                        None
+                      }
+                    }
+                  }
                   case _ => {
-                    log.error(s"Unable to extract user HTML from JS Bin page ${url}")
+                    log.error(s"Unable to extract script src URL from JS Bin page ${url}")
+                    None
+                  }
+                }
+              }
+              case HtmlWithinJavaScript => {
+                response.entityUtf8String match {
+                  case JsBinUserHtmlFromStartJs(userHtml) => Some(userHtml.utf8ByteString)
+                  case _ => {
+                    log.error(s"Unable to extract user HTML from JS Bin script file ${url}")
                     None
                   }
                 }

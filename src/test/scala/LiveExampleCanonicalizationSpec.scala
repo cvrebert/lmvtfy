@@ -4,7 +4,7 @@ import com.chrisrebert.lmvtfy.live_examples._
 
 class LiveExampleCanonicalizationSpec extends Specification {
   "JsBinExample" should {
-    def bin(url: String) = JsBinExample(Uri(url)).map{ _.codeUrl }
+    def bin(url: String) = JsBinUrlExample(Uri(url)).map{ _.codeUrl }
 
     "canonicalize URLs correctly" in {
       // JS Bin hates trailing slashes

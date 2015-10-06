@@ -9,13 +9,15 @@ sealed trait ExampleKind
 case object CompleteRawHtml extends ExampleKind
 case object CompleteRawHtmlMaybe extends ExampleKind
 case object RawHtmlFragment extends ExampleKind
-case object HtmlWithinJavaScriptWithinHtml extends ExampleKind
+case object HtmlWithinJavaScript extends ExampleKind
+case object HtmlWithinJavaScriptReferencedInScriptTag extends ExampleKind
 
 object LiveExample {
   def apply(url: Uri): Option[LiveExample] = {
     url match {
       case JsFiddleExample(fiddle) => Some(fiddle)
-      case JsBinExample(bin) => Some(bin)
+      case JsBinUrlExample(bin) => Some(bin)
+      // JsBinJsUrlExample is not constructed from an end-user URL
       case BootplyExample(ply) => Some(ply)
       case PlunkerExample(plunk) => Some(plunk)
       case CodePenExample(pen) => Some(pen)
@@ -72,18 +74,9 @@ object JsFiddleExample {
   }
 }
 
-class JsBinExample private(val codeUrl: Uri) extends LiveExample {
-  override val kind = HtmlWithinJavaScriptWithinHtml
-  override def displayUrl = codeUrl
-  override def toString = s"JsBinExample(${codeUrl})"
-  override def hashCode = codeUrl.hashCode
-  override def equals(other: Any) = other.isInstanceOf[JsBinExample] && other.asInstanceOf[JsBinExample].codeUrl == codeUrl
-}
-object JsBinExample {
+private[live_examples] object JsBinExample {
   private val CanonicalHost = NamedHost("jsbin.com")
-  def apply(uri: Uri): Option[JsBinExample] = canonicalize(uri).map{ new JsBinExample(_) }
-  def unapply(uri: Uri): Option[JsBinExample] = JsBinExample(uri)
-  private def canonicalize(uri: Uri) = {
+  private[live_examples] def canonicalize(uri: Uri) = {
     canonicalizedHost(uri.authority.host).flatMap{ newHost =>
       canonicalizedPath(uri.path).map{ newPath =>
         uri.withHost(newHost).withPath(newPath).withoutQuery.withoutFragment
@@ -105,6 +98,38 @@ object JsBinExample {
       case _ => None
     }
   }
+}
+
+class JsBinUrlExample private(val codeUrl: Uri) extends LiveExample {
+  override val kind = HtmlWithinJavaScriptReferencedInScriptTag
+  override def displayUrl = codeUrl
+  override def toString = s"JsBinUrlExample(${codeUrl})"
+  override def hashCode = codeUrl.hashCode
+  override def equals(other: Any) = other.isInstanceOf[JsBinUrlExample] && other.asInstanceOf[JsBinUrlExample].codeUrl == codeUrl
+}
+object JsBinUrlExample {
+  def apply(uri: Uri): Option[JsBinUrlExample] = JsBinExample.canonicalize(uri).map{ new JsBinUrlExample(_) }
+  def unapply(uri: Uri): Option[JsBinUrlExample] = JsBinUrlExample(uri)
+}
+
+class JsBinJsUrlExample private(val jsUrl: Uri, val codeUrl: Uri) extends LiveExample {
+  override val kind = HtmlWithinJavaScript
+  override def displayUrl = codeUrl
+  override def toString = s"JsBinJsUrlExample(${jsUrl}, ${codeUrl})"
+  override def hashCode = (jsUrl, codeUrl).hashCode
+  override def equals(other: Any) = {
+    if (other.isInstanceOf[JsBinJsUrlExample]) {
+      val otherBin = other.asInstanceOf[JsBinJsUrlExample]
+      otherBin.codeUrl == codeUrl && otherBin.jsUrl == jsUrl
+    }
+    else {
+      false
+    }
+  }
+}
+object JsBinJsUrlExample {
+  def apply(uri: Uri, javaScript: String): Option[JsBinJsUrlExample] = JsBinExample.canonicalize(uri).map{ new JsBinJsUrlExample(_, javaScript) }
+  def unapply(uri: Uri, javaScript: String): Option[JsBinJsUrlExample] = JsBinJsUrlExample(uri, javaScript)
 }
 
 class BootplyExample private(val codeUrl: Uri) extends LiveExample {
