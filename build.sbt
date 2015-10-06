@@ -8,10 +8,6 @@ mainClass := Some("com.chrisrebert.lmvtfy.server.Boot")
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
-resolvers += "Eclipse Foundation Releases" at "https://repo.eclipse.org/content/repositories/releases/"
-
-resolvers += "Eclipse Foundation Snapshots" at "https://repo.eclipse.org/content/repositories/snapshots/"
-
 val jcabiV = "0.24"
 
 libraryDependencies += "nu.validator" % "validator" % "15.6.29" excludeAll(
