@@ -8,7 +8,7 @@ import akka.io.IO
 import akka.pattern.ask
 import akka.util.{ByteString, Timeout}
 import spray.can.Http
-import spray.http.{HttpCharsets, Uri, MediaTypes, HttpResponse}
+import spray.http.{HttpCharsets, Uri, MediaTypes, HttpResponse, StatusCodes=>HttpStatusCodes}
 import spray.httpx.RequestBuilding._
 import spray.json._
 import com.chrisrebert.lmvtfy.{MarkdownAboutBootstrap, ValidationRequest, ValidationResult}
@@ -55,8 +55,17 @@ class BootlintActor(commenter: ActorRef) extends ActorWithLogging {
           }
         }
         else {
-          log.error(s"Failed to fetch Bootlint for ${mention}; HTTP status: ${response.status}")
-          Nil
+          if (response.status == HttpStatusCodes.RequestEntityTooLarge) {
+            Seq(BootlintProblem(
+              id = "XX0",
+              message = "Your example is too large for Bootlint to process! Please simplify your example and make it smaller.",
+              location = None
+            ))
+          }
+          else {
+            log.error(s"Failed to fetch Bootlint for ${mention}; HTTP status: ${response.status}")
+            Nil
+          }
         }
       }
       case Failure(exc) => {
