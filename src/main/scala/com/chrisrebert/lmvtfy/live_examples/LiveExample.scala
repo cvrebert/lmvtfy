@@ -112,15 +112,14 @@ object JsBinUrlExample {
   def unapply(uri: Uri): Option[JsBinUrlExample] = JsBinUrlExample(uri)
 }
 
-class JsBinJsUrlExample private(val jsUrl: Uri, val codeUrl: Uri) extends LiveExample {
+class JsBinJsUrlExample private(val codeUrl: Uri, val displayUrl: Uri) extends LiveExample {
   override val kind = HtmlWithinJavaScript
-  override def displayUrl = codeUrl
-  override def toString = s"JsBinJsUrlExample(${jsUrl}, ${codeUrl})"
-  override def hashCode = (jsUrl, codeUrl).hashCode
+  override def toString = s"JsBinJsUrlExample(${codeUrl}, ${displayUrl})"
+  override def hashCode = (codeUrl, displayUrl).hashCode
   override def equals(other: Any) = {
     if (other.isInstanceOf[JsBinJsUrlExample]) {
       val otherBin = other.asInstanceOf[JsBinJsUrlExample]
-      otherBin.codeUrl == codeUrl && otherBin.jsUrl == jsUrl
+      otherBin.codeUrl == codeUrl && otherBin.displayUrl == displayUrl
     }
     else {
       false
