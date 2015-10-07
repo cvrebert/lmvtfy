@@ -75,7 +75,7 @@ object JsFiddleExample {
 }
 
 private[live_examples] object JsBinExample {
-  private val CanonicalHost = NamedHost("jsbin.com")
+  val CanonicalHost = NamedHost("jsbin.com")
   private[live_examples] def canonicalize(uri: Uri) = {
     canonicalizedHost(uri.authority.host).flatMap{ newHost =>
       canonicalizedPath(uri.path).map{ newPath =>
@@ -127,8 +127,18 @@ class JsBinJsUrlExample private(val codeUrl: Uri, val displayUrl: Uri) extends L
   }
 }
 object JsBinJsUrlExample {
-  def apply(uri: Uri, javaScript: String): Option[JsBinJsUrlExample] = JsBinExample.canonicalize(uri).map{ new JsBinJsUrlExample(_, javaScript) }
-  def unapply(uri: Uri, javaScript: String): Option[JsBinJsUrlExample] = JsBinJsUrlExample(uri, javaScript)
+  def apply(codeUrl: Uri, displayUrl: Uri): Option[JsBinJsUrlExample] = {
+    codeUrl.authority.host match {
+      case JsBinExample.CanonicalHost => JsBinExample.canonicalize(displayUrl).map{ canonicalDisplay => new JsBinJsUrlExample(codeUrl, canonicalDisplay) }
+      case _ => None
+    }
+  }
+  def unapply(codeUrl: Uri, displayUrl: Uri): Option[JsBinJsUrlExample] = {
+    codeUrl.authority.host match {
+      case JsBinExample.CanonicalHost => JsBinJsUrlExample(codeUrl, displayUrl)
+      case _ => None
+    }
+  }
 }
 
 class BootplyExample private(val codeUrl: Uri) extends LiveExample {
