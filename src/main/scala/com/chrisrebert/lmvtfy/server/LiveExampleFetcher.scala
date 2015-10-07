@@ -61,15 +61,15 @@ class LiveExampleFetcher(validator: ActorRef) extends ActorWithLogging {
               case HtmlWithinJavaScriptReferencedInScriptTag => {
                 response.entityUtf8String match {
                   case JsBinScriptUrl(scriptUrl) => {
-                    JsBinUrlExample(scriptUrl) match {
+                    JsBinJsUrlExample(codeUrl = scriptUrl, displayUrl = mention.example.displayUrl) match {
                       case None => {
                         log.error(s"Unable to extract script src URL from JS Bin page ${url}")
                         None
                       }
-                      case Some(unfetchedJsBinExample) => {
+                      case Some(jsBinJsUrlExample) => {
                         // do another fetch because extra level of indirection
                         // FIXME: ideally, this should be sent to the pool of fetchers instead of to the current fetcher
-                        self ! LiveExampleMention(unfetchedJsBinExample, mention.user, mention.issue)
+                        self ! LiveExampleMention(example = jsBinJsUrlExample, user = mention.user, issue = mention.issue)
                         None
                       }
                     }
