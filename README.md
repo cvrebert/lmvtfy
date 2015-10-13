@@ -48,6 +48,9 @@ lmvtfy {
     // Suppress Spray's logging of malformed HTTP requests/headers?
     // (Enable this to avoid floods in your log output when your LMVTFY instance gets weird requests from crackers.)
     squelch-invalid-http-logging = true
+    // If there are fewer than this many requests left before the GitHub API rate limit is hit,
+    // then sleep until the rate limit gets replenished.
+    github-rate-limit-threshold = 10
     // List of full names of GitHub repos to watch for new issues and new issue comments
     github-repos-to-watch = ["twbs/bootstrap"]
     // Username of the account that reply comments will be posted from
