@@ -2,10 +2,13 @@ package com.chrisrebert.lmvtfy.validation
 
 import java.util.regex.Pattern
 
-object MarkdownRenderer {
-  implicit class MarkdownMessagePart(part: MessagePart) {
+package object markdown {
+  private object MarkdownMessagePart {
     private val uberCodeQuote = "````"
     private val tooManyBackticks = Pattern.compile(uberCodeQuote + "+")
+  }
+  implicit class MarkdownMessagePart(part: MessagePart) {
+    import MarkdownMessagePart._
 
     def markdown: String = {
       // escape backticks
@@ -24,9 +27,5 @@ object MarkdownRenderer {
     def markdown: String = {
       msg.locationSpan.map{ _.toString + ": " }.getOrElse("") + msg.parts.map{ _.markdown }.mkString
     }
-  }
-
-  def markdownFor(validationMessages: Seq[ValidationMessage]): String = {
-    validationMessages.map{ "* " + _.markdown }.mkString("\n")
   }
 }

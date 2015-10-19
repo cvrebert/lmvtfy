@@ -4,8 +4,9 @@ import java.io.ByteArrayInputStream
 import org.xml.sax.InputSource
 import scala.util.{Success,Failure}
 import akka.actor.ActorRef
-import com.chrisrebert.lmvtfy.validation.{MarkdownRenderer, Html5Validator}
 import com.chrisrebert.lmvtfy.{MarkdownAboutHtml, ValidationRequest, ValidationResult}
+import com.chrisrebert.lmvtfy.validation.{Html5Validator, SiteSpecificErrorAdviser}
+import com.chrisrebert.lmvtfy.validation.markdown.MarkdownRenderer
 
 class ValidatorSingletonActor(maybeBootlinter: Option[ActorRef], commenter: ActorRef) extends ActorWithLogging {
   override def receive = {
@@ -21,7 +22,8 @@ class ValidatorSingletonActor(maybeBootlinter: Option[ActorRef], commenter: Acto
           }
           else {
             log.info(s"${validationErrs.length} validation errors for ${mention}")
-            val validationMessagesAsMarkdown = MarkdownAboutHtml(MarkdownRenderer.markdownFor(validationErrs))
+            val validationMsgs = SiteSpecificErrorAdviser.extraMessagesFor(mention.example, validationErrs) ++ validationErrs
+            val validationMessagesAsMarkdown = MarkdownAboutHtml(MarkdownRenderer.markdownFor(validationMsgs))
             commenter ! ValidationResult(validationMessagesAsMarkdown, mention)
           }
         }

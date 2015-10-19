@@ -38,6 +38,13 @@ package object util {
     }
   }
 
+  implicit class InputSourceString(str: String) {
+    import java.io.StringReader
+    import org.xml.sax.InputSource
+
+    def asInputSource: InputSource = new InputSource(new StringReader(str))
+  }
+
   implicit class Utf8ByteArray(bytes: Array[Byte]) {
     def utf8String: Try[String] = Try { new String(bytes, utf8Charset) }
   }

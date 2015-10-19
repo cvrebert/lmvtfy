@@ -1,13 +1,8 @@
-import java.io.StringReader
-import org.xml.sax.InputSource
 import org.specs2.mutable._
 import com.chrisrebert.lmvtfy.validation._
+import com.chrisrebert.lmvtfy.util.InputSourceString
 
 class ValidatorSpec extends Specification {
-  implicit class HtmlString(str: String) {
-    def inputSource: InputSource = new InputSource(new StringReader(str))
-  }
-
   val httpEquivErrText = Vector(PlainText("Bad value "), CodeText("Gibberish"), PlainText(" for attribute "), CodeText("http-equiv"), PlainText(" on element "), CodeText("meta"), PlainText("."))
   val httpEquivErrSpan = SourceSpan(5, 5, 5, 56).get
   val httpEquivValidationMsg = ValidationMessage(Some(httpEquivErrSpan), httpEquivErrText)
@@ -26,7 +21,7 @@ class ValidatorSpec extends Specification {
       """.stripMargin
 
     "cause a validation error" in {
-      val messages = Html5Validator.validationErrorsFor(badHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(badHtml.asInputSource).get
       messages must have size(1)
       messages.head mustEqual httpEquivValidationMsg
     }
@@ -52,7 +47,7 @@ class ValidatorSpec extends Specification {
     "cause 2 validation errors" in {
       val pInUlMsg = ValidationMessage(SourceSpan(10, 7, 10, 9), Vector(PlainText("Element "), CodeText("p"), PlainText(" not allowed as child of element "), CodeText("ul"), PlainText(" in this context. (Suppressing further errors from this subtree.)")))
 
-      val messages = Html5Validator.validationErrorsFor(badHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(badHtml.asInputSource).get
       messages must have size(2)
       messages(0) mustEqual httpEquivValidationMsg
       messages(1) mustEqual pInUlMsg
@@ -76,7 +71,7 @@ class ValidatorSpec extends Specification {
     "result in a properly-spelled validation error message" in {
       val expectedMsg = ValidationMessage(SourceSpan(8, 5, 8, 36), Vector(PlainText("Attribute "), CodeText("href"), PlainText(" not allowed on element "), CodeText("span"), PlainText(" at this point.")))
 
-      val messages = Html5Validator.validationErrorsFor(badHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(badHtml.asInputSource).get
       messages must have size(1)
       messages.head mustEqual expectedMsg
     }
@@ -102,7 +97,7 @@ class ValidatorSpec extends Specification {
       """.stripMargin
 
     "not be considered a validation error" in {
-      val messages = Html5Validator.validationErrorsFor(badHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(badHtml.asInputSource).get
       messages must have size(0)
     }
   }
@@ -122,7 +117,7 @@ class ValidatorSpec extends Specification {
       """.stripMargin
 
     "not be considered a validation error" in {
-      val messages = Html5Validator.validationErrorsFor(mehHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(mehHtml.asInputSource).get
       messages must have size(0)
     }
   }
@@ -142,7 +137,7 @@ class ValidatorSpec extends Specification {
       """.stripMargin
 
     "not cause any validation messages" in {
-      val messages = Html5Validator.validationErrorsFor(goodHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(goodHtml.asInputSource).get
       messages must have size(0)
     }
   }
@@ -160,7 +155,7 @@ class ValidatorSpec extends Specification {
       """.stripMargin
 
     "not be considered a validation error" in {
-      val messages = Html5Validator.validationErrorsFor(mehHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(mehHtml.asInputSource).get
       messages must have size(0)
     }
   }
@@ -179,7 +174,7 @@ class ValidatorSpec extends Specification {
       """.stripMargin
 
     "not be considered a validation error" in {
-      val messages = Html5Validator.validationErrorsFor(mehHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(mehHtml.asInputSource).get
       messages must have size(0)
     }
   }
@@ -201,7 +196,7 @@ class ValidatorSpec extends Specification {
       """.stripMargin
     //
     "not be considered a validation error" in {
-      val messages = Html5Validator.validationErrorsFor(mehHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(mehHtml.asInputSource).get
       messages must have size(0)
     }
   }
@@ -220,7 +215,7 @@ class ValidatorSpec extends Specification {
       """.stripMargin
 
     "not be considered a validation error" in {
-      val messages = Html5Validator.validationErrorsFor(fiddlyHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(fiddlyHtml.asInputSource).get
       messages must have size(0)
     }
   }
@@ -239,7 +234,7 @@ class ValidatorSpec extends Specification {
           |  </body>
           |</html>
         """.stripMargin
-      val messages = Html5Validator.validationErrorsFor(autoInputHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(autoInputHtml.asInputSource).get
       messages must have size(0)
     }
     "not be considered a validation error on a button" in {
@@ -255,7 +250,7 @@ class ValidatorSpec extends Specification {
           |  </body>
           |</html>
         """.stripMargin
-      val messages = Html5Validator.validationErrorsFor(autoButtonHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(autoButtonHtml.asInputSource).get
       messages must have size(0)
     }
   }
@@ -276,7 +271,7 @@ class ValidatorSpec extends Specification {
           |  </body>
           |</html>
         """.stripMargin
-      val messages = Html5Validator.validationErrorsFor(areaWithoutAltHtml.inputSource).get
+      val messages = Html5Validator.validationErrorsFor(areaWithoutAltHtml.asInputSource).get
       messages must have size(0)
     }
   }
