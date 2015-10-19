@@ -58,5 +58,32 @@ class JsBinUserHtmlFromStartJsSpec extends Specification {
 
       userHtmlOption must beSome(expectedUserHtml)
     }
+
+    "handle escaped exclamation marks correctly" in {
+      val binJs =
+        """start({"html":"<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"utf-8\">\n  <title>JS Bin</title>\n</head>\n<body>\nFoo:\!\nBar:\\!\nBaz:\\\!\nQux:\\\\!\n</body>\n</html>","css":"","javascript":"","url":"http://jsbin.com/rijigoreye"}, {"root":"http://jsbin.com","shareRoot":"http://jsbin.com","runner":"http://null.jsbin.com/runner","static":"http://static.jsbin.com","version":"3.35.2","state":{"title":"JS Bin","description":"","token":"bMEyMSiqKGwiiU0QYPjQvoJ+","stream":false,"streaming":true,"code":"rijigoreye","revision":1,"processors":{"html":"html","css":"css","javascript":"javascript"},"checksum":null,"metadata":{"name":"anonymous","visibility":"public","last_updated":"2015-10-19T19:37:48.000Z"},"latest":true},"name":"JS Bin","settings":{"panels":["html","live"]},"user":{"settings":{}},"saveDisabled":true}, this, document);
+        """.stripMargin
+      val expectedUserHtml =
+        """<!DOCTYPE html>
+          |<html>
+          |<head>
+          |  <meta charset="utf-8">
+          |  <title>JS Bin</title>
+          |</head>
+          |<body>
+          |Foo:!
+          |Bar:\!
+          |Baz:\!
+          |Qux:\\!
+          |</body>
+          |</html>""".stripMargin
+
+      val userHtmlOption = binJs match {
+        case JsBinUserHtmlFromStartJs(binUserHtml) => Some(binUserHtml)
+        case _ => None
+      }
+
+      userHtmlOption must beSome(expectedUserHtml)
+    }
   }
 }
