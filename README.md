@@ -4,7 +4,7 @@ LMVTFY: Let Me Validate That For You
 ![Development Status :: 5 - Production/Stable](https://img.shields.io/badge/maturity-stable-green.svg "Development Status :: 5 - Production/Stable")
 [![MIT License](https://img.shields.io/github/license/cvrebert/lmvtfy.svg)](https://github.com/cvrebert/lmvtfy/blob/master/LICENSE.txt)
 
-LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain (links to) Web examples (e.g. a [jsFiddle](http://jsfiddle.net)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment ([such as this one](https://github.com/twbs/bootstrap/issues/11984#issuecomment-46140343)) on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
+LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain (links to) Web examples (e.g. a [JSFiddle](http://jsfiddle.net)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment ([such as this one](https://github.com/twbs/bootstrap/issues/11984#issuecomment-46140343)) on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
 
 Also, you can optionally enable [Bootlint](https://github.com/twbs/bootlint) integration, which will make LMVTFY run valid HTML documents through Bootlint (via its [HTTP API](https://github.com/twbs/bootlint#http-api)) to check for [Bootstrap](https://github.com/twbs/bootstrap) usage errors.
 
@@ -12,7 +12,7 @@ Affectionately named after [LMGTFY](http://knowyourmeme.com/memes/sites/let-me-g
 
 ## Supported example types
 ### Live
-* [jsFiddle](http://jsfiddle.net)
+* [JSFiddle](http://jsfiddle.net)
 * [JS Bin](http://jsbin.com)
 * [Bootply](http://www.bootply.com)
 * [Plunker](http://plnkr.co)
@@ -88,10 +88,10 @@ The following validation errors are deliberately ignored by LMVTFY for pragmatic
   * Again, folks often don't include a `<title>` in live examples since its presence or absence is almost never relevant to their problem and its absence almost never causes any other problems.
 * "Attribute `autocomplete` not allowed on element [`input` or `button`] at this point."
   * This nonstandard usage of the `autocomplete` attribute is currently the only good workaround for a [bizarre Firefox bug](https://bugzilla.mozilla.org/show_bug.cgi?id=654072).
-* Errors due to the nonstandard `<meta>` that jsFiddle uses on its pages.
+* Errors due to the nonstandard `<meta>` that JSFiddle uses on its pages.
   * "Bad value `edit-Type` for attribute `http-equiv` on element `meta`."
   * "Attribute `edit` not allowed on element `meta` at this point."
-  * These aren't errors in the jsFiddle user's code, so nothing can be done about them and it's pointless to complain about them.
+  * These aren't errors in the JSFiddle user's code, so nothing can be done about them and it's pointless to complain about them.
   * In practice, this nonstandard `<meta>` causes no problems.
 
 ## License
