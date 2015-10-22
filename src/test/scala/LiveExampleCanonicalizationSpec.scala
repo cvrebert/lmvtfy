@@ -6,7 +6,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
   "JsBinExample" should {
     def bin(url: String) = JsBinUrlExample(Uri(url)).map{ _.codeUrl }
 
-    "canonicalize URLs correctly" in {
+    "canonicalize HTTP URLs correctly" in {
       // JS Bin hates trailing slashes
       val canonicalVersioned = Some(Uri("http://jsbin.com/mogupeli/3/edit"))
       bin("http://jsbin.com/mogupeli/3") mustEqual canonicalVersioned
@@ -22,12 +22,29 @@ class LiveExampleCanonicalizationSpec extends Specification {
       bin("http://jsbin.com/mogupeli/edit/") mustEqual canonicalUnversioned
       bin("http://output.jsbin.com/mogupeli") mustEqual canonicalUnversioned
     }
+
+    "canonicalize HTTPS URLs correctly" in {
+      // JS Bin hates trailing slashes
+      val canonicalVersioned = Some(Uri("https://jsbin.com/mogupeli/3/edit"))
+      bin("https://jsbin.com/mogupeli/3") mustEqual canonicalVersioned
+      bin("https://jsbin.com/mogupeli/3/") mustEqual canonicalVersioned
+      bin("https://jsbin.com/mogupeli/3/edit") mustEqual canonicalVersioned
+      bin("https://jsbin.com/mogupeli/3/edit/") mustEqual canonicalVersioned
+      bin("https://output.jsbin.com/mogupeli/3") mustEqual canonicalVersioned
+
+      val canonicalUnversioned = Some(Uri("https://jsbin.com/mogupeli/edit"))
+      bin("https://jsbin.com/mogupeli") mustEqual canonicalUnversioned
+      bin("https://jsbin.com/mogupeli/") mustEqual canonicalUnversioned
+      bin("https://jsbin.com/mogupeli/edit") mustEqual canonicalUnversioned
+      bin("https://jsbin.com/mogupeli/edit/") mustEqual canonicalUnversioned
+      bin("https://output.jsbin.com/mogupeli") mustEqual canonicalUnversioned
+    }
   }
 
   "JsFiddleExample" should {
     def fiddle(url: String) = JsFiddleExample(Uri(url)).map{ _.codeUrl }
 
-    "canonicalize URLs for anonymous users correctly" in {
+    "canonicalize HTTP URLs for anonymous users correctly" in {
       // JS Fiddle likes trailing slashes
       val canonicalVersioned = Some(Uri("http://fiddle.jshell.net/wYc3u/5/show/light/"))
       fiddle("http://jsfiddle.net/wYc3u/5") mustEqual canonicalVersioned
@@ -46,7 +63,7 @@ class LiveExampleCanonicalizationSpec extends Specification {
       fiddle("http://jsfiddle.net/wYc3u/embedded/result/") mustEqual canonicalUnversioned
     }
 
-    "canonicalize URLs for logged-in users correctly" in {
+    "canonicalize HTTP URLs for logged-in users correctly" in {
       val canonicalUnversioned = Some(Uri("http://fiddle.jshell.net/cvrebert/7aKxf/show/light/"))
       fiddle("http://jsfiddle.net/cvrebert/7aKxf") mustEqual canonicalUnversioned
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/") mustEqual canonicalUnversioned
@@ -62,6 +79,43 @@ class LiveExampleCanonicalizationSpec extends Specification {
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/show/") mustEqual canonicalVersioned
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/embedded/result") mustEqual canonicalVersioned
       fiddle("http://jsfiddle.net/cvrebert/7aKxf/1/embedded/result/") mustEqual canonicalVersioned
+    }
+
+    "canonicalize HTTPS URLs for anonymous users correctly" in {
+      // JS Fiddle likes trailing slashes
+      val canonicalVersioned = Some(Uri("https://fiddle.jshell.net/wYc3u/5/show/light/"))
+      fiddle("https://jsfiddle.net/wYc3u/5") mustEqual canonicalVersioned
+      fiddle("https://jsfiddle.net/wYc3u/5/") mustEqual canonicalVersioned
+      fiddle("https://jsfiddle.net/wYc3u/5/show") mustEqual canonicalVersioned
+      fiddle("https://jsfiddle.net/wYc3u/5/show/") mustEqual canonicalVersioned
+      fiddle("https://jsfiddle.net/wYc3u/5/embedded/result") mustEqual canonicalVersioned
+      fiddle("https://jsfiddle.net/wYc3u/5/embedded/result/") mustEqual canonicalVersioned
+
+      val canonicalUnversioned = Some(Uri("https://fiddle.jshell.net/wYc3u/show/light/"))
+      fiddle("https://jsfiddle.net/wYc3u") mustEqual canonicalUnversioned
+      fiddle("https://jsfiddle.net/wYc3u/") mustEqual canonicalUnversioned
+      fiddle("https://jsfiddle.net/wYc3u/show") mustEqual canonicalUnversioned
+      fiddle("https://jsfiddle.net/wYc3u/show/") mustEqual canonicalUnversioned
+      fiddle("https://jsfiddle.net/wYc3u/embedded/result") mustEqual canonicalUnversioned
+      fiddle("https://jsfiddle.net/wYc3u/embedded/result/") mustEqual canonicalUnversioned
+    }
+
+    "canonicalize HTTPS URLs for logged-in users correctly" in {
+      val canonicalUnversioned = Some(Uri("https://fiddle.jshell.net/cvrebert/7aKxf/show/light/"))
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf") mustEqual canonicalUnversioned
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf/") mustEqual canonicalUnversioned
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf/show") mustEqual canonicalUnversioned
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf/show/") mustEqual canonicalUnversioned
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf/embedded/result") mustEqual canonicalUnversioned
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf/embedded/result/") mustEqual canonicalUnversioned
+
+      val canonicalVersioned = Some(Uri("https://fiddle.jshell.net/cvrebert/7aKxf/1/show/light/"))
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf/1") mustEqual canonicalVersioned
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf/1/") mustEqual canonicalVersioned
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf/1/show") mustEqual canonicalVersioned
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf/1/show/") mustEqual canonicalVersioned
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf/1/embedded/result") mustEqual canonicalVersioned
+      fiddle("https://jsfiddle.net/cvrebert/7aKxf/1/embedded/result/") mustEqual canonicalVersioned
     }
   }
 
