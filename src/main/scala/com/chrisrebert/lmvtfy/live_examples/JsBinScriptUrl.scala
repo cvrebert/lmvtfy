@@ -4,7 +4,7 @@ import scala.util.Try
 import spray.http.Uri
 
 object JsBinScriptUrl {
-  private val ScriptSrcRegex = "(?s).*<script(?:\\s+)src=\"(http://jsbin.com/bin/start\\.js\\?[^\"]+)\">.*".r
+  private val ScriptSrcRegex = "(?s).*<script(?:\\s+)src=\"(http(?:s?)://jsbin.com/bin/start\\.js\\?[^\"]+)\">.*".r
 
   def unapply(binPageHtml: String): Option[Uri] = {
     binPageHtml match {
