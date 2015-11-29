@@ -71,6 +71,8 @@ class LiveExamplesExtractorSpec extends Specification {
     "extract Plunker examples" in {
       assertHasLiveExample("http://plnkr.co/edit/XRNnDt")
       assertHasLiveExample("http://embed.plnkr.co/XRNnDt/preview")
+      assertHasLiveExample("http://embed.plnkr.co/XRNnDt")
+      assertHasLiveExample("http://embed.plnkr.co/XRNnDt/")
       assertHasLiveExample("http://run.plnkr.co/plunks/SvY0dYAXkW7PIAXvdcUo/")
     }
     "extract CodePen examples" in {

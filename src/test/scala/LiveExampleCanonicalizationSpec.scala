@@ -148,6 +148,8 @@ class LiveExampleCanonicalizationSpec extends Specification {
       plunk("http://plnkr.co/edit/XRNnDt/?p=info") mustEqual canonical
       plunk("http://embed.plnkr.co/XRNnDt/preview") mustEqual canonical
       plunk("http://embed.plnkr.co/XRNnDt/preview/") mustEqual canonical
+      plunk("http://embed.plnkr.co/XRNnDt") mustEqual canonical
+      plunk("http://embed.plnkr.co/XRNnDt/") mustEqual canonical
       plunk("http://run.plnkr.co/plunks/XRNnDt") mustEqual canonical
       plunk("http://run.plnkr.co/plunks/XRNnDt/") mustEqual canonical
     }
