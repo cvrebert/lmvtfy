@@ -204,6 +204,7 @@ object PlunkerExample {
       case Array("", "edit", identifier) => Some(identifier)
       case Array("", "plunks", identifier) => Some(identifier)
       case Array("", identifier, "preview") => Some(identifier)
+      case Array("", identifier) => Some(identifier)
       case _ => None
     }
     maybeIdentifier.map{ Path / "plunks" / _ / "" }
