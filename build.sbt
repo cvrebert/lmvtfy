@@ -10,7 +10,7 @@ resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
 val jcabiV = "0.24"
 
-libraryDependencies += "nu.validator" % "validator" % "15.6.29" excludeAll(
+libraryDependencies += "nu.validator" % "validator" % "16.1.1" excludeAll(
   ExclusionRule(organization = "org.eclipse.jetty"),
   ExclusionRule(organization = "javax.servlet"),
   ExclusionRule(organization = "commons-fileupload"),
