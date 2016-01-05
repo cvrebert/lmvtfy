@@ -3,7 +3,7 @@ LMVTFY: Let Me Validate That For You
 [![Build Status](https://travis-ci.org/cvrebert/lmvtfy.svg?branch=master)](https://travis-ci.org/cvrebert/lmvtfy)
 ![Development Status :: 5 - Production/Stable](https://img.shields.io/badge/maturity-stable-green.svg "Development Status :: 5 - Production/Stable")
 [![MIT License](https://img.shields.io/github/license/cvrebert/lmvtfy.svg)](https://github.com/cvrebert/lmvtfy/blob/master/LICENSE.txt)
-
+XXX
 LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain (links to) Web examples (e.g. a [JSFiddle](http://jsfiddle.net)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment ([such as this one](https://github.com/twbs/bootstrap/issues/11984#issuecomment-46140343)) on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
 
 Also, you can optionally enable [Bootlint](https://github.com/twbs/bootlint) integration, which will make LMVTFY run valid HTML documents through Bootlint (via its [HTTP API](https://github.com/twbs/bootlint#http-api)) to check for [Bootstrap](https://github.com/twbs/bootstrap) usage errors.
