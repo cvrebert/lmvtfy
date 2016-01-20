@@ -4,7 +4,7 @@ LMVTFY: Let Me Validate That For You
 ![Development Status :: 5 - Production/Stable](https://img.shields.io/badge/maturity-stable-green.svg "Development Status :: 5 - Production/Stable")
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg "MIT License")](https://github.com/cvrebert/lmvtfy/blob/master/LICENSE.txt)
 
-LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain (links to) Web examples (e.g. a [JSFiddle](http://jsfiddle.net)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment ([such as this one](https://github.com/twbs/bootstrap/issues/11984#issuecomment-46140343)) on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
+LMVTFY is a service that watches for new issues and new issue comments on a given GitHub repository. If the comments contain (links to) Web examples (e.g. a [JSFiddle](https://jsfiddle.net)), the example's HTML is extracted and run thru [the HTML5 validator](http://validator.github.io). If there are any validation errors, LMVTFY then posts a comment ([such as this one](https://github.com/twbs/bootstrap/issues/11984#issuecomment-46140343)) on the issue pointing out these errors, so that the poster may correct them and/or realize the error of their ways.
 
 Also, you can optionally enable [Bootlint](https://github.com/twbs/bootlint) integration, which will make LMVTFY run valid HTML documents through Bootlint (via its [HTTP API](https://github.com/twbs/bootlint#http-api)) to check for [Bootstrap](https://github.com/twbs/bootstrap) usage errors.
 
@@ -106,5 +106,5 @@ We all stand on the shoulders of giants and get by with a little help from our f
 
 ## See also
 * [Rorschach](https://github.com/twbs/rorschach), LMVTFY's sister bot who sanity-checks Bootstrap pull requests
-* [Savage](https://github.com/cvrebert/savage), LMVTFY's sister bot who runs cross-browser JS tests on Sauce Labs
+* [Savage](https://github.com/twbs/savage), LMVTFY's sister bot who runs cross-browser JS tests on Sauce Labs
 * [NO CARRIER](https://github.com/twbs/no-carrier), LMVTFY's sister bot who closes old abandoned issues
