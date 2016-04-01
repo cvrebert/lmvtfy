@@ -31,7 +31,7 @@ But due to the project's popularity, you will get some issues reported by newbie
 By automating the process of checking the validity of HTML examples, such issues can be resolved more quickly and with less work on the part of issue triagers.
 
 ## Used by
-* [Bootstrap](https://github.com/twbs/bootstrap); see [@twbs-lmvtfy](https://github.com/twbs-lmvtfy)
+* [Bootstrap](https://github.com/twbs/bootstrap); see [@twbs-lmvtfy](https://github.com/twbs-lmvtfy) and http://blog.getbootstrap.com/2014/06/25/lmvtfy/
 
 ## Usage
 Java 7+ is required to run LMVTFY. For instructions on building LMVTFY yourself, see [the Contributing docs](https://github.com/cvrebert/lmvtfy/blob/master/CONTRIBUTING.md).
